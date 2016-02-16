@@ -4,7 +4,18 @@
 % The following makes latex use nicer postscript fonts.
 \usepackage{times}
 \usepackage[english]{babel}
+%\usepackage{csquotes}% Recommended
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
 \usepackage[colorlinks,urlcolor=blue,linkcolor=blue]{hyperref}
+\usepackage[
+	backend=biber\
+]{biblatex}
+% TODO this is totally a thing
+%\graphicspath{ {images/} }
+\addbibresource{Mendeley.bib}
 
 \input{titlepage.tex}
 \include{introduction}

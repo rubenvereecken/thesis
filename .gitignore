@@ -35,6 +35,8 @@
 *.xdy
 *.tdo
 
+*.pdf
+
 
 ### Linux ###
 *~
