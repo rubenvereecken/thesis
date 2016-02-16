@@ -1,0 +1,82 @@
+% Author: Toon Verwaest
+
+\usepackage{graphicx}
+
+\gdef\@promotortitle{Promotor}
+\gdef\@advisortitle{Advisor}
+\gdef\@promotor{Set promotor}
+\gdef\@advisors{Set advisors}
+\gdef\@faculty{Faculty of Science}
+\gdef\@department{Department of Computer Science and Applied Computer Science}
+\gdef\@reason{Dissertation for the degree of Computer Science}
+
+\newenvironment{multiline}{\verbatim}{\verbatim}%
+
+\def\promotor#1{\gdef\@promotor{#1}}
+\def\advisors#1{\gdef\@advisors{#1}}
+\def\faculty#1{\gdef\@faculty{#1}}
+\def\department#1{\gdef\@department{#1}}
+\def\reason#1{\gdef\@reason{#1}}
+\def\advisortitle#1{\gdef\@advisortitle{#1}}
+\def\promotortitle#1{\gdef\@promotortitle{#1}}
+
+\def\maketitlepage{
+\begin{titlepage}
+\enlargethispage*{1000pt}
+
+\vspace*{-36.6mm}{
+  \hspace*{-24.75mm}{
+    \includegraphics[width=75.5mm,height=15.25mm]{VUB_logo}
+  }
+}
+
+\vspace*{-2.5mm}{
+  \hspace*{-3.5mm}{
+    \begin{tabular}{l|l}
+      
+                    % Faculty
+      & \parbox[t]{200pt}{\normalsize{\parbox[t]{200pt}{\@faculty}}\\
+                                        % Department
+                          \footnotesize{\parbox[t]{200pt}{\@department}}
+        } \\
+
+        \rule{0pt}{85mm}
+      
+      & \rule{6pt}{0mm}
+                % Title
+          \huge{\parbox[b]{400pt}{\@title}}\\
+          \rule{0pt}{5mm}\\
+        
+      \cline{2-2}
+      
+      \rule{0pt}{14mm}
+      
+      & \rule{6pt}{0mm}\begin{tabular}{l}
+                        % Reason
+          \footnotesize{\parbox[t]{400pt}{\@reason}}\\
+
+                                % Author
+          \rule{0pt}{7mm}\LARGE{\parbox[t]{400pt}{\@author}}\\
+          \\
+        \end{tabular}\\
+      \cline{2-2}
+      & \rule{6pt}{0mm}\begin{tabular}{rl}
+          \rule{0pt}{5mm}\\
+
+                      % Promotor(s)
+          \@promotortitle: & \parbox[t]{200pt}{\@promotor} \\
+  
+                      % Advisor(s)
+          \@advisortitle: & \parbox[t]{200pt}{\@advisors}\\
+        \end{tabular} \\
+      \rule{0pt}{50mm} \\
+
+        % Date
+      & \rule{6pt}{0mm} \begin{tabular}{llr}
+          \small{\@date} & \rule{230pt}{0mm} & \includegraphics[width=43mm,height=43mm]{VUB_schild}
+        \end{tabular}
+    \end{tabular}
+  }
+}
+\end{titlepage}
+}
