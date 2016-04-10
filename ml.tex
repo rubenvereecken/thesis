@@ -93,3 +93,140 @@ the applications described herein.
 The careful reader is of course cordially invited
 to read the more detailed descriptions.
 
+
+\section{Hands-on Introduction}
+A machine learning algorithm
+is usually required to form hypotheses
+based on given observations.
+In this way it can be seen as
+a black-box oracle
+in which data are shoved
+and answers pop out.
+Let's take as an easy example
+the probably overused and dead-beaten weather forecast.
+
+Let's say we only need to do a daily forecast.
+Data come in in the form of meteorological observations
+such as temperature, wind speed, and whatever else
+experts observe to make top-notch predictions.
+This then gets paired
+with a description of the actual weather the next day.
+Together they form experience-target pairs
+$(x_i, y_i)$
+that correspond to a meteorological observation
+on the one day and the weather on the next day,
+in the hope that we can somehow deduct the hidden
+link between the two.
+The target $y_i$ is what we're really after
+so we should choose carefully as to what we are trying to predict.
+$y_i$ can be a nominal value,
+i.e. from a given set of values
+such as the set $(sunny, rainy, windy)$,
+in which case the problem is called a \textit{classification} problem.
+Contrarily, it can be a real-valued number such as temperature
+in which case we call the problem a \textit{regression} problem.
+The distinction is worth nothing because
+some techniques lend themselves well to
+one category but not necessarily to the other.
+On this data we will try to learn a hypothesis $h$
+that can predict the target weather $y$
+for any given observation $x$.
+Now all we need to do is fill in the bits in between.
+
+We already have a vague description of what we want to achieve
+but now we need to design the problem.
+Let us pick for our targets the real-valued temperature some day.
+The observations, or \textit{features}, we will base our model on
+will take the form of a vector
+$(Temperature, Sky, Wind)$ or $(x_1, x_2, x_3)$ short,
+where $Temperature$ and $Wind$ are real-valued,
+whereas $Sky$ takes on one of the three values
+$(Sunny, Rainy, Cloudy)$.
+Now we need some kind of function connecting
+observation to target.
+One of the easiest choices would be a linear
+function that combines the features
+and outputs the target we are looking for.
+It would look quite simple:
+
+$$ y = w_0 + w_1x_1 + w_2x_2 + w_3x_3 $$
+
+We are still stuck with the problem that $x_2$, or $Sky$,
+is a nominal value and therefore does not fit all too well with algebra.
+We can work around this by agreeing on
+a little preprocessing step
+that maps $Sunny$ to $-1$, $Rainy$ to $0$ and $Cloudy$ to $1$.
+Now that our model is defined, all that is left for us to do
+is train it.
+
+In order to train our model we need a data set with training examples
+$(x_i, y_i)$,
+where the temperature $y_i$ corresponds to
+the observations $x_i$ the previous day.
+All that remains now is to pick the best weights
+so the resulting model is the best hypothesis.
+We describe a \textit{best fit}
+we need some metric of performance.
+The easiest one available is the error on the predictions made by the model
+compared to the targets in the training data.
+The best hypothesis is the one that minimizes this error.
+The most common error by far is the \textit{mean squared error},
+though others certainly exist.
+Given a training set $D$, it is defined as follows:
+
+$$ E = \frac{1}{|D|} \sum_{(x_i, y_i) \in D}{(h(x_i) - y_i)^2} $$
+
+Multiple algorithms exist that minimize $E$ in such a manner.
+If all data is available in one go, as it is in our case,
+we can simply apply linear regression to our system
+of $|D|$ equations $y = xw$ in order to find a $w$
+with the lowest error.
+Why not just go for an error of $0$?
+We could, however it is unlikely since we suffer from two problems:
+insufficient data and a delusion of a perfect world.
+In other words, our features probably are not sufficient
+and our data is noisy.
+If we still manage a training error of $0$
+we probably committed the grave mistake of
+\textit{overfitting} the training data,
+meaning we included the noise of the data in our model.
+The reason this is to be avoided is that noise
+cannot be predicted by definition and a model that tries
+to do so will perform even worse on similar unseen samples.
+
+< TODO image of overfitting >
+
+An alternative algorithm to find our optimal weights $w$
+is the \textit{weight update rule},
+a source of inspiration for many more algorithms.
+The idea behind is that every sample
+you calculate your prediction
+and shift the weights in the direction of the error,
+proportionally to the size of the error.
+So, for every sample:
+\begin{enumerate}
+\item Calculate $\hat{y_i} = h(x_i)$
+\item Update $w_i = w_i + \eta(y_i - \hat{y_i})x_i$
+\end{enumerate}
+
+The update size can be tweaked with $\eta$.
+
+\paragraph{}
+As you have witnessed yourself,
+designing a machine learning task
+is rather an art than an exact science.
+The first optimization algorithm proposed,
+linear regression,
+is only available for linear models.
+Finding the ultimate weights
+makes more sense in a regression context
+as opposed to a classification context.
+
+There are many more such decisions to made
+and models to choose from.
+During the next sections,
+I will touch on some interesting
+models that are used throughout this thesis.
+
+
+\section{Artificial Neural Networks}
