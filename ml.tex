@@ -230,12 +230,141 @@ models that are used throughout this thesis.
 
 
 \section{Artificial Neural Networks}
+\section{Introduction}
 Neural networks provide a robust method to learn
 vector-valued target functions.
 % TODO more examples is better
-They have effectively been used for a multitude of domains,
+They have effectively been used for a multitude of machine learning domains,
 including recognition of handwritten characters
-
-
+\cite{LeCun1989}
+and
+face recognition
+\cite{Cottreil1991},
+but also in reinforcement learning
+(\cite{anderson1989}, \cite{lin1993}). % inverted pendulum
+Both populairy and effectiveness of neural networks can be attributed to
+their ability to cope with noisy, real-world data,
+as well as being able to approximate any function,
+albeit with possibly very large complexity.
+% TODO maybe pic
+\paragraph{}
 In part, they are man's attempt
-to model the biology of the brain.
+to model the biology of the brain,
+or at least that is where the inspiration came from.
+The artificial neural networks we construct
+consist of interconnected units,
+each taking in real-valued inputs
+and outputting a real value,
+possibly connecting to multiple other units.
+This can be in a directed, feed-forward manner,
+but it does not have to be.
+Interesting architectures have been discovered
+that make use of recurrent connections.
+I will cover this later on. % TODO link
+To complete the analogy,
+the human brain consists of a large amount of densely packed neurons,
+approximately $10^(11)$ in total.
+Compared to an artificial neuron,
+they fire a lot slower
+yet still humans are capable of
+making incredibly complicated decisions
+(or recognitions)
+in a matter of less than a second.
+This hints at great parallelism,
+an attribute that is still important
+in the artificial neural networks we construct,
+especially in real-life situation reinforcement learning
+where decisions must be made swiftly and we cannot wait
+for a slower model to finish computing.
+While our general purpose machines 
+are entirely sequential in nature,
+parallel hardware has been built specially
+for neural network applications.
+These are not generally available,
+as each domain and even each problem
+still require their own specific architectures.
+Still, in modern day, many make use
+of the parallel capabilities of
+Graphic Processing Units (GPUs),
+effectively making artificial neural networks even more useful.
+
+The analogy is limited however.
+Our use of neural networks draws inspiration from nature
+but does not aim to mimic perfectly.
+Whereas our neural networks output real values,
+biological neurons produce a series of spikes
+where both timing and intensity impact the result, % TODO citatie :/?
+a phenomenon researchers are still trying to model perfectly.
+For now,
+we shall content ourselves without the dimension of time.
+
+\section{Building Blocks}
+Artificial neural networks are made up of simple elements called units.
+Units are connected through directed connections
+that are associated with a weight.
+These weights are what make up the parameters of the model.
+Units are usually divided in layers depending on their function
+and location within the network.
+Non-input units get their activation signal, i.e. their input,
+from some function of the values of the incoming connections
+and the weights associated with them.
+
+\begin{figure}
+\label{fig.neuralnet}
+\center
+\includegraphics[]{net.png}
+\caption{Multi-layer neural network with a single hidden layer.}
+\end{figure}
+
+%TODO ref on perceptrons
+Activation functions can be linear or nonlinear.
+A special kind of unit is the \textit{perceptron},
+which outputs either a $-1$ or $1$,
+depending on the value of a linear combination of the input:
+
+\begin{equation}
+\label{eq.perceptron}
+o(\overrightarrow{x}) = \begin{cases}
+1 & if \overrightarrow{w}\cdot\overrightarrow{x} > 0 \\
+-1 & otherwise
+\end{cases}
+\end{equation}
+
+\begin{figure}
+\label{fig.perceptron}
+\center
+\includegraphics[]{perceptron.png}
+\caption{Basic perceptron unit.}
+\end{figure}
+
+%TODO I have the perceptron img, need to clean and attribute properly
+where $\overrightarrow{w}$ denotes the weights of the incoming connection
+and $\overrightarrow{x}$ the corresponding incoming values.
+This function effectively creates a hyperplane decision surface;
+it separates the input space in two.
+
+A problem with perceptrons, however,
+is that they are not differentiable
+in their whole domain.
+As I'll explain further down, %TODO ref
+differentiability is a useful and ofttimes required attribute.
+As a way to circumvent this difficulty of non-differentiability,
+the \textit{sigmoid} (denoted $\sigma(x)$) is often used:
+
+\begin{equation}
+\label{eq.sigmoid}
+\sigma(x) = \frac{1}{1 + e^{-x}}
+\end{equation}
+
+%TODO img of sigmoid
+As can be seen on fig <>,
+it has the same tendency as the perceptron activation function
+to separate the input space in two
+but there is a transition area of uncertainty between the two extremes,
+allowing the function to be differentiable in its whole domain.
+
+\subsection{Gradient Descent and Backpropagation}
+
+\section{Convolutional Neural Networks}
+
+\section{Recurrent Neural Networks}
