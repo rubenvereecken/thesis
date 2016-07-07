@@ -1,3 +1,5 @@
+build
+
 ### LaTeX ###
 *.acn
 *.acr
@@ -34,8 +36,6 @@
 *.vrb
 *.xdy
 *.tdo
-
-*.pdf
 
 
 ### Linux ###
