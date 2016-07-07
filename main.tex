@@ -8,6 +8,7 @@
 \usepackage{graphicx}
 \usepackage[colorlinks,urlcolor=blue,linkcolor=blue]{hyperref}
 \usepackage[backend=biber]{biblatex}
+\usepackage[section]{placeins} % To keep floats within their sections
 % TODO this is totally a thing
 \graphicspath{ {images/} }
 \addbibresource{Mendeley.bib}
@@ -15,6 +16,7 @@
 \addbibresource{other.bib}
 
 \input{titlepage.tex}
+\tableofcontents
 \include{introduction}
 \include{ml}
 \include{rl}

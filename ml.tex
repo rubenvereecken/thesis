@@ -230,7 +230,6 @@ models that are used throughout this thesis.
 
 
 \section{Artificial Neural Networks}
-\section{Introduction}
 Neural networks provide a robust method to learn
 vector-valued target functions.
 % TODO more examples is better
@@ -242,10 +241,10 @@ face recognition
 \cite{Cottreil1991},
 but also in reinforcement learning
 (\cite{anderson1989}, \cite{lin1993}). % inverted pendulum
-Both populairy and effectiveness of neural networks can be attributed to
+Both popularity and effectiveness of neural networks can be attributed to
 their ability to cope with noisy, real-world data,
 as well as being able to approximate any function,
-albeit with possibly very large complexity.
+albeit with possibly very large complexity (TODO ref).
 % TODO maybe pic
 \paragraph{}
 In part, they are man's attempt
@@ -260,10 +259,10 @@ This can be in a directed, feed-forward manner,
 but it does not have to be.
 Interesting architectures have been discovered
 that make use of recurrent connections.
-I will cover this later on. % TODO link
+Such architectures will be considered in (TODO link).
 To complete the analogy,
 the human brain consists of a large amount of densely packed neurons,
-approximately $10^(11)$ in total.
+approximately $10^{11}$ in total.
 Compared to an artificial neuron,
 they fire a lot slower
 yet still humans are capable of
@@ -298,7 +297,7 @@ a phenomenon researchers are still trying to model perfectly.
 For now,
 we shall content ourselves without the dimension of time.
 
-\section{Building Blocks}
+\subsection{Perceptron}
 Artificial neural networks are made up of simple elements called units.
 Units are connected through directed connections
 that are associated with a weight.
@@ -331,10 +330,11 @@ o(\overrightarrow{x}) = \begin{cases}
 \end{equation}
 
 \begin{figure}
-\label{fig.perceptron}
+\label{fig.ml.perceptron}
 \center
 \includegraphics[]{perceptron.png}
 \caption{Basic perceptron unit.}
+%TODO accredit
 \end{figure}
 
 %TODO I have the perceptron img, need to clean and attribute properly
@@ -343,7 +343,8 @@ and $\overrightarrow{x}$ the corresponding incoming values.
 This function effectively creates a hyperplane decision surface;
 it separates the input space in two.
 
-A problem with perceptrons, however,
+\subsection{Sigmoid}
+A problem with perceptrons
 is that they are not differentiable
 in their whole domain.
 As I'll explain further down, %TODO ref
@@ -352,12 +353,19 @@ As a way to circumvent this difficulty of non-differentiability,
 the \textit{sigmoid} (denoted $\sigma(x)$) is often used:
 
 \begin{equation}
-\label{eq.sigmoid}
+\label{eq.ml.sigmoid}
 \sigma(x) = \frac{1}{1 + e^{-x}}
 \end{equation}
 
+\begin{figure}[h]
+\center
+\includegraphics[width=.7\textwidth]{sigmoid.pdf}
+\caption{The Sigmoid function}
+\label{fig.ml.sigmoid}
+\end{figure}
+
 %TODO img of sigmoid
-As can be seen on fig <>,
+As can be seen on fig \ref{fig.ml.sigmoid},
 it has the same tendency as the perceptron activation function
 to separate the input space in two
 but there is a transition area of uncertainty between the two extremes,
@@ -365,6 +373,6 @@ allowing the function to be differentiable in its whole domain.
 
 \subsection{Gradient Descent and Backpropagation}
 
-\section{Convolutional Neural Networks}
+\subsection{Convolutional Neural Networks}
 
-\section{Recurrent Neural Networks}
+\subsection{Recurrent Neural Networks}
