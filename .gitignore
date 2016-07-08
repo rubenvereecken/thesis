@@ -1,4 +1,5 @@
 build
+notebooks/.ipynb_checkpoints
 
 ### LaTeX ###
 *.acn
