@@ -1,0 +1,15 @@
+
+% Tiny bit of extra whitespace, easy on the eye
+\renewcommand{\baselinestretch}{1.05}
+% Away with indents before paragraphs
+\setlength{\parindent}{0pt}
+
+
+% Redefine \paragraph to be sexier
+\makeatletter
+\renewcommand{\paragraph}{%
+  \@startsection{paragraph}{4}%
+  {\z@}{1.75ex \@plus 1ex \@minus .2ex}{-0em}%
+  {\normalfont\normalsize\bfseries}%
+}
+\makeatother

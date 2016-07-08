@@ -9,14 +9,27 @@
 \usepackage[colorlinks,urlcolor=blue,linkcolor=blue]{hyperref}
 \usepackage[backend=biber]{biblatex}
 \usepackage[section]{placeins} % To keep floats within their sections
+\usepackage{vubtitlepage}
+\usepackage[Rejne]{fncychap}
+
+%\usepackage{layouts}
 % TODO this is totally a thing
 \graphicspath{ {images/} }
 \addbibresource{Mendeley.bib}
 \addbibresource{Thesis.bib}
 \addbibresource{other.bib}
 
+\input{custom.tex}
+
+\begin{document}
+
 \input{titlepage.tex}
+
+\pagenumbering{roman}
 \tableofcontents
+
+% Actual content
+
 \include{introduction}
 \include{ml}
 \include{rl}
