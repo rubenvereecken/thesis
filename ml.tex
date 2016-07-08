@@ -232,18 +232,18 @@ models that are used throughout this thesis.
 %TODO
 
 \section{Curse of Dimensionality}
-The distance between two instances is calculated based on all their attributes.
+The distance between two instances is calculated based on all of their attributes.
 For these instances to have a small distance between them,
 they should be close to one another in all of their attributes,
 or otherwise put,
 they should be similar in all aspects.
 The more attributes or dimensions they have,
 the harder this becomes.
-This informally introduced phenomenon we call
+This informally described phenomenon we call
 the \textit{curse of dimensionality}.
 
-
 \begin{figure}[ht]
+\label{fig.ml.cod}
 \center	
 \begin{subfigure}{.49\textwidth}
   \centering
@@ -264,15 +264,68 @@ the \textit{curse of dimensionality}.
   \label{fig.ml.cod1}
 \end{subfigure}
 
-\label{fig.ml.cod}
+
 \caption{Each plot contains 100 points
 with values in all dimensions ranging
-uniformly between 0 and 1.
+uniformly between 0 and 10.
 The curse of dimensionality is especially clear
 from the difference between the 2-dimensional
 and 1-dimensional plot.
 }
 \end{figure}
+
+Figure ~\ref{fig.ml.cod} attempts a visual demonstration.
+Each plot contains 100 instances with a variable amount of dimensions,
+but with values for all dimensions ranging uniformly between 0 and 10.
+As instances become increasingly more multi-dimensional, %TODO wording
+the spaces containing them become increasingly more sparse.
+Even though an instance may be close to another instance
+in some dimensions,
+any discrepancies in other dimensions
+will only increase the distance between the two instances.
+
+Let us resume with the above example.
+Another way to uncover the increasing sparsity is to examine
+is by examining the density of each space.
+The 1-dimensional space has 10 instances per unit of space,
+since it contains 100 instances spread over 10 units.
+In contrast then, the 2-dimensional space contains
+only a single instance per square unit of space
+and the 3-dimensional space a forlorn $.1$ instance
+per cubic unit of space.
+In order to boost the density of the 3-dimensional space
+to be on par with the 1-dimensional one,
+we would need a hundred times as many instances
+in this particular scenario,
+for that is the factor between the two space sizes.
+
+\paragraph{}
+The phenomenon is often encountered in areas such as
+text processing or image processing
+where large numbers of dimensions are inevitable.
+A naive model that tries to represent texts
+could have a different dimension for each word,
+likewise a model that describes an image
+would have a separate dimension for each pixel,
+easily reaching into thousands of attributes.
+
+Such models would need a tremendous amount
+of instances to have any sort of meaningful
+distance measure.
+Acquiring the required quantities of data
+is often infeasible,
+making techniques that shrink space dimensionality
+very valuable in practice.
+Techniques can range from discarding
+least important attributes to
+statistically combining attributes
+to even learning new attributes that represent
+higher-level concepts
+from the lower-level attributes.
+A popular example of the latter are
+convolutional networks,
+a topic I will cover in %TODO ref
+
 
 
 \section{Artificial Neural Networks}
