@@ -7,7 +7,8 @@
 \usepackage{amsmath,amsfonts,amssymb}
 \usepackage{graphicx}
 \usepackage[colorlinks,urlcolor=blue,linkcolor=blue]{hyperref}
-\usepackage[backend=biber]{biblatex}
+\usepackage[backend=biber, style=apa]{biblatex}
+\DeclareLanguageMapping{english}{english-apa}
 \usepackage[section]{placeins} % To keep floats within their sections
 \usepackage{vubtitlepage}
 \usepackage[Rejne]{fncychap}
@@ -16,8 +17,8 @@
 %\usepackage{layouts}
 % TODO this is totally a thing
 \graphicspath{ {images/} }
-\addbibresource{Mendeley.bib}
-\addbibresource{Thesis.bib}
+%\addbibresource{bib/Mendeley.bib}
+\addbibresource{bib/Thesis.bib}
 \addbibresource{other.bib}
 
 \input{custom.tex}

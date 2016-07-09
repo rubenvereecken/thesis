@@ -299,6 +299,20 @@ we would need a hundred times as many instances
 in this particular scenario,
 for that is the factor between the two space sizes.
 
+A final measure of sparsity of a space I like to think in
+is the expected average distance for dimensions,
+given their distributions.
+In other words,
+if one were to pick two instances from one of the above spaces uniformly,
+what would the expected distance between the two be?
+In this running example, %TODO verify this with someone
+this measure is 5 for the 1-dimensional space
+and approximately 7,07 and 8,66 for the other
+two spaces.
+This measure relates directly to the curse of dimensionality;
+as your number of dimensions increase,
+expect your distances to go up as well.
+
 \paragraph{}
 The phenomenon is often encountered in areas such as
 text processing or image processing
@@ -396,7 +410,7 @@ a phenomenon researchers are still trying to model perfectly.
 For now,
 we shall content ourselves without the dimension of time.
 
-\subsection{Perceptron}
+\subsection{Building Blocks}
 Artificial neural networks are made up of simple elements called units.
 Units are connected through directed connections
 that are associated with a weight.
@@ -406,14 +420,19 @@ and location within the network.
 Non-input units get their activation signal, i.e. their input,
 from some function of the values of the incoming connections
 and the weights associated with them.
+We call these functions \textit{activation functions}.
+They are usually non-linear and play an important role
+in how the input value is expressed, or \textit{activated}.
 
-\begin{figure}
+\begin{figure}[h]
 \label{fig.neuralnet}
 \center
 \includegraphics[]{net.png}
 \caption{Multi-layer neural network with a single hidden layer.}
 \end{figure}
 
+
+\subsection{Perceptron}
 %TODO ref on perceptrons
 Activation functions can be linear or nonlinear.
 A special kind of unit is the \textit{perceptron},
@@ -463,16 +482,72 @@ the \textit{sigmoid} (denoted $\sigma(x)$) is often used:
 \label{fig.ml.sigmoid}
 \end{figure}
 
-%TODO img of sigmoid
 As can be seen on fig \ref{fig.ml.sigmoid},
 it has the same tendency as the perceptron activation function
 to separate the input space in two
 but there is a transition area of uncertainty between the two extremes,
 allowing the function to be differentiable in its whole domain.
 
+In practice, the range is normalized between -1 and 1
+just like the perceptron.
+
 \subsection{Hyperbolic Tangent}
+As a cousin to the sigmoid function, the hyperbolic tangent
+deserves mentioning as well.
+It bears the same shape as the sigmoid function
+since it is really only a stretched
+and shifted version.
+
+\begin{equation}
+\label{eq.ml.tanh}
+\sigma(x) = \frac{1}{1 + e^{-2x}}+1
+\end{equation}
+
+\begin{figure}[h]
+\center
+\includegraphics[width=.7\textwidth]{tanh.pdf}
+\caption{The Sigmoid function}
+\label{fig.ml.sigmoid}
+\end{figure}
 
 \subsection{Rectified Linear Unit}
+A fairly recent activation function is the
+Rectified Linear Unit, or ReLU for short
+\parencite{Nair2010}.
+
+\begin{equation}
+\label{eq.relu}
+f(x) =
+\begin{cases}
+0 & \text{for } x < 0 \\
+x & \text{for } x \geq 0
+\end{cases}
+\end{equation}
+
+\begin{figure}[h]
+\center
+\includegraphics[width=.7\textwidth]{relu.pdf}
+\caption{Rectified Linear Unit}
+\label{fig.ml.relu}
+\end{figure}
+
+While it is very simple in its essence,
+it has some important properties
+that can be leveraged.
+Among the advantages is that anything
+below zero is mapped to zero.
+This is great for sparse
+network activations.
+In a scenario with weights initialized
+symmetrically (e.g. uniformly) around 0,
+only half the neurons will activate.
+This sparsity is great for discrimination
+and effectively makes training
+neural networks faster,
+making it especially interesting for
+deep learning
+\parencite{Y.2015a}.
+
 
 \subsection{Gradient Descent and Backpropagation}
 
