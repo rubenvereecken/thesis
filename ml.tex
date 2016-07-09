@@ -192,11 +192,90 @@ If we still manage a training error of $0$
 we probably committed the grave mistake of
 \textit{overfitting} the training data,
 meaning we included the noise of the data in our model.
-The reason this is to be avoided is that noise
-cannot be predicted by definition and a model that tries
+The reason this is to be avoided is that by definition
+noise cannot be predicted and a model that tries
 to do so will perform even worse on similar unseen samples.
 
-< TODO image of overfitting >
+\paragraph{}
+Figure
+\ref{fig:overfitting}
+demonstrates this phenomenon of overfitting.
+A high-dimensional polynomial is fitted on
+a small set of samples drawn from a noisy
+distribution that follows a goniometric function.
+The model that we would like to attain
+should be as close as possible to the original function.
+However, if we try to fit the available data completely,
+the polynomial results in a model that performs
+well in the very close vicinity of the training points
+but performs horrendously on unseen data
+that deviates from the original training data.
+This can be seen from the discrepancy
+between the model and true function.
+It follows that overfitting is characterized by
+a low training error but a high test error
+(the error on heretofore unseen data),
+or put otherwise,
+the model fails to generalize the training data.
+
+\begin{figure}[h]
+\center
+\begin{subfigure}{.49\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{underfitting.pdf}
+  \caption{Underfitting}
+  \label{fig:underfitting}
+\end{subfigure}
+\begin{subfigure}{.49\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{overfitting.pdf}
+  \caption{Overfitting}
+  \label{fig:overfitting}
+\end{subfigure}
+
+\label{fig:fitting}
+\caption{
+Underfitting and overfitting
+demonstrated with two polynomial
+models on noisy data modelled
+after a goniometric function.
+}
+\end{figure}
+
+The opposite of overfitting would then be \textit{underfitting},
+as demonstrated by Figure \ref{fig:underfitting}.
+This is often the case for models that lack
+representational power
+no matter how much data is available.
+While the figure contains a rather naive example
+of a 1-dimensional polynomial fit,
+it illustrates perfectly how some models
+can never hope to attain a complex underlying function.
+
+It will not be possible to minimize the training error entirely,
+though an underfitting model may still outperform
+an overfitted one.
+
+\paragraph{}
+As should be clear from the example,
+neither under- nor overfitting are good,
+in fact an algorithm designer
+should be weary of both.
+It is best to explore multiple
+algorithm settings in order to find
+a model that is prone to
+neither sort of misfitting.
+
+In the next section I will describe a measure
+that helps guide this search.
+
+\begin{figure}[h]
+\center
+\includegraphics[width=.7\textwidth]{perfectfitting.pdf}
+\label{fig:perfectfitting}
+\caption{The right model can perfectly generalize from noisy data,
+insofar as the data covers the desired domain}
+\end{figure}
 
 \subsection{Finishing up the example}
 An alternative algorithm to find our optimal weights $w$
@@ -343,7 +422,3 @@ A popular example of the latter are
 convolutional networks,
 a topic I will cover in %TODO ref
 
-
-
-
-\section{•}
