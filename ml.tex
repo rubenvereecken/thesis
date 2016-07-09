@@ -182,7 +182,42 @@ we can simply apply linear regression to our system
 of $|D|$ equations $y = xw$ in order to find a $w$
 with the lowest error.
 
-\subsection{Underfitting and Overfitting}
+
+
+\subsection{Finishing up the example}
+An alternative algorithm to find our optimal weights $w$
+is the \textit{weight update rule},
+a source of inspiration for many more algorithms.
+The idea behind is that every sample
+you calculate your prediction
+and shift the weights in the direction of the error,
+proportionally to the size of the error.
+So, for every sample:
+\begin{enumerate}
+\item Calculate $\hat{y_i} = h(x_i)$
+\item Update $w_i = w_i + \eta(y_i - \hat{y_i})x_i$
+\end{enumerate}
+
+The update size can be tweaked with $\eta$.
+
+\paragraph{}
+As you have witnessed yourself,
+designing a machine learning task
+is rather an art than an exact science.
+The first optimization algorithm proposed,
+linear regression,
+is only available for linear models.
+Finding the ultimate weights
+makes more sense in a regression context
+as opposed to a classification context.
+
+There are many more such decisions to made
+and models to choose from.
+During the next sections,
+I will touch on some interesting
+models that are used throughout this thesis.
+
+\section{Underfitting and Overfitting}
 Why not just go for an error of $0$?
 We could, however it is unlikely since we suffer from two problems:
 insufficient data and a delusion of a perfect world.
@@ -213,8 +248,7 @@ that deviates from the original training data.
 This can be seen from the discrepancy
 between the model and true function.
 It follows that overfitting is characterized by
-a low training error but a high test error
-(the error on heretofore unseen data),
+a low training error but a high generalization error,
 or put otherwise,
 the model fails to generalize the training data.
 
@@ -277,41 +311,181 @@ that helps guide this search.
 insofar as the data covers the desired domain}
 \end{figure}
 
-\subsection{Finishing up the example}
-An alternative algorithm to find our optimal weights $w$
-is the \textit{weight update rule},
-a source of inspiration for many more algorithms.
-The idea behind is that every sample
-you calculate your prediction
-and shift the weights in the direction of the error,
-proportionally to the size of the error.
-So, for every sample:
-\begin{enumerate}
-\item Calculate $\hat{y_i} = h(x_i)$
-\item Update $w_i = w_i + \eta(y_i - \hat{y_i})x_i$
-\end{enumerate}
+\section{Bias and Variance}
+A common way to describe a learning algorithm
+is in terms of its
+bias and variance.
+They are two different sources of error
+the algorithm designer wishes to minimize.
+The \textit{bias} of a learning algorithm
+is the error inherent to the algorithm
+because of false assumptions,
+such as an unsuitable degree for a polynomial model
+in the previous example.
+This does not necessarily mean the model is weak on its own,
+it only is for a specific problem.
+Bias gives cause to underfitting,
+as can be seen in Figure \ref{fig:underfitting}.
 
-The update size can be tweaked with $\eta$.
+Bias can be quantified as the difference
+between the expected prediction
+and the true function value:
+
+$$
+\text{Bias}(x) = E[\hat{f} (x)] - f(x)
+$$
+
+\textit{Variance}
+on the other hand,
+is error because of sensitivity to noise:
+small fluctuations in the data set.
+It is the variability of a model's predictions.
+As a result,
+high variance may causes overfitting
+noise inherent to the data but not to the model.
+A typical example can be seen in Figure \ref{fig:overfitting}.
+
+Variance can be quantified in terms of
+the expected deviation of a prediction (variability):
+
+$$
+\text{Variance}(x) = E[ (\hat{f}(x) - E[\hat{f}(x)])^2]
+$$
+
+It can be lowered by
+reducing the amount of features
+(especially those of little import to the model)
+or increasing the amount of data points.
 
 \paragraph{}
-As you have witnessed yourself,
-designing a machine learning task
-is rather an art than an exact science.
-The first optimization algorithm proposed,
-linear regression,
-is only available for linear models.
-Finding the ultimate weights
-makes more sense in a regression context
-as opposed to a classification context.
+Bringing these two notions together
+gives us the \textit{bias-variance decomposition}
+of a learning algorithm's generalization error,
+i.e. the expected error on unseen data:
+%TODO I'd like some more space before paragraphs here
 
-There are many more such decisions to made
-and models to choose from.
-During the next sections,
-I will touch on some interesting
-models that are used throughout this thesis.
+$$
+\text{Err}(x) = E[(Y - \hat{f}(x))^2]
+$$
+$$
+\text{Err}(x) = (E[\hat{f} (x)] - f(x))^2 + E[ (\hat{f}(x) - E[\hat{f}(x)])^2] + \sigma^2
+$$
 
-\section{Bias and Variance}
-%TODO
+As you can see, the first two terms
+are Bias squared and Variance respectively.
+That leaves us with the last term
+which is the irreducible error,
+an error resulting from a lack of
+omniscience; a lack of data.
+
+From this decomposition we can see that we
+can see that we can only have an error of 0
+given the original model behind the data
+an infinite amount of data. % bold claims man
+
+\begin{figure}[ht]
+\center
+\includegraphics[width=0.7\textwidth]{biasvariance.png}
+
+\caption{Bias-Variance decomposition}
+\label{fig:biasvariance}
+%TODO attribute img http://scott.fortmann-roe.com/docs/BiasVariance.html
+\end{figure}
+
+\paragraph{}
+Figure \ref{fig:biasvariance}
+visualizes the bias-variance decomposition
+and shows the general tendencies of its individual components.
+As bias decreases, variance generally goes up
+and vice versa.
+The goal of any algorithm designer
+is then to find the sweet spot;
+the model that optimizes the tradeoff
+between the two.
+
+This can be done by exploring parameters
+for a certain model,
+like the degree of a polynomial,
+and calculating the
+\textit{expected generalization error}, % yes made this up myself lucid moment
+since the true generalization error
+is never known.
+This in turn can be done
+by keeping a separate test set
+and calculating the error on that,
+or other techniques that make clever use
+of the training data
+such as bootstrap or cross-fold validation.
+I'll go into those in the next section. %TODO ORLY?
+
+\begin{figure}
+\center
+\includegraphics[width=0.7\textwidth]{bullseye.png}
+\caption{}
+\label{fig:bullseye}
+%TODO attribute img http://scott.fortmann-roe.com/docs/BiasVariance.html
+\end{figure}
+
+\paragraph{}
+So far the discussion on the
+generalization error and how to mitigate it,
+I'd like to finish with a depiction
+of bias and variance in Figure \ref{fig:bullseye}.
+The center of the red rose
+is some target value $f(x)$
+and darts are predictions $\hat{f}(x)$.
+You can imagine this is the same x
+for many instantiations of the same model
+or it's a different x for every dart $\hat{f}(x)$,
+it doesn't matter.
+
+A high variance will have a scattering effect.
+After all,
+variance describes the variability of predictions.
+High bias is the inability to generalize
+well because of the model's false assumption:
+in the image the model assumes an incorrect target.
+The goal is once to have both measures as low as possible.
+
+\section{Model Validation}
+When training a model,
+one typically wants to know the generalization error
+as it is described in the previous section.
+You already have the training error
+because it is what you are trying to minimize,
+but it usually generalizes poorly
+to the generalization error.
+It can actually be harmful to
+watch only the training error during training,
+so you need an indication of how the model
+generalizes past training.
+
+A naive way to go about this
+is to take a separate set of data
+that comes from the same distribution
+as the training data
+(because otherwise your measure says very little
+or your training data was chosen poorly)
+and calculate the error of the model on this set.
+This test data set should be large enough
+to be representative of the underlying distribution
+but need not be as large as the original training set.
+A common measure,
+when dividing a data set,
+is to keep 20\% to 30\% aside
+as the test set.
+
+I call this way of calculating the test error naive
+because it requires that the test data
+was not used during training.
+Data is however far too valuable for training,
+we would rather not use it to simply
+compute a measure of success.
+Surely we can do better.
+
+\subsection{Bootstrap}
+
+\subsection{Cross-Validation}
 
 \section{Curse of Dimensionality}
 The distance between two instances is calculated based on all of their attributes.
