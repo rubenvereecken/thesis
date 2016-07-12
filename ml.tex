@@ -416,7 +416,7 @@ and calculating the error on that,
 or other techniques that make clever use
 of the training data
 such as bootstrap or cross-fold validation.
-I'll go into those in the next section. %TODO ORLY?
+I'll delve into those in the next section. %TODO ORLY?
 
 \begin{figure}
 \center
@@ -431,7 +431,7 @@ So far the discussion on the
 generalization error and how to mitigate it,
 I'd like to finish with a depiction
 of bias and variance in Figure \ref{fig:bullseye}.
-The center of the red rose
+The center of the red target
 is some target value $f(x)$
 and darts are predictions $\hat{f}(x)$.
 You can imagine this is the same x
@@ -460,6 +460,25 @@ watch only the training error during training,
 so you need an indication of how the model
 generalizes past training.
 
+Often there are training, validation and test phases.
+Validation is the stage
+where we are trying to decide on the best model;
+this is when model parameters are determined
+(model selection).
+During testing we simply see how well the model
+is expected to generalize beyond experience.
+At this point no more tuning is performed.
+If the same data would be used for both validation
+and testing,
+the resulting test error
+would probably be overly optimistic
+\parencite{friedman2001elements}
+since we are trying to determine prediction error
+based on the data that was used to determine
+the very model we are using.
+
+
+\paragraph{}
 A naive way to go about this
 is to take a separate set of data
 that comes from the same distribution
@@ -467,25 +486,114 @@ as the training data
 (because otherwise your measure says very little
 or your training data was chosen poorly)
 and calculate the error of the model on this set.
-This test data set should be large enough
+This \textit{validation set} should be large enough
 to be representative of the underlying distribution
 but need not be as large as the original training set.
 A common measure,
 when dividing a data set,
 is to keep 20\% to 30\% aside
-as the test set.
+for validation purposes.
+If a test set is also required,
+a good rule of thumb is keeping
+50\% for training data
+and dividing the other 50\%
+equally over validation and test sets.
 
-I call this way of calculating the test error naive
-because it requires that the test data
-was not used during training.
+This way of splitting up data is far from ideal
+because it requires that the validation data
+not be used during training.
 Data is however far too valuable for training,
 we would rather not use it to simply
 compute a measure of success.
-Surely we can do better.
-
-\subsection{Bootstrap}
 
 \subsection{Cross-Validation}
+Cross-validation or K-fold cross-validation
+is by far the most popular validation technique.
+Gone with the separate validation set
+(I'll ignore testing for prediction error for now),
+cross-validation testing solves
+the problem of data scarcity by not using up
+the data you desperately need for training.
+
+\begin{figure}[h]
+\center
+\includegraphics[width=0.8\textwidth]{crossval.png}
+\caption{
+5-fold Cross-validation
+\parencite{Zhang2011}
+}
+\label{fig:crossval}
+%TODO check attribution
+\end{figure}
+
+Figure \ref{fig:crossval} illustrates
+how the training set is now divided into
+K equal-sized \textit{folds}.
+Each of these folds will be a validation set
+in its own time.
+
+The technique requires K
+different models to be learned,
+for a total of K iterations.
+During iteration $i$,
+fold $i$ is kept aside
+as the validation set for this iteration
+and all other folds together comprise
+round $i$'s training set.
+
+For each model the error is calculated on the validation
+set, let's call this $\textit{CV}_i$.
+The cross-validation error then becomes:
+
+$$
+CV(\hat{f}) = \frac{1}{N} \sum^{N}_{i=1} CV_i
+$$
+
+\paragraph{}
+We now have a guess at the prediction error.
+A good K is paramount for a good cross-validation error,
+it also has a huge impact on the required amount of work
+since computation time grows linearly with K.
+We would like it to be quite low to save on computation time
+yet high enough to have the cross-validation error
+be a meaningful estimate.
+Lower K tend to higher bias
+because less data is used for training.
+Higher K then tend towards
+high variance.
+This comes down to the same tradeoff between
+bias and variance,
+though this time of an estimator
+that estimates generalization error.
+Generally good compromises for K are 5 and 10
+\parencite{kohavi1995study}.
+
+
+\subsection{Bootstrap}
+Bootstrap is a general statistical method
+to compute any quantity based on
+some amount of data.
+We will content ourselves with only
+its application
+to calculate prediction error.
+
+Start out by randomly drawing a dataset
+with replacement from the training set
+and a total size equal to the original
+training sets.
+Do this until you have B datasets,
+called \textit{bootstrap datasets}.
+We can now compute
+the leave-one-out bootstrap estimate
+of the prediction error:
+
+$$
+BS^{loo}= \frac{1}{N} \sum^{N}_{i=1} \frac{1}{|C^{-i}|} \sum_{b \in C ^ {-i}} E(f(x_i), \hat{f}^{*b}(x_i))
+$$
+
+This error has the same bias tendencies as cross-validation:
+
+% pg 251 in file:///home/ruben/Downloads/ESLII_print10.pdf
 
 \section{Curse of Dimensionality}
 The distance between two instances is calculated based on all of their attributes.
