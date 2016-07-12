@@ -66,7 +66,7 @@ a phenomenon researchers are still trying to model perfectly.
 For now,
 we shall content ourselves without the dimension of time.
 
-\subsection{Building Blocks}
+\section{Building Blocks}
 Artificial neural networks are made up of simple elements called units.
 Units are connected through directed connections
 that are associated with a weight.
@@ -88,7 +88,7 @@ in how the input value is expressed, or \textit{activated}.
 \end{figure}
 
 
-\subsection{Perceptron}
+\section{Perceptron}
 %TODO ref on perceptrons
 Activation functions can be linear or nonlinear.
 A special kind of unit is the \textit{perceptron},
@@ -117,7 +117,7 @@ and $\overrightarrow{x}$ the corresponding incoming values.
 This function effectively creates a hyperplane decision surface;
 it separates the input space in two.
 
-\subsection{Sigmoid}
+\section{Sigmoid}
 A problem with perceptrons
 is that they are not differentiable
 in their whole domain.
@@ -147,7 +147,7 @@ allowing the function to be differentiable in its whole domain.
 In practice, the range is normalized between -1 and 1
 just like the perceptron.
 
-\subsection{Hyperbolic Tangent}
+\section{Hyperbolic Tangent}
 As a cousin to the sigmoid function, the hyperbolic tangent
 deserves mentioning as well.
 It bears the same shape as the sigmoid function
@@ -166,7 +166,7 @@ and shifted version.
 \label{fig.ml.htan}
 \end{figure}
 
-\subsection{Rectified Linear Unit}
+\section{Rectified Linear Unit}
 A fairly recent activation function is the
 Rectified Linear Unit, or ReLU for short
 \parencite{Nair2010}.
@@ -234,3 +234,148 @@ so the slopes are fixed outside of training.
 
 
 \section{Gradient Descent and Backpropagation}
+Earlier we talked about a learning algorithm's error
+and even glossed over ways to minimize this error.
+In this section we will discuss gradient descent
+as a general approach
+followed by backpropagation,
+a specific gradient descent algorithm
+designed to minimize errors
+for artificial neural networks.
+
+\paragraph{}
+The approaches discussed here
+make certain assumptions about
+what the algorithm's error looks like
+in function of the parameters of the algorithm.
+In other words, they make assumptions
+about the error surface.
+
+Differentiability is even a requirement, %TODO confirm
+meaning the derivative of the error
+exists in each point,
+so for each combination of algorithm parameters.
+This gives rise to smooth surfaces
+(though possibly steep)
+that do not contain gaps,
+such as the one in
+Figure \ref{fig:error_surface}.
+
+Despite the requirement,
+the methods described here still perform badly
+on irregular surfaces:
+surfaces where the gradient changes sign often for example,
+so surfaces with many local minima.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.7\textwidth]{error_surface2.pdf}
+  \caption{Error surface in function of two parameters of the model
+  that are to be learned.}
+  \label{fig:error_surface}
+\end{figure}
+
+\subsection{Gradient Descent}
+\label{sub:gradient_descent}
+
+Gradient descent or steepest descent
+can be described as the general approach
+of moving across an error surface
+by following the path with the greatest gradient
+- the path with the steepest slope -
+downward.
+This makes it a greedy algorithm.
+Following such a slope
+means adjusting the parameters (or weights)
+in the direction of the slope.
+Figure \ref{fig:gradient_descent}
+illustrates what such a walk
+would look like on the error surface.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.5\textwidth]{gradientdescent.png}
+  \caption{Gradient descent follows the path with the steepest slope}
+  \label{fig:gradient_descent}
+  %TODO make own replacement
+  %https://en.wikipedia.org/wiki/File:Gradient_descent.svg
+\end{figure}
+
+As stated before,
+gradient descent requires the derivative of the error E
+to exist in the whole domain.
+Formally, in function of the weight vector
+$\overrightarrow{w}$ of length $n$,
+we write the derivative or gradient of E as:
+
+$$
+\nabla E(\overrightarrow{w}) = \left(
+  \frac{\delta E}{\delta w_0}, \\
+  \frac{\delta E}{\delta w_1}, \\
+  \dots, \\
+  \frac{\delta E}{\delta w_n}, \\
+\right)
+$$
+
+$\nabla E(\overrightarrow{w})$
+is in itself a vector and corresponds to the steepest slope
+I described earlier,
+with both a size and direction.
+Since this gradient describes the steepest
+\textit{increase}
+of E with respect to $\overrightarrow{w}$,
+we need to use the negated gradient
+$-\nabla E(\overrightarrow{w})$
+to follow the slope downward.
+
+We can now use this for our weight update:
+
+\begin{equation}
+\Delta \overrightarrow{w} \leftarrow \overrightarrow{w} - \\
+\eta \nabla E(\overrightarrow{w})
+\label{eq:gradient_descent}
+\end{equation}
+
+We call $\eta$ the learning rate,
+useful for tuning the step size of the algorithm.
+Smaller values will converge more slowly
+while larger ones have the danger of overstepping local minima,
+making convergence even slower.
+Gradient descent is actually known to 'zigzag'
+near convex valleys.
+
+% The method in equation \ref{eq:gradient_descent}
+% is also called
+% \textit{batch} gradient descent
+% because all 
+\paragraph{}
+In order to actually compute the gradient iteratively,
+we still need a way to calculate the partial derivations
+$\frac{\delta E}{\delta w_i}$.
+We still have not defined the error E,
+so let us start with that.
+For a training data set $D$
+and learning algorithm $\hat{f}$,
+we define the error $E$ w.r.t. to
+$\overrightarrow{w}$ as:
+
+\begin{equation}
+  E(\overrightarrow{w}) \equiv \frac{1}{2} \\
+  \sum_{(x_i, y_i) \in D}(y_i - \hat{f}(x_i))^2
+\end{equation}
+
+As you can see it is close the mean squared error,
+with an added advantage that will become clear in a moment.
+
+\paragraph{}
+In order to actually derive $E$ w.r.t to $w$,
+we also need to define the learning algorithm $f$,
+which of course plays a key role
+in what the error surface looks like.
+There are some general computational methods %TODO really cool if I could link any
+for computing the gradient near a certain point $x$,
+but we will content ourselves with a simpler example
+that allows us to perform an analytical derivation.
+
+For $f$, we will pick 
+a simple linear unit that will suffice as an example.
