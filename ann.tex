@@ -343,6 +343,11 @@ while larger ones have the danger of overstepping local minima,
 making convergence even slower.
 Gradient descent is actually known to 'zigzag'
 near convex valleys.
+Because of this,
+the learning rate is sometimes reduced over time
+so the learner is less prone to overstep
+and instead settle into minima.
+
 
 % The method in equation \ref{eq:gradient_descent}
 % is also called
@@ -368,14 +373,117 @@ As you can see it is close the mean squared error,
 with an added advantage that will become clear in a moment.
 
 \paragraph{}
-In order to actually derive $E$ w.r.t to $w$,
+In order to algebraically derive $E$ w.r.t to $w$,
 we also need to define the learning algorithm $f$,
 which of course plays a key role
 in what the error surface looks like.
 There are some general computational methods %TODO really cool if I could link any
-for computing the gradient near a certain point $x$,
-but we will content ourselves with a simpler example
-that allows us to perform an analytical derivation.
+for computing the gradient near a certain point $x$
+in case the algebraic derivation is too hard to calculate
+or the calculations are too complex.
+However, we will content ourselves with a simpler example
+that allows us to perform an algebraic derivation
+and calculate the gradient without such methods.
 
 For $f$, we will pick 
-a simple linear unit that will suffice as an example.
+a simple linear unit that will suffice as an example:
+
+$$
+f(\overrightarrow{x};\overrightarrow{w}) = \overrightarrow{x} \cdot \overrightarrow{w}
+$$
+
+Finally then, the differentation of $E$:
+
+\begin{equation}
+  \begin{split}
+    \frac{\delta E}{\delta w_i} &= \frac{\delta}{\delta w_i} \frac{1}{2}
+    \sum_{(x_j, y_j) \in D} (y_j - \hat{y}_j)^2 \\
+    &= \sum_{(x_j, y_j) \in D}(y_j - \hat{y}_j)
+    \frac{\delta}{\delta w_i}(y_j - \overrightarrow{w} \cdot \overrightarrow{x_j}) \\
+    &= \sum_{(x_j, y_j) \in D}(y_j - \hat{y}_j)(-x_{ij})
+  \end{split}
+\end{equation}
+
+with $x_{ij}$ the $i$'th component of $x_j$.
+As you can see, the derivation is comfortably easy
+because of our choice of the linear unit
+and the way the error function is defined.
+Other errors but most of all other learning
+algorithms can have far less obvious differentiations.
+
+Combining this with \ref{eq:gradient_descent}
+gives us the update rule for a specific weight component:
+
+\begin{equation}
+  \Delta \overrightarrow{w}_i = \eta \sum_{(x_j, y_j \in D)} \\
+  (y_j - \hat{y}_j) x_{ij}
+  \label{eq:gradient_descent_update}
+\end{equation}
+
+Equation \ref{eq:gradient_descent_update}
+describes the gradient descent algorithm for the linear unit.
+Each iteration the weight update gets calculated
+for all the training examples by computing $\hat{y}_j$
+and following \ref{eq:gradient_descent_update},
+then summing all weight updates $w_{ij}$
+to get $w_i$.
+Only once all weight deltas $\Delta w_i$
+are calculated should the actual weight vector be updated
+(with $\Delta w$ comprised of the individual $w_i$ of course):
+
+\begin{equation}
+  \overrightarrow{w} = \overrightarrow{w} + \overrightarrow{\Delta w}
+\end{equation}
+
+This then gets repeated until some termination condition is met,
+like a sufficiently small error or a desired amount of passes
+over the training set.
+
+\paragraph{}
+Because first the whole weight update is calculated
+with respect to the whole training data set
+and only then the weight vector is adjusted,
+this vanilla version of gradient descent is also
+called \textit{batch gradient descent}.
+It can be quite inefficient and downright
+impractical for large training sets that do not fit into memory.
+For this reason,
+the stochastic variant is often used.
+
+\subsection{Stochastic Gradient Descent}
+In order to alleviate the problems
+with regular stochastic gradient descent's
+convergence speed and even tendency to fall
+into local minimum pitfalls,
+the stochastic approach to gradient descent was devised.
+
+Instead of performing the parameter updates in batch fashion,
+parameters are updated incrementally.
+This means that for every training sample $(x_j, y_j)$,
+$\overrightarrow{w}$
+gets updated immediately
+and therefore affects the calculation of the next
+$\Delta \overrightarrow{w}$.
+This makes it much faster than the regullar batch version
+and allows it to be used for online learning.
+It also means that stochastic gradient descent
+does not use the true gradient to adjust parameters,
+instead it uses some complicated estimate.
+
+It should be ovious that it is computationally cheaper
+but it is also good for escaping local minima.
+Because of its strange descent behavior,
+stochastic gradient descent can actually easily overshoot
+shallow local minima, allowing it to find better ones later on.
+
+\paragraph{}
+By adjusting $\eta$ to be smaller as compensation,
+stochastic gradient descent can be made to approximate
+the true gradient arbitrarily closely.
+Even better, it has been shown that slowly decreasing
+the learning rate, as proposed before,
+will allow stochastic gradient descent
+to match the convergence behavior
+of its batch counterpart.
+
+\subsection{Backpropagation}
