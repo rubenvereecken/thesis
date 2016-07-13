@@ -87,8 +87,26 @@ in how the input value is expressed, or \textit{activated}.
 \caption{Multi-layer neural network with a single hidden layer.}
 \end{figure}
 
+\section{Activation Functions}
+\label{sec:activation}
 
-\section{Perceptron}
+Activation functions are used to transform the output
+of a unit in a neural network.
+They have a crucial impact on the shape of the output space,
+so some care should be taken when deciding on one.
+
+Formally, an activation function $\phi$ will compute
+
+\begin{equation}
+  o = \phi (\overrightarrow{w} \cdot \overrightarrow{x})
+\end{equation}
+
+where $\overrightarrow{x}$
+is the vector of incoming values from other units
+and $\overrightarrow{w}$
+is the vector of associated weights.
+
+\subsection{Perceptron}
 %TODO ref on perceptrons
 Activation functions can be linear or nonlinear.
 A special kind of unit is the \textit{perceptron},
@@ -117,7 +135,8 @@ and $\overrightarrow{x}$ the corresponding incoming values.
 This function effectively creates a hyperplane decision surface;
 it separates the input space in two.
 
-\section{Sigmoid}
+\subsection{Sigmoid}
+\label{sec:sigmoid}
 A problem with perceptrons
 is that they are not differentiable
 in their whole domain.
@@ -147,7 +166,7 @@ allowing the function to be differentiable in its whole domain.
 In practice, the range is normalized between -1 and 1
 just like the perceptron.
 
-\section{Hyperbolic Tangent}
+\subsection{Hyperbolic Tangent}
 As a cousin to the sigmoid function, the hyperbolic tangent
 deserves mentioning as well.
 It bears the same shape as the sigmoid function
@@ -156,7 +175,7 @@ and shifted version.
 
 \begin{equation}
 \label{eq.ml.tanh}
-\sigma(x) = \frac{1}{1 + e^{-2x}}+1
+htan(x) = \frac{1}{1 + e^{-2x}}+1
 \end{equation}
 
 \begin{figure}[h]
@@ -464,13 +483,17 @@ $\overrightarrow{w}$
 gets updated immediately
 and therefore affects the calculation of the next
 $\Delta \overrightarrow{w}$.
-This makes it much faster than the regullar batch version
+Stochastic gradient descent basically descends towards the steepest
+gradient of the error with respect to a single example.
+This makes it much faster than the regular batch version
 and allows it to be used for online learning.
 It also means that stochastic gradient descent
 does not use the true gradient to adjust parameters,
 instead it uses some complicated estimate.
 
 It should be ovious that it is computationally cheaper
+because it performs a step for every sample
+instead of once for the whole sample set,
 but it is also good for escaping local minima.
 Because of its strange descent behavior,
 stochastic gradient descent can actually easily overshoot
@@ -487,3 +510,181 @@ to match the convergence behavior
 of its batch counterpart.
 
 \subsection{Backpropagation}
+We have now laid out the basis for the \textit{backpropagation} algorithm,
+a learning algorithm designed for multilayer networks
+that are capable of representing even the most nonlinear surfaces.
+Backpropagation will allow us to learn the weights of a multilayer network
+by minimizing a measure of difference between network output and target output
+\parencite{rumelhart1988learning}.
+This minimization will be done with gradient descent
+and the measure of difference we will employ is
+
+\begin{equation}
+  E(\overrightarrow{w}) \equiv \frac{1}{2} \sum_{(x_j, y_j) \in D}
+  \sum_{k \in outputs}(y_{kj} - \hat{y}_{kj})^2
+\end{equation}
+
+where $y_{kj}$ is the \textit{k}th element of the output value 
+that corresponds to input sample $x_{j}$,
+and $\hat{y}_{j}$ is the network value for $x_{j}$,
+
+so $\hat{y}_{kj}$ corresponds to its $k$th value.
+Having the error defined like this allows gradient descent
+to minimize the error across all training samples.
+
+\paragraph
+The network should have an activation function
+as described in Section \ref{sec:activation};
+we will refrain from picking a specific example for now
+and call this activation function $\phi$.
+
+However, since backpropagation is based on gradient descent,
+it has the same requirement of differentiability
+of the function in question.
+Since the network is made up partly of these activation functions,
+we require these be differentiable.
+Because of this,
+backpropagation can not readily be used with a unit such as the perceptron
+because it is not differentiable.
+
+\paragraph{}
+In the algorithm, we will need a delta
+that signifies how off the network's output is.
+The $\delta_n$ described here are actually the negative derivatives of our error
+w.r.t. to the network in node n,
+but we will not go into a full explanation of how this result was achieved.
+I only mention this because this
+$-\frac{\delta E}{\delta net_n}$
+corresponds closely to the negative gradient we used in gradient descent.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{neuron.png}
+  \caption{Overview of different components in a neural network}
+  \label{fig:neuron}
+\end{figure}
+
+First off, create a neural network
+and initialize all network weights.
+Initialization can be done in different ways,
+according to different distributions,
+but a popular standard way of doing things
+is to initialize them all according to a small uniform distribution
+centered around zero.
+
+Once created, feed the given training sample
+through the network, giving $o_k$ as output
+for every unit $k$.
+The units $o_k$ in the outer layer together
+make up $\hat{y}$.
+
+Computing the error term $\delta_k$
+for an output unit $k$ 
+and a given training sample
+is pretty straightforward:
+
+\begin{equation}
+  \delta_k = \psi(o_k) (y_k - \hat{y}_k)
+  \label{eq:delta_k}
+\end{equation}
+
+with $(y_k - \hat{y}_k)$
+simply the difference between the target output and the network output
+and $\psi$ the derivative of the activation function $\phi$.
+For example, if we were to use
+the sigmoid function $\sigma$ (Section \ref{sec:sigmoid}):
+
+\begin{equation}
+  \psi(x) = \sigma(x) (1 - \sigma(x))
+\end{equation}
+
+and since $o_k$ is calculated by the activation function $\sigma$:
+
+\begin{equation}
+  \psi(o_k) = o_k (1 - o_k)
+\end{equation}
+
+The $\delta_k$ in \ref{eq:delta_k}
+describes the error for an output unit,
+but how do we compute the error for a hidden unit,
+since a hidden unit has no provided target value?
+
+It turns out it should depend on the error terms
+of the units it connects to,
+weighted by the weights associated to those connections.
+For a hidden unit $h$, write its error term $\delta_h$ as:
+
+\begin{equation}
+  \delta_h = \psi(o_h) \sum_{k \in outputs} w_{kh}\delta_k
+\end{equation}
+
+where $w_{kh}$ denotes the weight associated to
+the connection from unit $h$ to unit $k$.
+These are the weights that of course have to be tuned,
+so intuitively backpropagation will tune
+the responsability or impact of each node for/on the next node,
+effectively learning hidden representations about the hypothesis in question.
+
+\paragraph{}
+Now that we have defined the error terms for all weights,
+we can calculate the weight update
+for the weight associated with the connection
+from unit $i$ to unit $j$:
+
+\begin{equation}
+  \Delta w_{ji} = \eta \delta_j x_{ji}
+\end{equation}
+
+Just as with gradient descent,
+this can be done until some termination criterion is reached,
+be it convergence or amount of iterations.
+
+In the stochastic gradient descent setting of this algorithm,
+$\Delta w_{ji}$ would be used immediately to update
+$w_{ji}$.
+This is how backpropagation is commonly encountered
+but one could also choose to employ the batch version
+just as was the case with regular gradient descent.
+In that scenario,
+sum all $\Delta w_{ji}$s
+gotten for all examples of the training set
+and only then perform weight updates.
+
+In practice this is never done because the approach scales horribly
+with training set size.
+In fact, backpropagation is usually unleashed on the training set multiple times
+in order to converge to a local minimum,
+seeing every sample more than once.
+
+\subsubsection{Momentum}
+A common extension to backpropagation is momentum.
+Every weight update,
+you carry over some of the weight update from last iteration:
+
+\begin{equation}
+  \Delta w_{ji}(t+1) = \eta \delta_j x_{ji} + \\
+  \alpha \Delta w_{ji}(t)
+  \label{eq:momentum}
+\end{equation}
+
+We call $\alpha$ in \ref{eq} the \textit{momentum}.
+It is aptly named after the physical property
+and describes how a moving object needs a
+larger force to be applied (or for longer)
+in order for it to come to a standstill,
+the larger the momentum
+(and analogously for getting up to speed,
+though we conveniently ignore that).
+
+As a result,
+a high momentum will keep the weight vector
+rolling in the same direction in flat regions
+and even roll up small slopes thanks to momentum
+accumulated previously,
+great for escaping local minima
+overcoming flat plateaus.
+
+As an extra,
+convergence is sped up
+because regions with unchanging downward slopes (negative gradients)
+will accumulate a lot of speed.
