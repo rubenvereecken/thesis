@@ -194,7 +194,7 @@ the predicted state-action value for all state-action pairs:
 % https://webdocs.cs.ualberta.ca/~sutton/book/ebook/node86.html
 $$MSE(\theta) = \sum_{s \in S}[Q*(s,a)-Q(s,a,\theta)]^2$$
 This error can then to be minimized over all samples
-by a method such as gradient descent (discussed next)
+by a method such as gradient descent.
 
 That is the traditional machine learning approach.
 Note that reaching a global optimum for the parameters
@@ -210,36 +210,6 @@ as our ultimate goal is to have the best policy $\pi$,
 % TODO so.. do they collide? Sutton was vague at first	
 two goals that do not necessarily collide.
 
-\subsection{Gradient Descent}
-Gradient descent is a method for minimizing the error
-over all examples.
-It works by moving the parameters of some function approximator
-in the direction that most reduces the error for some example.
-Denote with $\theta$ the parameters
-and with $\Delta_{theta_t}f(theta_t)$ the vector of partial derivatives
-for some function f.
-Then:
-% Basically this one from sutton
-% https://webdocs.cs.ualberta.ca/~sutton/book/ebook/node87.html
-$$ \theta_{t+1} = ... $$
-As a result, the step will be proportional
-to the negative gradient of the example's squared error
-and regulated by a parameter $\alpha$.
-
-In fact, this is actually called
-stochastic gradient descent
-as the update is done after each training sample,
-instead of after the whole batch
-as in standard gradient descent in machine learning.
-
-However,
-we still do not have
-$Q*$, meaning we have to substitute
-or bootstrap it with an approximation.
-If this approximation is an unbiased estimate,
-$\theta_t$ is guaranteed to converge
-to a local optimum
-for decreasing step-size $\alpha$.
 
 \section{Eligibility Traces}
 Valt te overwegen.
