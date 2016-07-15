@@ -1,7 +1,210 @@
 \chapter{Reinforcement Learning}
-%\chapter{Reinforcement Learning}
-In this chapter I will introduce the notions and notations
-used in reinforcement learning.
+\section{The Problem}
+Reinforcement Learning in general is
+the idea of learning from interaction with the environment;
+a concept humans are familiar with albeit sometimes subconsciously.
+
+The child learns to walk by attempts, failure,
+and eventually success.
+During every interaction with our environment
+we are constantly aware of how it reacts to us,
+be it when we walk down the street
+or hold a conversation with someone.
+We are even aware of animals doing the same.
+
+\paragraph{}
+The idea of trial-and-error learning has long been in play,
+the term itself even used in the 19th century
+to describe observations of animal behavior
+\parencite{woodworth1938experimental}.
+
+Edward Thorndike phrased the
+\textit{Law of Effect}
+which is,
+after some of his own amendments,
+still considered a basic principle
+governing much of animal behavior.
+
+\begin{displayquote}
+Of several responses made to 
+the same situation, those which are accompanied or closely 
+followed by satisfaction to the animal will, other things being 
+equal, be more firmly connected with the situation, so that, 
+when it recurs, they will be more likely to recur; those which 
+are accompanied or closely followed by discomfort to the ani- 
+mal will, other things being equal, have their connections with 
+that situation weakened, so that, when it recurs, they will be 
+less likely to occur. The greater the satisfaction or discomfort, 
+the greater the strengthening or weakening of the bond. 
+
+\attrib{\cite{thorndike1911}, p. 244}
+\end{displayquote}
+
+The psychological field of animal behavior and learning
+has a longer history than the computational counterpart does,
+with popular examples such as Pavlov's research.
+The Russian Nobel laureate studied how animals
+responded to different stimuli:
+
+\begin{displayquote}
+It is pretty evident that under natural conditions the normal animal must
+respond not only to stimuli which themselves bring immediate benefit or harm,
+but also to other physical or chemical agencies—waves of sound,
+light, and the like—which in themselves only signal the approach of these stimuli;
+though it is not the sight and sound of the beast of prey 
+which is in itself harmful to the smaller animal, but its teeth and claws.
+\attrib{\cite{pavlov1927conditional}, p. 14}
+\end{displayquote}
+
+In this same text the term "reinforcement"
+was used for the first time in the context of animal learning.
+
+Pavlov is most known for his experiment with dogs.
+He noticed dogs would produce saliva in response
+to receiving food.
+He then associated a secondary stimulus to the act
+of feeding the animals
+by ringing a bell beforehand.
+The dogs learned to associate the bell
+with food and produced saliva
+upon hearing the bell,
+even before or without receiving anything.
+
+\paragraph{}
+Using trial-and-error to achieve artificial intelligence 
+was among the earliest ideas in the field.
+Alan Turing describes positive and negative stimuli
+to influence an algorithm:
+
+\begin{displayquote}
+  When a configuration is reached for which the action is undetermined, a
+random choice for the missing data is made and the appropriate entry is
+made in the description, tentatively, and is applied. When a pain stimulus
+occurs all tentative entries are cancelled, and when a pleasure stimulus
+occurs they are all made permanent.
+
+\attrib{\cite{turing1948intelligent}}
+\end{displayquote}
+
+Reinforcement Learning as I treat it here
+solely means the computational approach
+to learning from interaction,
+except where mentioned explicitly.
+We will not theorize on animal behavior
+or try to model it in order to create computational models.
+Sometimes, however,
+inspiration is drawn from animal behavior
+but it usually is no more than that;
+analogies only go as far as they serve us.
+The perspective used here is that of the engineer,
+not the neuroscientist.
+
+\paragraph{}
+Central to reinforcement learning is that a learner
+interacts with its environment in order to learn
+and ultimately aims to achieve some goal.
+Applied to human behavior in the course of a lifetime,
+we could say humans -in general- try to optimize happiness.
+Applied to something less daunting than the human condition,
+a sculptor may try to optimize beauty
+or expressivity of a sculpture,
+learning along the way how to do so in the best possible way.
+It is this goal-based interaction that forms the core
+to reinforcement learning.
+
+\paragraph{}
+Reinforcement learning can be characterized
+by three distinguishing features,
+setting it apart from other fields of learning
+
+\begin{description}
+  \item[Closed loop]
+    In order to learn, a learning agent must interact
+    with the environment to collect the necessary information.
+    However, each action changes the environment in a certain way
+    and in turn influences the agent's future inputs.
+    This forms a \textit{closed loop}.
+
+  \item[Discovery]
+    An agent is provided with no instructions on what actions to take
+    and how this will impact the environment.
+    It is to discover this itself.
+
+  \item[Time factor]
+    Consequences of an action can be delayed by an unknown amount of time.
+    Even the reward signal can be received many time steps later.
+    The agent is to figure out for itself
+    how its actions relate temporally to consequences.
+    
+    A good example of this is the game of chess with only a reward signal
+    at the end of a match, either positive or negative.
+    Some moves during the game are probably more important
+    than others and some more complicated,
+    like traps that take multiple moves to set up.
+    Yet all moves together are rewarded with only a single signal
+    at the end of the match.
+    It is for the agent to unravel and attribute
+    its actions according to importance.
+\end{description}
+
+\subsection{Reinforcement Learning and Machine Learning}
+As I tried to convey above,
+a crucial aspect to reinforcement learning
+is trial-and-error, learning from interactions
+with an environment that is not necessarily known.
+This makes reinforcement learning different from
+\textit{supervised learning}
+which is most associated with machine learning.
+In a supervised setting,
+a labeled example set is provided
+for the learner to learn from.
+Learning in this context means generalizing from the training set
+so queries about data not in this set
+can still be answered accurately.
+
+Reinforcement learning is different
+in that it takes on more of the problem;
+a learning algorithm is not presented with data
+but instead must gather it by interacting with the environment.
+In doing so it must also make a tradeoff between exploration and exploitation,
+a characterizing element to reinforcement learning.
+A learning agent can either \textit{exploit}
+what it knows to be the best action in order to achieve its goal,
+thereby possibly ignoring alternative routes of action
+that would have resulted in better results,
+or choose to \textit{explore}
+what impact its actions have on the environment.
+Neither strategy can be followed exclusively
+if one wants to learn anything worthwhile,
+a good combination of both is always needed.
+
+\paragraph{}
+On the "opposite" side of supervised learning
+is we call unsupervised learning,
+which is about finding hidden patterns in unlabeled data.
+The supervision gap between the two obviously pertains
+to whether the data has been created in a supervised manner.
+An illusion is created that there are two sides to machine learning,
+though reinforcement learning does not seem to fit either.
+Reinforcement learning is effectively a third machine learning paradigm.
+
+\subsection{In Practice (TODO)}
+Reinforcement learning has been applied in a multitude of domains,
+not only the ones immediately called to mind when thinking
+of autonomous agents like physical robots of all kinds,
+though those have definitely gained a lot of attention.
+
+%TODO pff geen zin nu
+\paragraph{}
+Survey by \cite{Kober2013}
+
+\paragraph{}
+Talk about self-driving cars
+
+With the surge of new techniques and faster machines
+reinforcement learning has also gotten popular with the public.
+%TODO self-driving cars
+
 
 \section{Reinforcement Learning Framework}
 There are only few components to the reinforcement learning problem.
