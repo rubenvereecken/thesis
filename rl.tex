@@ -1,4 +1,10 @@
 \chapter{Reinforcement Learning}
+\epigraph{
+  Fool me once, shame on you \\
+  fool me twice, shame on me.
+}{Popular proverb}
+
+
 \section{The Problem}
 Reinforcement Learning in general is
 the idea of learning from interaction with the environment;
@@ -221,6 +227,7 @@ reinforcement learning has also gotten popular with the public.
 
 
 \section{Reinforcement Learning Framework}
+\subsection{Agent and Environment}
 There are only few components to the reinforcement learning problem.
 The learner and actor is dubbed the agent and everything outside it the environment.
 The agent perceives its environment and acts on it,
@@ -237,30 +244,36 @@ In order for it to do so
 it must learn to not only look to immediate rewards
 but must also look to what the future has to offer.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\center
-	\includegraphics[width=.5 \linewidth]{agent-environment.png}
-	\caption{The agent interacts with the environment and consequentially perceives a reward and the next state of the environment.}
+	\includegraphics[width=.8 \linewidth]{agent-environment.png}
+	\caption{The agent interacts with the environment and 
+  consequentially perceives a reward and the next state of the environment.
+  \parencite{Sutton1998a}
+  }
 	\label{agent-env}
 \end{figure}
 
+\paragraph{}
 Formally, we divide the problem into discrete time steps $t$.
-A time step occurs every time the agent perceives a state $s_t$
+A time step occurs every time the agent perceives a state $S_t$
 from the set of possible states $\mathcal{S}$.
-Based on this state the agent selects an action $a_t$
-from its repertoire of actions $\mathcal{A}(s_t)$
-available to it at in state $s_t$.
-As a result, the next step it will receive a numerical reward $r_{t+1}$
-along with the next state $s_{t+1}$,
+Based on this state the agent selects an action $A_t$
+from its repertoire of actions $\mathcal{A}(S_t)$
+available to it at in state $S_t$.
+As a result, the next step it will receive
+a numerical reward $R_{t+1} \in \mathcal{R}$
+along with the next state $S_{t+1}$,
 and so on and so on.
 
+\paragraph{}
 As you can see, the problem setting is entirely abstract
 and can be filled in in various ways.
 In fact, the same practical problem may be defined in different ways
 depending on the goal.
 A state could just as well represent a robot's raw sensor readings
 as well as higher-level representations
-such as whether it's looking at a green or red light.
+such as whether it is looking at a green or red light.
 We say that state is provided by the environment
 even though one could argue a robot's sensors
 are part of the agent.
@@ -275,6 +288,104 @@ to higher-level concepts like which room to go to
 or whether to turn left or right.
 Basically, actions are decisions taken by the distant observer,
 for the designer to decide which shape they take.
+
+\paragraph{Cart Pole Balancing Example}
+A popular experiment in reinforcement learning
+that has its roots close to half a century ago
+is the cart pole balancing experiment
+\parencite{Michie1968}.
+
+In this experiment,
+a pole is affixed to a joint to the cart.
+Because of the joint,
+the pole can move in a two-dimensional plane
+as shown in Figure \ref{fig:cartpole}.
+The cart can move in two directions
+parallel to the joint's movement.
+
+Let us say the pole starts in a perfectly orthogonal
+position to the cart.
+However, because of the joint and
+inherent material imperfections, however microscopic,
+the pole will start to drop toward one side or the other.
+It is now the cart's goal
+to keep the pole balanced perfectly upward
+by moving however it can.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.7\linewidth]{cartpole.png}
+  \caption{Cart Pole Experiment
+  %TODO attribute to http://library.rl-community.org/wiki/CartPole_(Java)
+  }
+  \label{fig:cartpole}
+\end{figure}
+
+\paragraph{}
+Applied to our framework,
+we could at first glance say the cart is the obvious agent
+and everything else its environment.
+It would however make more sense
+to name the textit{decision maker} that controls the cart the agent
+and anything physical the environment or observable state.
+
+As it is commonly defined,
+a state exists of the angle of the pole with the cart
+along with the angular velocity of the pole.
+This would mandate three possible actions:
+move left, move right, or stand still.
+
+However, say the cart works in a more complicated manner
+and actually has to accelerate instead of just
+move at a fixed speed in one direction.
+In that case,
+the aforementioned state is insufficient
+to correctly balance the pole;
+car speed is now a crucial component
+and should be added to the state if possible
+to give a more complete description
+and allow the agent to learn even better policies.
+If not added, the agent will still learn
+to the best of its abilities though.
+
+
+\subsection{Goal and Rewards}
+During a task,
+an agent receives rewards upon acting with the environment.
+Rewards can be positive or negative,
+be real-valued or restricted to natural numbers,
+the agent just has one goal with them.
+There are different ways to define a goal.
+
+\begin{description}
+  \item[finite horizon] 
+    The most naive way to collect rewards is through the
+    \textit{finite-horizon} model,
+    in which the agent aims to optimize its expected
+    rewards for the next fixed amount of steps.
+    This is rarely appropriate and still leaves us
+    with the challenge of finding an appropriate value
+    for the constant horizon window.
+  \item[infinite horizon]
+    The alternative then is to not have a fixed window
+    but try to maximize reward over the rest of the agent's lifespan,
+    albeit discounted so later rewards have less impact than current ones.
+  \item[average reward]
+    The average reward model makes the agent optimize
+    its average reward over the rest of its lifetime.
+    It relates closely to the infinite-horizon model, without the discount.
+\end{description}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.5\linewidth]{optimality.png}
+  \caption{Different goal models
+  \parencite{Kaelbling1996} 
+  }
+  \label{fig:optimality}
+\end{figure}
+
+We will only ever use the \textit{infinite-horizon} model.
 
 \section{Markov Decision Processes}
 The Markov property is an interesting property for a problem to have
@@ -430,3 +541,5 @@ two goals that do not necessarily collide.
 
 \section{Eligibility Traces}
 Valt te overwegen.
+
+\section{Actor-Critic}
