@@ -465,28 +465,146 @@ the pole should be balanced perfectly upward.
 \section{Markov Decision Processes}
 The Markov property is an interesting property for a problem to have
 because it states that all relevant information at some point
-is present in a state.
+is present in a state, a state being whatever is available to the agent.
 This means that the whole history leading up to a certain point,
 insofar that it is relevant,
 is encoded in the state at that time. 
 Such a state is said to be Markov.
 
-Formally, consider the probability of ending up in a state $s_{t+1}$
-with reward $r_{t+1}$
-after performing some action $a_t$
-in a state $s_t$.
+\paragraph{}
+Consider the probability of ending up in a state $S_{t+1}$
+with reward $R_{t+1}$
+after performing some action $A_t$
+in a state $S_t$.
 This probability is denoted
 
-$$Pr(s_{t+1}=s', r_{t+1}=r | s_t, a_t)$$
+\begin{equation}
+  Pr(S_{t+1}=s', R_{t+1}=r | S_t, A_t)
+\end{equation}
 
 We would say a state signal is Markov if this probability is the same as
 
-$$Pr(s_{t+1}=s', r_{t+1}=r | s_t, a_t, s_{t-1}, a_{t-1},..., s_0, a_0)$$
+\begin{equation}
+  Pr(S_{t+1}=s', R_{t+1}=r | S_t, A_t, S_{t-1}, A_{t-1},..., S_0, A_0)
+\end{equation}
 
-which is the same scenario except given the entire state and action history. If these two are indeed equal, then the history is effectively encoded in the current state $s_t$.
+which is the same scenario except given the entire state and action history.
+If these two are indeed equal
+then the history is effectively encoded in the current state $S_t$.
 
 \paragraph{}
-START on mdp's here
+Markov states are handy because we do not need the whole history
+in order to make good decisions or even the best decisions.
+The best policy in function of the entire history
+is the same one as without the history
+because everything relevant to predicting the environment
+is already encoded in the current state.
+This is especially important for reinforcement learning
+as decisions will always be made in function of only the current state.
+Even when the state is not entirely Markov,
+it is easier for us to think of it as Markov
+or an approximation thereof
+because it gives us a framework on which
+we can build an understanding,
+so long as we are conscious of possible deviations.
+
+\subsection{Markov Decision Processes}
+\label{sub:markov_decision_processes}
+Once a reinforcement learning task has the Markov property
+we call it a \textit{Markov Decision Process} or MDP for short. 
+Such an MDP is completely defined by its probability
+of transitioning to any state $s'$ with reward $r$
+when starting in any state $s$ and acting with some action $a$:
+
+\begin{equation}
+  p(s', r|s, a) = Pr\{S_{t+1}=s', R_{t+1}|S_t=s, A_t=a\}
+\end{equation}
+
+And if one would like to know the chance of transitioning to a state
+regardless of the reward associated to the transition
+(the \textit{state-transition probability})
+it could be easily calculated as:
+
+\begin{equation}
+  \begin{split}
+    p(s'|s, a)
+    &= Pr{S_{t+1}=s'|S_t=s, A_t=a} \\
+    &= \sum_{r \in \mathcal{R}} p(s', r|s, a)
+  \end{split}
+\end{equation}
+
+Another especially useful number is the expected reward
+for a certain state-action pair:
+
+\begin{equation}
+  \begin{split}
+    r(s, a)
+    &= E[R_{t+1} | S_t = s, A_t = a] \\
+    &= \sum_{r \in \mathcal{R}}r \sum_{s' \in \mathcal{S}} p(s', r|s, a)
+  \end{split}
+\end{equation}
+
+As should be obvious from these examples,
+the Markov assumption
+is an extremely convenient one.
+
+\subsection{Partially Observable Markov Decision Processes}
+\label{sub:partially_observable_markov_decision_processes}
+One approach to non-Markovian settings
+are \textit{Partially Observable MDP's} (POMDP).
+They can be seen as generalizations of Markov decision processes
+with incomplete information
+\parencite{lovejoy1991survey}.
+
+Formally, we can say there is an underlying MDP to the POMDP
+with states $\mathcal{S} = \{s1, s2,\dots,s_N\}$
+and a transition probability as described above.
+The agent can however not observe a state directly,
+at time step $t$ it instead observes an observation $o_t$
+that relates to $s_t$ in some way,
+according to some unknown probability distribution $P(o|s_t)$.
+
+\paragraph{}
+Partially observable MDP's are MDP's in which knowledge is incomplete
+but other features relate to the state that \textit{is} observable.
+A typical example of such features are derived features
+such as speed of an object as it relates to the object's position.
+Speed is often a crucial component but it is not always
+part of a state and indeed one could argue it should not be
+because it is derived from another part of the state, over time.
+
+\paragraph{Cart Pole Balancing Example (cont.)}
+In the cart pole example, we originally said we could have both angle
+and angular velocity of the pole as part of the state.
+What of the scenario when we do not supply angular velocity to the agent,
+instead it must rely only on the current angle?
+
+The agent does not know how fast the pole swings,
+not even in which direction.
+All it knows is the current angle.
+Ideally it would know the direction of the pole
+so it could counteract or complete its movement,
+but in order to do that it must now look at the history
+of the pole: which direction does it come from?
+What is the distance travelled since last step?
+This is clearly not Markovian,
+as in the markovian case all necessary knowledge
+is encoded in the current state,
+whereas this scenario requires knowledge of at least the previous step.
+Indeed, if the previous state could be part of the current state
+the agent would already have a wealth of information.
+We have:
+
+\begin{equation}
+\begin{split}
+Pr\{S_{t+1}=s', R_{t+1}| S_t = s, A_t = a\} \\
+\neq Pr\{S_{t+1}=s', R_{t+1}| S_t = s, A_t = a, S_{t-1} = s'', A_{t-1}=a''\} 
+\end{split}
+\end{equation}
+
+However, this scenario could be considered as a POMDP
+and be solved with a technique tailored to such.
+
 
 \section{Value Functions}
 
