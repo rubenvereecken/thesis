@@ -624,8 +624,98 @@ This fixed-window approach is exactly what has been attempted successfully by
 though they state it only works in cases
 where the window is sufficient to encompass the required history.
 
-
 \section{Value Functions}
+The \textit{policy} of an agent is the decision maker,
+the component of the algorithm that decides on the action in each state.
+For a state $s \in \mathcal{S}$
+and an action $a \in \mathcal{A}(s)$,
+$\pi(a|s)$ is the probability of taken action $a$ in state $s$
+as directed by the policy $\pi$.
+
+\paragraph{}
+We now introduce the notion of a \textit{value function};
+a function that estimates how good a certain state is for the agent.
+Recall that the agent will try to optimize discounted accumulated reward $G_t$,
+this in turn depends on the future actions of the agent.
+Since actions are a result of the policy $\pi$,
+we always define a value function in terms of a policy:
+
+\begin{equation}
+  \begin{split}
+    v_\pi(s) &\equiv E_\pi[G_t | S_t = s] \\
+    &= E_\pi \left[ \sum^\infty_{k=1}\gamma^kR_{t+k} \middle| S_t = s \right]
+  \end{split}
+\end{equation}
+
+We call this the \textit{state-value function} for policy $\pi$.
+
+\paragraph{}
+Then there is the \textit{state-action function} for policy $\pi$,
+denoted $q_\pi(s,a)$,
+which is the expected return when taking action $a$ in state $s$
+then following policy $\pi$:
+
+\begin{equation}
+  \begin{split}
+    q_\pi(s,a) &\equiv E_\pi[G_t | S_t = s, A_t = a] \\
+    &= E_\pi \left[ \sum^\infty_{k=1}\gamma^kR_{t+k} \middle| S_t = s, A_t = a \right]
+  \end{split}
+\end{equation}
+
+Note that I still have not said how to calculate these functions.
+As they are defined here, they are the mathematical entities we aim to achieve
+and give us a way of thinking in ideal terms
+that we can then later approach in practice.
+
+\paragraph{}
+There is an extremely important recursive relation
+between value functions that forms the foundation for the sections to come.
+
+\begin{equation}
+  \begin{split}
+    v_\pi(s)
+    &= E_\pi \left[ \sum^\infty_{k=1}\gamma^kR_{t+k} \middle| S_t = s \right] \\
+    &= \sum_{\substack{s' \in \mathcal{S} \\ a \in \mathcal{A}(s)}}
+    \pi(a|s) p(s'|s, a) \left [ r + \gamma v_\pi(s') \right ]
+  \end{split}
+\end{equation}
+
+We call this relation the \textit{Bellman equation}.
+Broken down, it is the sum of expected returns for each state $s'$
+accessible from state $s$,
+weighted by the chance of ending up in state $s'$
+(which is of course impacted by both the odds of picking action $a$
+and ending up in state $s'$ after).
+
+\paragraph{}
+Using value functions,
+we can define a partial ordering between policies
+in order to decide on the best one.
+One policy is better than the other
+if its expected return is greater than the other's.
+Formally,
+
+$$
+\pi \geq \pi' \iff v_\pi(s) \geq v_{\pi'}(s) \, \forall s \in \mathcal{S}
+$$
+
+We now have a front of \textit{optimal policies},
+which we will denote by $\pi*$.
+They all share the \textit{ optimal state-value function }
+and \textit{optimal action-value function}:
+
+\begin{align*}
+  v_*(s) &\equiv \max_{\pi} v_\pi(s) & \forall s \in \mathcal{S} \\
+  q_*(s, a) &\equiv \max_\pi q_\pi(s,a) & \forall s \in \mathcal{S},
+  \forall a \in \mathcal{A}(s)
+\end{align*}
+
+Finally, we can write the optimal action-value function
+in function of the optimal state-value function.
+
+\begin{equation}
+  q_*(s,a) = E[R_{t+1} + \gamma v_*(S_{t+1}) | S_t = s, A_t = a]
+\end{equation}
 
 \section{Temporal Difference Learning}
 
