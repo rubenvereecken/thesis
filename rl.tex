@@ -352,10 +352,27 @@ to the best of its abilities though.
 \subsection{Goal and Rewards}
 During a task,
 an agent receives rewards upon acting with the environment.
-Rewards can be positive or negative,
-be real-valued or restricted to natural numbers,
-the agent just has one goal with them.
-There are different ways to define a goal.
+Rewards are crucial to the reinforcement learning problem
+as they are way the algorithm designer
+can create goals for the agent (the \textit{what})
+without stating how these goals might be achieved (the \textit{how}).
+In the earlier example of a chess game,
+you would reward the agent for winning
+(and even penalize for losing)
+but in general not reward specific steps the agent took
+to reach its goal of winning.
+That would be bringing domain specific knowledge into it,
+which is not necessary and can
+even be detrimental to the learner's success.
+The most basic form contains no domain knowledge.
+
+
+\paragraph{}
+Rewards are numerical and can be positive or negative,
+real-valued or restricted to natural numbers,
+the agent just has one goal with them:
+to somehow accumulate it.
+There are different ways to define such a goal.
 
 \begin{description}
   \item[finite horizon] 
@@ -385,7 +402,65 @@ There are different ways to define a goal.
   \label{fig:optimality}
 \end{figure}
 
-We will only ever use the \textit{infinite-horizon} model.
+We will only use the \textit{infinite-horizon} model.
+Over the course of a lifetime
+the agent will try to optimize
+
+the expected total discounted return
+\begin{equation}
+  E\left( \sum^{\infty}_{t=0}\gamma^tr_t \right)
+\end{equation}
+
+or put otherwise,
+at timestep $t$ the agent will try to optimize his
+total discounted reward $G_t$
+by choosing the appropriate action $A_t$:
+
+
+\begin{equation}
+  G_t = \sum^{\infty}_{k=1}\gamma^kR_{t+k}
+\end{equation}
+
+As stated, we will discount later rewards
+to avoid infinity as time goes on.
+This discounting is tuned by $\gamma \in [0,1]$,
+the \textit{discount rate}.
+Though a nifty mathematical trick,
+it also has the interpretation of giving more weight
+to rewards closer in the future than those
+further down the road.
+In case of $\gamma = 1$,
+an reward later on has the same impact on the goal as an equally high reward
+encountered earlier.
+Tuning $\gamma$ effectively tunes the agent's
+farsightedness, with lower values for $\gamma$
+make for a `greedier' agent.
+
+\paragraph{Cart Pole Balancing Example (cont.)}
+Let us take again the cart pole balancing example.
+We still have to split up the problem in discrete time steps.
+Take for example 40 steps every second,
+because that is the limitation imposed by the hardware
+and it does not make sense to make decisions faster
+than they can be acted upon.
+
+\paragraph{}
+We now need to convey to the cart agent exactly 
+what we want it to achieve:
+to keep the pole balanced upward indefinitely.
+A good way to get the goal across is to define a range
+within which the robot is doing a good job,
+then always assign $+1$ whenever the pole is inside that range
+and $-1$ when the pole drops too low.
+This will make sure the agent tries to get
+within the positive-reward range
+but potentially also as far as possible
+from the negative-reward fringes,
+depending on how the agent learns.
+If the positive range is then defined around the center,
+as it should be,
+the pole should be balanced perfectly upward.
+
 
 \section{Markov Decision Processes}
 The Markov property is an interesting property for a problem to have
