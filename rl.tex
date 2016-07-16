@@ -565,13 +565,30 @@ that relates to $s_t$ in some way,
 according to some unknown probability distribution $P(o|s_t)$.
 
 \paragraph{}
-Partially observable MDP's are MDP's in which knowledge is incomplete
-but other features relate to the state that \textit{is} observable.
+One way that POMDP's arise often is because of noisy sensors,
+so observations do not completely accurately reflect true state. 
+Another example is when state features can be derived
+from observable features.
 A typical example of such features are derived features
 such as speed of an object as it relates to the object's position.
 Speed is often a crucial component but it is not always
 part of a state and indeed one could argue it should not be
 because it is derived from another part of the state, over time.
+
+\paragraph{}
+Many approaches to POMDP's
+include building some kind of model of the environment
+so the relation between observation and hidden state can be used
+\parencite{Cassandra1994}.
+Other approaches use some kind of history window,
+both fixed
+\parencite{mccallum1995instance}
+and variable-width windows
+\parencite{ring1994continual}
+have been attempted.
+
+In section %TODO ref section recurrent
+we will explore another road.
 
 \paragraph{Cart Pole Balancing Example (cont.)}
 In the cart pole example, we originally said we could have both angle
@@ -602,8 +619,10 @@ Pr\{S_{t+1}=s', R_{t+1}| S_t = s, A_t = a\} \\
 \end{split}
 \end{equation}
 
-However, this scenario could be considered as a POMDP
-and be solved with a technique tailored to such.
+This fixed-window approach is exactly what has been attempted successfully by
+\citeauthor{Lin1992a} (\citeyear{Lin1992a}),
+though they state it only works in cases
+where the window is sufficient to encompass the required history.
 
 
 \section{Value Functions}
