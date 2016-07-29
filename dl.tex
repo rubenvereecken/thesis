@@ -1,20 +1,67 @@
 \chapter{Deep Learning}
-Neural networks have on and off
-been a hot topic in machine learning and reinforcement learning.
-Using them with off-policy learning like Q-learning
-is dangerous because there are no convergence guarantees,
-in fact in practice they tend to diverge.
-This made linear learners the superior choice
-for use with Q-learning
-because of their convergence guarantees.
+Deep Learning describes a family of learning techniques
+that at their core are about learning representations of data
+in a hierarchical fashion.
+It replaces the need for handcrafted feature
+and indeed works in an entirely unsupervised or at least
+semi-supervised fashion.
 
-Deep Reinforcement Learning has mediated these problems
-and has managed to deliver a learner
-that learns end-to-end,
-from high-dimensional output such as an image
-to Q-values.
+The core algorithm in deep learning is backpropagation
+(described in detail in \ref{sec.backprop})
+which describes how a learning model should update its parameters
+in response to a discrepancy between learned output
+and example output.
 
+\paragraph{}
+While the notion of stacking layers of units
+to create multi-tiered artificial neural networks
+has been around for a few decades already,
+% TODO ref first Ann?
+the recent surge in computing power
+has enabled these conceptual models
+to be actually built large enough
+to explore their full potential.
+
+Next to fully connected neural networks,
+there are a few other types of networks of interest
+that I will explore.
+One such is the Convolutional Neural Network
+which I will describe in more detail in
+section \ref{sec.cnn}.
+This type especially has benefitted from
+advances in technology because of their highly
+parallel nature which effectively allows them to be run
+on consumer graphic hardware which is ever-improving
+and becoming more accessible.
+
+\paragraph{}
 
 \section{Convolutional Neural Networks}
+
+DEfinitely mention
+\begin{itemize}
+  \item used to be a need for handcrafting features, cnns solve that
+  \item based on visual mech of living orgs: simple/complex cells for
+    edge patterns and locally invariant patterns.
+    Oh also, visual cortex
+  \item GPUs are nice https://www.computer.org/csdl/proceedings/icdar/2005/2420/00/24201115-abs.html
+  \item regular network doesn't care about pixel distance,
+    so why care about full connectivity? Wasteful and overfitting
+  \item exploit strong spatially local correlation present in natural img
+by enforcing a local connectivity pattern between neurons of adjacent layers.
+  \item 3D volumes of neurons.  The neurons inside a layer are only connected to a small region of the layer before it
+  \item Stack layers to create non-linear filters
+  \item Shared weights form a feature map,
+    all neurons in a layer detect the same feature -> translation invariance.
+    Also computationally efficient.
+  \item each neuron is connected to only a small region of the input volume. The extent of this connectivity is a hyperparameter called the receptive field of the neuron
+  \item early layers are rougher and larger:
+    they can detect less features because there are less filters.
+    Layers further down become smaller and contain more filters.
+  \item maybe add something on regularization wirth dropout
+
+
+\end{itemize}
+
 
 \section{Recurrent Neural Networks}

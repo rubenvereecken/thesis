@@ -44,7 +44,7 @@ in the artificial neural networks we construct,
 especially in real-life situation reinforcement learning
 where decisions must be made swiftly and we cannot wait
 for a slower model to finish computing.
-While our general purpose machines 
+While our general purpose machines
 are entirely sequential in nature,
 parallel hardware has been built specially
 for neural network applications.
@@ -253,6 +253,7 @@ so the slopes are fixed outside of training.
 
 
 \section{Gradient Descent and Backpropagation}
+\label{sec.backprop}
 Earlier we talked about a learning algorithm's error
 and even glossed over ways to minimize this error.
 In this section we will discuss gradient descent
@@ -371,7 +372,7 @@ and instead settle into minima.
 % The method in equation \ref{eq:gradient_descent}
 % is also called
 % \textit{batch} gradient descent
-% because all 
+% because all
 \paragraph{}
 In order to actually compute the gradient iteratively,
 we still need a way to calculate the partial derivations
@@ -404,7 +405,7 @@ However, we will content ourselves with a simpler example
 that allows us to perform an algebraic derivation
 and calculate the gradient without such methods.
 
-For $f$, we will pick 
+For $f$, we will pick
 a simple linear unit that will suffice as an example:
 
 $$
@@ -524,7 +525,7 @@ and the measure of difference we will employ is
   \sum_{k \in outputs}(y_{kj} - \hat{y}_{kj})^2
 \end{equation}
 
-where $y_{kj}$ is the \textit{k}th element of the output value 
+where $y_{kj}$ is the \textit{k}th element of the output value
 that corresponds to input sample $x_{j}$,
 and $\hat{y}_{j}$ is the network value for $x_{j}$,
 
@@ -579,7 +580,7 @@ The units $o_k$ in the outer layer together
 make up $\hat{y}$.
 
 Computing the error term $\delta_k$
-for an output unit $k$ 
+for an output unit $k$
 and a given training sample
 is pretty straightforward:
 
