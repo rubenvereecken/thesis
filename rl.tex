@@ -32,16 +32,16 @@ still considered a basic principle
 governing much of animal behavior.
 
 \begin{displayquote}
-Of several responses made to 
-the same situation, those which are accompanied or closely 
-followed by satisfaction to the animal will, other things being 
-equal, be more firmly connected with the situation, so that, 
-when it recurs, they will be more likely to recur; those which 
-are accompanied or closely followed by discomfort to the ani- 
-mal will, other things being equal, have their connections with 
-that situation weakened, so that, when it recurs, they will be 
-less likely to occur. The greater the satisfaction or discomfort, 
-the greater the strengthening or weakening of the bond. 
+Of several responses made to
+the same situation, those which are accompanied or closely
+followed by satisfaction to the animal will, other things being
+equal, be more firmly connected with the situation, so that,
+when it recurs, they will be more likely to recur; those which
+are accompanied or closely followed by discomfort to the ani-
+mal will, other things being equal, have their connections with
+that situation weakened, so that, when it recurs, they will be
+less likely to occur. The greater the satisfaction or discomfort,
+the greater the strengthening or weakening of the bond.
 
 \attrib{\cite{thorndike1911}, p. 244}
 \end{displayquote}
@@ -71,7 +71,7 @@ It is pretty evident that under natural conditions the normal animal must
 respond not only to stimuli which themselves bring immediate benefit or harm,
 but also to other physical or chemical agencies—waves of sound,
 light, and the like—which in themselves only signal the approach of these stimuli;
-though it is not the sight and sound of the beast of prey 
+though it is not the sight and sound of the beast of prey
 which is in itself harmful to the smaller animal, but its teeth and claws.
 \attrib{\cite{pavlov1927conditional}, p. 14}
 \end{displayquote}
@@ -91,7 +91,7 @@ upon hearing the bell,
 even before or without receiving anything.
 
 \paragraph{}
-Using trial-and-error to achieve artificial intelligence 
+Using trial-and-error to achieve artificial intelligence
 was among the earliest ideas in the field.
 Alan Turing describes positive and negative stimuli
 to influence an algorithm:
@@ -155,7 +155,7 @@ setting it apart from other fields of learning
     Even the reward signal can be received many time steps later.
     The agent is to figure out for itself
     how its actions relate temporally to consequences.
-    
+
     A good example of this is the game of chess with only a reward signal
     at the end of a match, either positive or negative.
     Some moves during the game are probably more important
@@ -247,7 +247,7 @@ but must also look to what the future has to offer.
 \begin{figure}[ht]
 	\center
 	\includegraphics[width=.8 \linewidth]{agent-environment.png}
-	\caption{The agent interacts with the environment and 
+	\caption{The agent interacts with the environment and
   consequentially perceives a reward and the next state of the environment.
   \parencite{Sutton1998a}
   }
@@ -375,7 +375,7 @@ to somehow accumulate it.
 There are different ways to define such a goal.
 
 \begin{description}
-  \item[finite horizon] 
+  \item[finite horizon]
     The most naive way to collect rewards is through the
     \textit{finite-horizon} model,
     in which the agent aims to optimize its expected
@@ -397,7 +397,7 @@ There are different ways to define such a goal.
   \centering
   \includegraphics[width=0.5\linewidth]{optimality.png}
   \caption{Different goal models
-  \parencite{Kaelbling1996} 
+  \parencite{Kaelbling1996}
   }
   \label{fig:optimality}
 \end{figure}
@@ -445,7 +445,7 @@ and it does not make sense to make decisions faster
 than they can be acted upon.
 
 \paragraph{}
-We now need to convey to the cart agent exactly 
+We now need to convey to the cart agent exactly
 what we want it to achieve:
 to keep the pole balanced upward indefinitely.
 A good way to get the goal across is to define a range
@@ -468,7 +468,7 @@ because it states that all relevant information at some point
 is present in a state, a state being whatever is available to the agent.
 This means that the whole history leading up to a certain point,
 insofar that it is relevant,
-is encoded in the state at that time. 
+is encoded in the state at that time.
 Such a state is said to be Markov.
 
 \paragraph{}
@@ -511,7 +511,7 @@ so long as we are conscious of possible deviations.
 \subsection{Markov Decision Processes}
 \label{sub:markov_decision_processes}
 Once a reinforcement learning task has the Markov property
-we call it a \textit{Markov Decision Process} or MDP for short. 
+we call it a \textit{Markov Decision Process} or MDP for short.
 Such an MDP is completely defined by its probability
 of transitioning to any state $s'$ with reward $r$
 when starting in any state $s$ and acting with some action $a$:
@@ -549,7 +549,7 @@ the Markov assumption
 is an extremely convenient one.
 
 \subsection{Partially Observable Markov Decision Processes}
-\label{sub:partially_observable_markov_decision_processes}
+\label{sub:pomdp}
 One approach to non-Markovian settings
 are \textit{Partially Observable MDP's} (POMDP).
 They can be seen as generalizations of Markov decision processes
@@ -566,7 +566,7 @@ according to some unknown probability distribution $P(o|s_t)$.
 
 \paragraph{}
 One way that POMDP's arise often is because of noisy sensors,
-so observations do not completely accurately reflect true state. 
+so observations do not completely accurately reflect true state.
 Another example is when state features can be derived
 from observable features.
 A typical example of such features are derived features
@@ -615,7 +615,7 @@ We have:
 \begin{equation}
 \begin{split}
 Pr\{S_{t+1}=s', R_{t+1}| S_t = s, A_t = a\} \\
-\neq Pr\{S_{t+1}=s', R_{t+1}| S_t = s, A_t = a, S_{t-1} = s'', A_{t-1}=a''\} 
+\neq Pr\{S_{t+1}=s', R_{t+1}| S_t = s, A_t = a, S_{t-1} = s'', A_{t-1}=a''\}
 \end{split}
 \end{equation}
 
@@ -837,7 +837,7 @@ for all $\theta$ near $\theta'$.
 One should also be careful with simply minimizing the MSE
 of the state-action function approximator
 as our ultimate goal is to have the best policy $\pi$,
-% TODO so.. do they collide? Sutton was vague at first	
+% TODO so.. do they collide? Sutton was vague at first
 two goals that do not necessarily collide.
 
 
