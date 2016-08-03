@@ -474,7 +474,12 @@ the previous output ($h_{t-1}$)
 and previous internal cell state ($c_{t-1}$).
 All combine these inputs using a linear computation
 and become non-linear through the activation function.
+The connections from the previous cell state
+to a gate are called \textit{peephole connections},
+first introduced by
+\citeauthor{gers2000recurrent} (\citeyear{gers2000recurrent}).
 
+\paragraph{}
 The internal cell state is a combination
 of a `forget component' that determines
 how the previous cell state is carried over
