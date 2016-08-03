@@ -445,8 +445,14 @@ The combination of these elements make the LSTM cell into
 into a veritable piece of memory.
 
 \paragraph{}
-The relations between the different components are described as follows,
-where $\sigma$ is the sigmoid activation function:
+Quite a lot of LSTM variants have been developed over the years
+since their the LSTM's inception.
+Below I describe the relations between the different components
+as they are used in this thesis,
+based on a popular design described by
+\citeauthor{Graves2013} (\citeyear{Graves2013}).
+Note that $\sigma$ is the sigmoid activation function
+as described in section \ref{sec:sigmoid}.
 
 \begin{align}
   &i_t = \sigma(W_{xi}x_t + W_{hi}h_{t-1}+W_{ci}c_{t-1} + b_i) \\
