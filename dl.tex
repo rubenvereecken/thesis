@@ -1,4 +1,4 @@
-\chapter{Deep Learning}
+\chapter{Deep Reinforcement Learning}
 Deep Learning describes a family of learning techniques
 that at their core are about learning representations of data
 in a hierarchical fashion.
@@ -51,12 +51,17 @@ yet it is far from limited to these.
 Deep learning has been extensively and successfully
 applied to reinforcement learning as well,
 the main topic of interest in this thesis.
-In section \ref{sec:drl}
-I will describe
-the latest advances and current struggles
-the deep reinforcement learning faces,
-as well as my own attempts at improving
-the current situation.
+
+\paragraph{}
+The rest of this chapter will start by introducing
+core deep learning conceps,
+then proceed to applying deep learning
+to the reinforcement learning case.
+Sections \ref{sec:cnn} and \ref{sec:rnn}
+concern themselves with general deep learning techniques,
+i.e. not specific to the reinforcement learning.
+
+% TODO add refs to later sections
 
 
 \section{Convolutional Neural Networks}
@@ -311,14 +316,176 @@ and even more convolutional layer
 to make up for the loss in power.
 
 \section{Recurrent Neural Networks}
+\label{sec:rnn}
+Some tasks are sequential in nature,
+meaning one sample depends on a previous one,
+rather than data being independently
+drawn from some unknown underlying distribution.
+Typical problems include speech and language.
 
-\section{Deep Reinforcement Learning}
-\label{sec:deep_reinforcement_learning}
+Recurrent neural networks are especially suited
+for these domains.
+They process input sequences one step at a time,
+maintaining learned hidden state which will then
+affect future output.
+% TODO mention recurring connection
+
+\paragraph{}
+It is no wonder this class of artificial neural networks
+draws the eye of the reinforcement learner designer.
+A problem with a pure Markov state space
+has no need of a network useful for learning dependencies between different states,
+since by definition every state on its own is sufficient enough of a representation
+and includes all necesary past states in its description.
+However, many reinforcement learning problems are not strictly Markovian
+and are only reduced to Markov decision processes for convenience.
+Since these problems do not adhere strictly to Markovness,
+they could still benefit from RNN's.
+
+Recall also from section \ref{sub:pomdp}
+the class of Partially Observable Markov Decision Procceses (POMDP).
+These are processes that simply lack all required information in
+at least some state descriptions.
+As a result this is the class of problems that benefit most
+from recurrent neural networks
+and as a result are of special interest in this thesis.
+
+\subsection{Building Blocks and Training}
+\label{sub:building_blocks_and_training}
+As Recurrent Neural Networks form a class of networks,
+I will go over the general approach taken instead of a specific version.
+
+Whereas regular feed-forward networks contain only forward connections,
+RNN's usually contain cycles allowing them to capture time dependencies.
+The cycle allows on state to depend on a previous one,
+making it the ideal setup for sequences.
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=0.8\linewidth]{rnn.jpg}
+  \caption{Recurrent Neural Network unfolded through time
+  \parencite{Y.2015dl}.
+  }
+  \label{fig:rnn}
+\end{figure}
+
+At first, it might look daunting to train a network with recurrent connections
+and as a result a recursive component in the error.
+However, recurrent neural networks can simply be trained with gradient descent.
+Figure \ref{fig:rnn} shows how a recurrent connection can be viewed
+throughout three different time steps.
+Seen in this rolled out fashion,
+it simply becomes a very deep network with shared weights
+and allows us to apply the well-known backpropagation algorithm.
+
+\subsection{Long Short-Term Memory Networks}
+\label{sub:lstm}
+Regular recurrent neural networks can suffer from two problems during training:
+\textit{vanishing gradient} and {exploding gradient}.
+Highlighted first by
+\citeauthor{Bengio1994} (\citeyear{Bengio1994}),
+these two recurring problematic phenomena have long prevented
+efficient traiffic of recurrent neural networks.
+
+The \textit{exploding gradient} describes the norm of the gradient
+increasing during training
+because of explosive growth of the long-term components
+which then far outweigh the short-term components.
+The opposite phenomenon, \textit{vanishing gradient},
+features more prominently in the literature.
+It describes long term components that go exponentially fast to zero,
+making it practically impossible to learn
+long-term time dependencies of arbitrary length.
+
+To deal with the exploding gradient,
+\parencite{Pascanu2012}
+suggest clipping the norm of the gradients
+and
+% TODO pls verify with Peter
+\citeauthor{Graves2013} (\citeyear{Graves2013})
+show that \textit{skip connections},
+i.e. connections that `skip' a layer,
+help mitigate the vanishing gradient problem
+for deep networks.
+
+\paragraph{}
+An architecture especially good at storing and accessing information
+is the \textit{Long Short-Term Memory},
+introduced by \citeauthor{Hochreiter1997} (\citeyear{Hochreiter1997}).
+% TODO eh you sure?
+It remedies extreme gradients
+by enforcing a constant error flow through special internal units.
+It also contains gates that regulate
+which inputs get remembered or even forgotten,
+as well as gates that regulate when to output a remembered value.
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=0.8\linewidth]{lstm.png}
+  \caption{Long Short-Term Memory cell
+  \parencite{Graves2013}.
+  }
+  \label{fig:lstm}
+\end{figure}
+
+\paragraph{}
+The basic unit is a Long Short-Term Memory cell
+which is displayed schematically in Figure \ref{fig:lstm}.
+A cell contains three gates:
+an input gate, forget gate and output gate.
+Each gate uses an activation function,
+often the sigmoid function.
+Central to it all is the cell unit, the internal state,
+which gets regulated by the gates
+in a fashion described by their names;
+one gate controls whether the internal state should be overridden,
+the other whether it should be used in the output
+and yet another whether the internal state should be forgotten.
+The combination of these elements make the LSTM cell into
+into a veritable piece of memory.
+
+\paragraph{}
+The relations between the different components are described as follows,
+where $\sigma$ is the sigmoid activation function:
+
+\begin{align}
+  &i_t = \sigma(W_{xi}x_t + W_{hi}h_{t-1}+W_{ci}c_{t-1} + b_i) \\
+  &f_t = \sigma(W_{xf}x_t + W_{hf}h_{t-1}+W_{cf}c_{t-1} + b_f) \\
+  &o_t = \sigma(W_{xo}x_t + W_{ho}h_{t-1}+W_{co}c_{t-1} + b_o) \\
+  &c_t = f_tc_{t-1}+i_t tanh(W_{xc}x_t+W_{hc}h_{t-1}+b_c) \\
+  &h_t = o_t tanh(c_t)
+\end{align}
+
+The $W_{ij}$ notation denotes the weights associated
+with the connection from unit $i$ to unit $j$.
+Likewise, $b_k$ denotes the bias for unit $k$.
+
+While the equations might look daunting at first glance,
+they can all be given intuitive meaning.
+The three gates behave similarly;
+they all depend on the current cell input ($x_t$),
+the previous output ($h_{t-1}$)
+and previous internal cell state ($c_{t-1}$).
+All combine these inputs using a linear computation
+and become non-linear through the activation function.
+
+The internal cell state is a combination
+of a `forget component' that determines
+how the previous cell state is carried over
+along with a combination of the current input and the previous output,
+weighted by the current input gate
+which regulates how the input should be used.
+
+It must be noted that the original LSTM proposal
+did not contain a forget gate
+and simply added unchanged cell state
+back into the current update.
+This cell state was then referred to as the Constant Error Carousel (CEC),
+named so because it enforced a constant error
+in order to mitigate the vanishing and exploding gradient problems.
 
 
 
 \section{Misc, still needs a decent place}
 \subsection{RMSProp}
 \label{sub:rmsprop}
-
-
