@@ -705,6 +705,7 @@ They all share the \textit{ optimal state-value function }
 and \textit{optimal action-value function}:
 
 \begin{align*}
+  \label{eq:bellman}
   v_*(s) &\equiv \max_{\pi} v_\pi(s) & \forall s \in \mathcal{S} \\
   q_*(s, a) &\equiv \max_\pi q_\pi(s,a) & \forall s \in \mathcal{S},
   \forall a \in \mathcal{A}(s)
@@ -716,6 +717,54 @@ in function of the optimal state-value function.
 \begin{equation}
   q_*(s,a) = E[R_{t+1} + \gamma v_*(S_{t+1}) | S_t = s, A_t = a]
 \end{equation}
+
+\paragraph{Gridworld Example}
+\label{par:gridworld}
+Another classic example in Reinforcement Learning is Gridworld.
+Figure \ref{fig:gridworld}a depicts the state space
+as a rectangular grid where each cell corresponds to a state.
+Only four actions are available to the agent in any state;
+it can move in each of four directions to a neighboring cell.
+
+There are three kinds of rewards.
+If the agent performs an action that would have it drop off the grid,
+it receives a penalty of $-1$ and remains in the same state.
+Moving to either state $A$ or $B$ gives the agent a bonus as depicted
+and moving it to a different state: $A'$ or $B'$ respectively.
+All other moves net the agent a reward of $0$.
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=0.8\linewidth]{gridworld.png}
+  \caption{Gridworld: Left }
+  \label{fig:gridworld}
+\end{figure}
+
+\paragraph{}
+Let us suppose now the random policy $\pi$
+which takes a random action at random in any and every state.
+Figure \ref{fig:gridworld}b then shows the value function $v_\pi$
+for this policy in the case that $\gamma=0.9$.
+These values can be calculated by solving the equations \ref{eq:bellman}.
+For a small state space such as the Gridworld one, doing so explicitly
+is still possible.
+However, for larger ones this quickly becomes infeasable
+and one must turn to approximation methods
+which we will consider later on.
+
+Note that the largest state values are at $A$ and $B$.
+Still, relative to the reward associated with each,
+$A$'s state value is not quite as high.
+This is due to the fact that $A'$
+is right next to the border of the grid
+and thus has more potential for falling off,
+i.e. for negative rewards which negatively impact
+the state values for states that can lead there.
+
+\section{Optimal Value Functions}
+\label{sec:optimal_value_functions}
+
+
 
 \section{Temporal Difference Learning}
 
@@ -839,9 +888,3 @@ of the state-action function approximator
 as our ultimate goal is to have the best policy $\pi$,
 % TODO so.. do they collide? Sutton was vague at first
 two goals that do not necessarily collide.
-
-
-\section{Eligibility Traces}
-Valt te overwegen.
-
-\section{Actor-Critic}
