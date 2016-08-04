@@ -329,14 +329,15 @@ Formally, in function of the weight vector
 $\overrightarrow{w}$ of length $n$,
 we write the derivative or gradient of E as:
 
-$$
-\nabla E(\overrightarrow{w}) = \left(
-  \frac{\delta E}{\delta w_0}, \\
-  \frac{\delta E}{\delta w_1}, \\
-  \dots, \\
-  \frac{\delta E}{\delta w_n}, \\
-\right)
-$$
+\begin{equation}
+\label{eq:gradient_descent_derivative}
+  \nabla E(\overrightarrow{w}) = \left(
+    \frac{\delta E}{\delta w_0}, \\
+    \frac{\delta E}{\delta w_1}, \\
+    \dots, \\
+    \frac{\delta E}{\delta w_n}, \\
+  \right)
+\end{equation}
 
 $\nabla E(\overrightarrow{w})$
 is in itself a vector and corresponds to the steepest slope
@@ -690,3 +691,88 @@ As an extra,
 convergence is sped up
 because regions with unchanging downward slopes (negative gradients)
 will accumulate a lot of speed.
+
+\subsection{Adagrad and RMSProp}
+\label{sub:adagrad_and_rmsprop}
+Some parameters get updated less frequently than others
+while they may play a key role for the others,
+they are the proverbial needs in the haystack of parameters.
+Adagrad \parencite{Duchi2011},
+its name derived from `adaptive gradient',
+addresses exactly this need of allowing important
+yet less updated parameters
+to play a bigger role in gradient updates.
+It builds on stochastic gradient descent
+but adds the notion
+of parameter-specific learning rates
+that are continuously updated to reflect
+the scarcity of updates for a parameter.
+
+Let us start by introducing a shorthand for
+the gradient of the error at time step $t$
+for a parameter vector $\theta$:
+
+\begin{equation}
+  g_{t} \equiv \nabla_\theta E(\theta)
+\end{equation}
+
+Our stochastic gradient descent update rule then becomes:
+
+\begin{equation}
+  \theta_{t+1} = \theta_{t} - \eta \cdot g_{t}
+\end{equation}
+
+Now we introduce a diagonal matrix $G_t$,
+which I will discuss right after:
+
+\begin{equation}
+  \theta_{t+1} = \theta_{t} - \frac{\eta}{\sqrt{G_t + \epsilon}} \odot g_{t}
+\end{equation}
+
+Note that $\odot$ denotes element-wise matrix-vector multiplication
+and $\epsilon$ is simply a tiny non-zero value
+to avoid division by zero.
+
+The matrix $G_t$ is a diagonal matrix
+of which each element $i,i$
+corresponds to the sum of squares of the gradients
+corresponding to $\theta_i$
+up to time step $t$.
+
+The element $G_{t, ii)}$ looks as follows.
+
+\begin{equation}
+  G_{t, ii} = \sum^t_{\tau=1}g_{\tau, i} g_{\tau, i}^\top
+\end{equation}
+
+\subsubsection{RMSProp}
+Adagrad effectively takes into account
+the past updates to a parameter.
+However, since it uses all past gradients
+the values of $G_t$ do tend to blow up over long
+series of samples
+and as a result the learning rate vanishes almost entirely,
+preventing the algorithm from learning anything beyond that point.
+Multiple approaches have been developed to tackle this problem.
+
+One such is \textit{RMSProp},
+introduced by \citeauthor{Hinton}
+% TODO cant find year
+in a lecture in his Coursera Class (\citeyear{Hinton}).
+It solves the ever-growing $G_t$
+and the resulting ever-diminishing learning rate
+by keeping a moving average of the squared gradient for all parameters:
+
+\begin{equation}
+  E[g^2]_t = \gamma E[g^2]_{t-1} + (1-\gamma) g^2_t
+\end{equation}
+
+The update rule then becomes
+
+\begin{equation}
+  \theta_{t+1} = \theta_{t} - \frac{\eta}{\sqrt{E[g^2]_t + \epsilon}} g_{t}
+\end{equation}
+
+This is what it is named after,
+as it keeps the Root Mean Squared error in the denominator
+and propagates it by keeping a moving average.
