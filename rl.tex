@@ -718,6 +718,23 @@ in function of the optimal state-value function.
   q_*(s,a) = E[R_{t+1} + \gamma v_*(S_{t+1}) | S_t = s, A_t = a]
 \end{equation}
 
+It follows that an optimal policy is one that is greedy
+with regard to the optimal value function,
+i.e. one that always takes the action
+with which the highest value $q_*(s,a)$ is associated.
+
+\paragraph{}
+In practice it is rarely feasible to compute all required values
+in order to gain access to the optimal policy.
+State spaces may be too large or even infinite
+and the same may go for action spaces.
+The notion of optimality introduced here serves only as a theoretical framework
+on which we can build techniques to approach this optimality
+in varying degrees of success,
+heavily dependent on the problem statement at hand.
+In the next sections I will build up to such techniques
+that I will then use throughout this thesis.
+
 \paragraph{Gridworld Example}
 \label{par:gridworld}
 Another classic example in Reinforcement Learning is Gridworld.
@@ -761,77 +778,270 @@ and thus has more potential for falling off,
 i.e. for negative rewards which negatively impact
 the state values for states that can lead there.
 
-\section{Optimal Value Functions}
-\label{sec:optimal_value_functions}
-
-
-
 \section{Temporal Difference Learning}
 
-\section{Q-Learning}
-Often we will discount future rewards
-by a certain factor $\gamma$ per time step,
-resulting in a total future discounted return
-for the agent of
-$R_t = \sum{T}{t'=t} \gamma^{t'-t}r_{t'}$,
-with T the last time step.
-This return is dependent on some policy $\pi$.
-We now define $Q*(s,a)$ as the maximum expected return
-when in a state s and taking action a.
-This assumes we already know the optimal policy
-in every subsequent state.
-More formally,
-$Q*(s,a) = max_{\pi}E[R_t|s_t=s, a_t=a, \pi]$
+One of the core ideas to reinforcement learning
+is the concept of \textit{temporal-difference} (TD) learning.
+TD methods do not require a model of the environment
+in order to work,
+they allow learning from raw experience
+which makes them all the more useful.
+
+In this section,
+% TODO describe what comes after
+% I start out by focusing on how TD methods
+% estimate the previously introduced value function $v_\pi$.
+
+\subsection{TD Prediction}
+We start out with the prediction problem:
+estimating the value function $v_\pi$ for a policy $\pi$.
+After some experiences following the policy,
+the current estimates of $v_\pi$ should be updated.
+All TD methods have in common that they update after each time step.
+The most simple method called $TD(0)$
+updates its estimate $V$ of the value function $v_\pi$
+for some policy at hand as follows:
+
+\begin{equation}
+  \label{eq:td0}
+  V(S_t) \leftarrow V(S_t) + \alpha \left[ R_{t+1} + \gamma V(S_{t+1}) - V(S_t) \right]
+\end{equation}
+
+where $S_{t+1}$ is the state transitioned to from $S_t$,
+while receiving a reward $R_{t+1}$.
+The factor $\alpha$ is a learning rate which impacts
+the size of updates to the value function estimate.
+
+We call the TD method a \textit{bootstrapping} estimate
+because updates rely on existing estimates,
+i.e. $V(S_{t+1})$ in \ref{eq:td0}.
+TD is also referred to as a \textit{sample backup}
+because in order to create a new estimate
+for a state at time $t$, it uses an estimate
+of the successor state at time $t+1$
+along with the reward achieved to get there.
+Every time a new state is reached,
+the value for the previous state is updated,
+hence the backup.
+In contrast, a \textit{full backup}
+would require a full distribution of all possible successor states
+instead of just a single sample successor.
 
 \paragraph{}
-Since we assume we already know the optimal action in every state,
-$$Q*(s,a) = E_{s'~\mathcal{E}}[r+\gamma max_{a'}Q*(s',a')|s,a]$$
+The obvious advantage to the TD method
+is that it requires absolutely no model
+of the environment, the reward signal
+or the distribution that governs next states when choosing an action.
+Instead, all knowledge is captured
+in the value estimates.
 
-Q-learning uses this equation directly
-by plugging it into an iterative update.
-Every step, the known Q-value for the visited state-action pair
-is updated using a simple update rule:
+Another advantage is that TD methods are entirely online
+and experience an update after each and every step.
+This makes them applicable to any problem,
+be it an episodic one with very long episodes
+or a continuous one that never terminates.
+In contrast, other methods exist that update estimates
+after each episode.
+Care must be taken to adapt those methods to these problem statements
+but TD methods fit out of the box.
 
-$$<<TODO Q-learning update rule>>$$
+Finally it is worth noting that the estimates
+in the $TD(0)$ algorithm just described
+converge to the true $v_\pi$
+for any policy $\pi$,
+given that the policy remains fixed.
 
-with $\alpha$ a discount factor to stabilize the update.
-This learned action	-value function directly approaches
-the optimal action-value function $Q*$,
-meaning that it always learns the optimal policy
-of taking action $a' = argmax_{a}Q(s,a)$
-in any state s.
-The policy that is used to learn these Q-values
-is only used for exploration purposes such that
-sufficient state-action pairs are visited
-and updated.
-However, the policy itself is not optimized.
-We call this off-policy learning,
-as opposed to on-policy learning such as Sarsa-TD
-where Q-values are updated with respect to
-the currently used policy.
-An advantage of Q-learning
-is that it is guaranteed to converge
-with probability 1
-once certain conditions are fulfilled,
-such as sufficiently small step size $\alpha$.
+\subsection{Q-Learning}
+\label{sub:qlearning}
+Now that we have concerned ourselves with the problem
+of value prediction
+it is time to move to the \textit{control problem}:
+that of finding an optimal policy.
+We must make a trade-off between exploration and exploitation,
+the characterizing dilemma of reinforcement learning
+that requires us to balance between
+exploiting what is known to be good
+or exploring the unknown in order to uncover even better.
+Two approaches exist,
+distinguished by the way
+exploration is handled:
+on-policy and off-policy.
+We will start with the latter in this section
+as this is the approach taken throughout this thesis,
+though I will touch on on-policy learning
+in section \ref{sub:sarsa}
+to contrast the off-policy approach described here.
 
 \paragraph{}
-A problem with this learning approach is that
-it enumerates all state-action pairs,
-without generalization beyond visited pairs
-and the added disadvantage of having to visit
-each state-action pair multiple times
-in order to have the Q-values converge.
-Note that this makes the exploration strategy especially important,
-as an agent that starts with a default Q-value assumption of 0
-for each state-action pair can easily overfit
-to non-zero Q-values if it is too greedy.
-Moreover, and most importantly,
-this approach does not scale well beyond only the smallest and most trivial
-of state-action spaces.
-This because the agent won't be able to enumerate all state-action pairs
-sufficiently in such scenarios.
-In the next section I will discuss how to alleviate this problem.
+First off, we will concern ourselves with
+the action-value function instead of the state-value function.
+This because the control problem
+is about choosing actions,
+so we want to know the quality of each action
+at a given state.
+That is, we will estimate $q_\pi(s,a)$
+instead of estimating $v_\pi(s)$ explicitly.
+
+\paragraph{}
+The algorithm of interest in this section,
+\textit{Q-learning} \parencite{watkins1989learning},
+is still one of the most important algorithms
+in reinforcement learning
+ever since its inception almost three decades ago.
+It is made especially interesting because
+it is proven to converge
+to the optimal state-action value function $q_*$
+given the requirement that all state-action pairs
+are visited and updated sufficiently
+along with a restriction on the step-size
+\parencite{watkins1992q}.
+
+At the core of Q-learning is its state-action value estimate update:
+
+\begin{equation}
+  \label{eq:qlearning}
+  Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \left[ R_{t+1} + \gamma max_a Q(S_{t+1}, a) - Q(S_t, A_t) \right]
+\end{equation}
+
+We call this off-policy learning because
+the action-value function $q$ being learned
+is not the one associated with the policy used to learn $q$.
+In fact, Q approximates $q_*$ directly
+so the optimal policy being learned is the greedy one,
+independent of the policy used while learning.
+
+This independency is achieved by the term
+$max_aQ(S_{t+1},a)$
+which maximizes for the greedy policy
+as it only considers the best known action to take
+in state $S_{t+1}$.
+In other words, it associated the quality of a state
+with the best action-value in that state.
+
+\paragraph{}
+The policy used during training is still important
+as it governs which state-action pairs will be visited.
+A greedy policy that only ever considers a few unique paths
+through the state-action space
+is probably a bad idea because it will neglect to update
+Q-values for other state-action pairs
+and as such will never converge to $q_*$.
+
+One popular approach to balance the need
+for exploration versus exploitation is
+the \textit{$\epsilon$-greedy} policy.
+When faced with a choice between actions,
+it will select the best known action
+with a chance of $1-\epsilon$
+and select a random action otherwise.
+The value for $\epsilon$ is usually kept low,
+like $0.1$.
+
+Often there is a need to explore a lot early,
+then exploit the gathered experience later on
+in order to find $q_*$.
+A typical example of this would be a game
+where a positive reward is only received when the game is won
+and a negative penalty is the result of early loss.
+The only positive reward might be hard to achieve
+without a long series of `good' moves
+and even one mistake might cause an early loss,
+again preventing the agent from seeing a positive reward signal.
+Scenarios like this benefit from decreasing $\epsilon$ over time,
+for example in a linear fashion,
+until it reaches some smaller but still non-zero value
+that would cause the policy to exploit more
+as it gathers experience.
+
+
+\begin{algorithm}
+  \caption{Q-Learning}
+\label{algo:qlearning}
+\begin{algorithmic}
+  \State Initialize $Q(s,a) \forall s \in \mathcal{S}, a \in \mathcal{A}(s)$ (i.e. to 0)
+  \ForAll{episode}
+    \State get start state $S$
+    \While{$S$ not terminal}
+      \If{chance $\epsilon$}
+        \State $A = \text{uniformChoice}(\mathcal{A}(S))$
+      \Else
+      \State $A = \text{argmax}_a Q(S, a)$
+      \EndIf
+      \State Perform action $A$, receive reward $R$ and observe state $S'$
+      \State $Q(S, A) \gets Q(S, A) + \alpha \left[ R + \gamma \text{max}_a Q(S', a) - Q(S, A) \right]$
+      \State $S \gets S'$
+    \EndWhile
+  \EndFor
+\end{algorithmic}
+\end{algorithm}
+
+\paragraph{}
+The full Q-learning algorithm
+with $\epsilon$-greedy for a learning policy
+is displayed in Algorithm \ref{algo:qlearning}.
+Note that as it is described here it is a \textit{tabular} algorithm,
+meaning Q is represented using a lookup table
+indexed by both a state $s$ and action $a$.
+In next section we will procede beyond the tabular case
+and investigate how to cope with
+state and action spaces too large for lookup tables.
+
+\subsection{Sarsa}
+\label{sub:sarsa}
+Opposite of off-policy learning we have on-policy learning.
+A prominent algorithm in this category is Sarsa,
+so named because it uses the the following 5 events:
+$S_t, A_t, R_{t+1}, S_{t+1}, A_{t+1}$
+as opposed to Q-learning, which does not take into account
+the \textit{next} action $A_{t+1}$.
+
+The Sarsa update rule is as follows.
+
+\begin{equation}
+  \label{eq:sarsa}
+  Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \left[ R_{t+1} + \gamma Q(S_{t+1}, A_{t+1}) - Q(S_t, A_t) \right]
+\end{equation}
+
+When compared to Q-learning,
+it differs only in that it uses a different Q-value in the update.
+Instead of an ideal Q-value associated with the highest action-value
+for next state $S_{t+1}$,
+the Sarsa update rule also takes into account
+the action taken in that next state, i.e. $A_{t+1}$.
+This means one can only update an estimate $Q$
+after two actions performed,
+whereas Q-learning required only a single state-action-state transition.
+
+The fact that Sarsa updates Q-values
+with respect to the learning policy makes it on-policy;
+it estimates $q_\pi$ for the policy $\pi$ at hand,
+not just the greedy policy,
+like Q-learning would.
+
+% TODO I want a Q-learning example
+
+\subsection{Function Approximation}
+\label{sub:function_approximation}
+So far we have only dealt with the tabular case
+where state or state-action values could be stored in a table.
+However, as soon as we are faced with large state or action spaces
+it becomes intractable to fill the entire table,
+let alone iterate over its content sufficiently
+for it to approach the intended functions in a meaningful manner.
+We are faced with the problem of \textit{generalization},
+that of generalizing beyond learning experience to new situations
+while still maintaining useful value estimates.
+
+Since we intend to generalize value functions,
+the generalization discussed here is called \textit{function approximation}.
+What would have previously been table entries
+are now the samples of the function we aim to approximate.
+The techniques visited in this section are not unique to reinforcement learning.
+Generalization methods form the core of machine learning,
+so we can borrow extensively from that domain.
+The main question that still remains for us is how to employ
+these techniques for our reinforcement learning setting.
+
 
 \section{Function Approximation}
 To combat the problems brought along by a large state-action space,
