@@ -1020,8 +1020,8 @@ like Q-learning would.
 
 % TODO I want a Q-learning example
 
-\subsection{Function Approximation}
-\label{sub:function_approximation}
+\section{Function Approximation}
+\label{sec:function_approximation}
 So far we have only dealt with the tabular case
 where state or state-action values could be stored in a table.
 However, as soon as we are faced with large state or action spaces
@@ -1042,59 +1042,132 @@ so we can borrow extensively from that domain.
 The main question that still remains for us is how to employ
 these techniques for our reinforcement learning setting.
 
-
-\section{Function Approximation}
-To combat the problems brought along by a large state-action space,
-we can use function approximators instead of storing Q-values
-for each state-action pair,
-which would quickly become infeasible.
-To this end,
-we could use any approximation method commonly used in machine learning
-to approximate our state-action values.
-However, reinforcement learning makes some methods
-less suitable than others.
-Samples gathered iteratively using reinforcement learning
-usually have high correlation since an agent
-takes a certain path through
-the state-action space,
-where neighboring states are usually somewhat similar.
-The target to be learned is also not stationary,
-since the real target value is often now known
-but bootstrapped with some estimation.
-For example,
-in Q-learning the optimal action-value function $Q*$
-is approximated using $r+\gamma max_{a'}Q(s',a')$
-since we do not know the optimal $Q*$ in advanced.
-This substituted target is still changing
-because it has not been learned fully yet
-and is both the value to be learned
-as the target used for learning.
-In subsequent sections I will discuss
-how we can minimize the impact of these problems.
-Still, it is important to be aware of them
-when designing a function approximator.
+\paragraph{}
+We start out again by estimating the state value function $v_\pi$
+associated with a policy $\pi$.
+This time however we do not use a table but instead
+some parameterized function $\hat{v}$ with parameters $\theta \in \mathbb{R}^n$.
+Our goal is to have $\hat{v}$ approximate v for all states $s \in \mathcal{S}$,
+we write
+$\hat{v}(s, \theta) \approx v_\pi(s)$.
+Similarly,
+we can aim to approximate the state-action value function $q_\pi(s,a)$
+as $\hat{q}(s, a, \theta)$.
 
 \paragraph{}
-One way of looking at the error of a Q-value approximator
-with parameters $\theta$ is to look at the Mean Squared Error
-between between the maximum expected return and
-the predicted state-action value for all state-action pairs:
-% formula kinda from sutton
-% https://webdocs.cs.ualberta.ca/~sutton/book/ebook/node86.html
-$$MSE(\theta) = \sum_{s \in S}[Q*(s,a)-Q(s,a,\theta)]^2$$
-This error can then to be minimized over all samples
-by a method such as gradient descent.
+We can use any functional approximator introduced previously for $v$,
+like a simple polynomial where $\theta$
+consists of the coefficients
+or even a neural network with $\theta$ all of the network's weights.
+The advantage of using such an approximator
+is that whenever a state is backed up,
+other states will have their values affected too
+because a single parameter usually affects the output for
+multiple or even all inputs.
+The idea behind this is that these changes beyond the single state
+result in generalization.
+Usually similar states are similar in quality
+so we will look for a function approximator
+that generalizes beyond a single state to similar states
+in a similar manner.
 
-That is the traditional machine learning approach.
-Note that reaching a global optimum for the parameters
-is often only possible for linear functions
-and not so anymore for more complex nonlinear functions.
-In the harder case, we could instead look for local optima,
-i.e. a case when $MSE(\theta') < MSE(\theta)$
-for all $\theta$ near $\theta'$.
+\paragraph{}
+Not all traditional function approximation methods work
+just as well in the reinforcement learning setting.
+First off, data is gathered incrementally
+and each sample has a very strong correlation
+with the ones preceding and surrounding it.
+Not all approximation methods cope well with these
+strong correlations between data,
+they tend to introduce overfitting.
 
-One should also be careful with simply minimizing the MSE
-of the state-action function approximator
-as our ultimate goal is to have the best policy $\pi$,
-% TODO so.. do they collide? Sutton was vague at first
-two goals that do not necessarily collide.
+More importantly, in the machine learning setting,
+we would have a set of labeled samples
+that included input, approximation output
+but also a \textit{target} output.
+The target output in this case would be the associated value function,
+$v\_pi$ in case of the approximator $\hat{v}$.
+This allows us to define an error,
+we will use the simple mean square error (MSE):
+
+\begin{equation}
+  MSE(\theta) = \sum_{s \in \mathcal{S}} \left( v_\pi(s) - \hat{v}(s, \theta) \right )
+\end{equation}
+
+Of course the error can be similarly defined
+where not $v_\pi$ but $q_\pi$ is to be approximated.
+While this gives us a theoretical setting to reason with,
+we do not actually have access to $v_\pi$
+and as such can not use it to generate target values.
+Instead we \textit{bootstrap}, like before,
+using approximated values for each backup.
+This naturally brings along another problem.
+Not only are the targets bootstrapped,
+the targets also move as the learning process go on,
+because the targets themselves are affected each backup.
+This calls for approximation methods that
+are very robust to these nonstationary targets.
+
+Let us return then to our error definition.
+As before, in the machine learning context,
+we want to minimize this.
+That is, we want to find a \textit{global optimum},
+a parameter vector $\theta*$
+such that $MSE(\theta*) \leq MSE(\theta)$ for any possible $\theta$.
+In order to minimize this we can reuse any of previously introduced methods,
+including for example backpropagation
+if our approximation method is a neural network.
+
+\paragraph{}
+An update for Q-learning
+after taking an action $A$ in state $S$,
+then transitioning to state $S'$ and receiving reward $R$,
+could look as follows.
+
+\begin{align*}
+  &\delta \gets R + \gamma \max_a \hat{q}(S', a, \theta) - \hat{q}(S, A, \theta) \\
+  &\theta \gets \theta + \nabla \hat{q}(S, A, \theta)
+\end{align*}
+
+This is of course gradient descent
+as described in section \ref{sec:gradient_descent}
+with $\nabla f(\theta)$
+again defined as the vector of partial derivatives
+as in equation \ref{eq:gradient_descent_derivative}.
+
+\subsection{Linear Methods}
+\label{sub:linear_methods}
+A simple approach that nevertheless can yield good results
+for problem domains that are not too complex
+is the linear model.
+In this case, $\theta$ is a vector of $n$ elements,
+corresponding to the feature vector $\phi(s)$ of length $n$.
+The approximation would then be:
+
+\begin{equation}
+  \hat{v}(s, \theta) \equiv \theta^T \phi(s) = \sum^n_{i=1} \theta_i \phi_i(s)
+\end{equation}
+
+Thanks to this definition the gradient of the value function approximation
+can be easily written as:
+
+\begin{equation}
+  \nabla \hat{v}(s, \theta) = \phi(s)
+\end{equation}
+
+This simple way of calculating the gradient
+for any given state makes linear methods extremely easy to use with gradient descent.
+Their popularity is further increased
+by having only a single optimum $\theta*$ (or multiple equally good optima)
+% TODO verify this blatant claim p202
+as opposed to have multiple local optima.
+Any linear method that would get to local optima
+is thus guaranteed to converge to or near the global optimum.
+
+As opposed to for example neural networks,
+linear methods are both quick to train and evaluate.
+Still, their domain of effectiveness is limited
+to approximately linear functions,
+so their power is severely limited when dealing with
+larger problems with complex non-linear relations between features
+(like say image classification based on raw pixels).
