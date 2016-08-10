@@ -512,6 +512,300 @@ perfected the design of the network
 which allowed it to be on par
 and often outperform human players
 on the majority of games considered.
-% TODO img maybe?
 
+This section is devoted to explaining why the Deep Q-Network
+performed so well and what set it apart from previous attempts.
+While there are two publications on the DQN architecture
+(\citeyear{Mnih2013} and \citeyear{Mnih2015}),
+the core as I explain it here is roughly the same;
+they differ on a wide array of network parameters and learning parameters,
+yet there are few structural differences.
+When I use DQN in the text to follow,
+I refer to the conceptual architecture that underlies both
+except where noted explicitly.
+
+\subsection{Problem Setting}
+\label{sub:dqn_problem_setting}
+The problem DQN attempts to solve
+is that of a learning agent which finds itself playing an Atari game.
+It does not know which game;
+all it knows to be available to it
+are consecutive observations of raw pixel values
+and a scalar reward signal,
+along with a number of unidentified actions it can take.
+A more detailed investigation of this environment
+can be found in section \ref{sec:ale}
+where I describe the Arcade Learning Environment.
+
+\paragraph{}
+There are quite a few things that make the environment
+challenging to a learning agent.
+While the action space is small,
+the state space is huge even though it is still finite.
+This means tabulation variants of learning algorithms
+are no longer feasible and function approximation must be employed instead.
+This approximator used is a complex network,
+the architecture of which is described further down.
+
+\paragraph{}
+Then there are a few difficulties
+unique to the reinforcement learning problem.
+
+The first is the \textit{credit assignment problem}:
+given a reward,
+how should the learner distribute credit to each of its previous actions
+in a way that optimally reflects the impact of that action on the outcome.
+Credit assignment is necessary and important
+in order to distinguish between truly important actions
+- game changers in this scenario maybe even -
+and less important actions
+that necessarily bridge the gap between crucial events.
+
+The problem presented here features this problem
+in varying degrees depending on the game in question
+since some games can have a huge delay between
+the reward and the core action or sequence of actions
+that inevitably caused it.
+The fact that this delay is very game-dependent
+forms another challenge:
+we want to be able to face all games with a uniform architecture.
+
+\paragraph{}
+Another issue is the need for good function approximation
+while most techniques are tailored to the supervised learning setting
+where data comes from a static distribution.
+Since we update Q-values as we go
+and indeed bootstrap updates with old values,
+our target distribution is far from static and only becomes stable
+as the network converges.
+
+Added to this is the fact that consecutive states
+are highly correlated,
+another characteristic that must be taken into account
+when using learning algorithms
+that assume data samples to be independent.
+
+\subsection{Deep Q-Learning}
+\label{sub:deep_q_learning}
+To cope with the various problems presented above,
+a learning algorithm was devised that beautifully combines
+and improves on previous attempts to improve learning.
+
+To start with,
+while reinforcement learning is inherently online,
+a technique called \textit{experience replay} \parencite{lin1993}
+is employed that allows us to combat some of the previously mentioned challenges.
+An agent's experiences are stored in a data-set $\mathcal{D}$
+as quadruples $e_t = (s_t, a_t, r_t, s_{t+1})$
+at each time step $t$.
+During the agent's experience gathering,
+every few steps,
+we apply a Q-learning minibatch update to a sample of the experience
+$e ~ \mathcal{D}$
+that is randomly drawn from the experience database.
+
+Note that the use of experience replay condemns us to off-policy learning
+because the policy has already changed at the time a sample is sampled.
+The off-policy learning algorithm of choice for DQN
+was Q-learning,
+resulting in the complete \textit{Deep Q-Learning}
+algorithm in listing \ref{eq:deep_q_learning}.
+
+\paragraph{}
+Another important addition to the algorithm
+is the use of a separate network to generate target values
+for Q-value updates.
+Say the network is $Q$,
+then at startup and every $C$ updates
+we clone $Q$ to obtain $\hat{Q}$,
+the target network that we will use to generate target Q-values
+for the next $C$ updates.
+
+This effectively makes the target distribution stable
+for $C$ updates at a time.
+Of course it still needs to change
+but the frequency at which this happens
+makes divergence unlikely.
+
+% TODO yeah I didn't really explain \phi, or eps, or rmsprop
+\begin{algorithm}
+  \caption{Deep Q-Learning with Experience Replay}
+\label{algo:deep_q_learning}
+\begin{algorithmic}
+  \State Initialize replay memory $\mathcal{D}$ with capacity $N$
+  \State Initialize action-value function $Q$ with random weights $\theta$
+  \State Initialize $\hat{Q}$ with parameters $\theta'$ to a clone of $Q$
+  \ForAll{episode}
+    \State Initialize start state $s_1$ and processed observation $\phi_1 = \phi(s_1)$
+    \For{$t=1, T$}
+      \State With chance $\epsilon$ select random action $a_t$
+      \State Otherwise select $a_t = \text{argmax}_a Q(\phi(s_t), a; \theta)$
+      \State Perform action $a_t$, receive reward $r_t$ and observe $s_{t+1}$
+      \State Store $(\phi_t, a_t, r_t, \phi(s_{t+1}))$ in $\mathcal{D}$
+      \State Sample random minibatch $(\phi_j, a_j, r_j, \phi_{j+1})$ from $\mathcal{D}$
+      \If{episode terminates at $j+1$}
+        \State $y_j \gets r_j$
+      \Else
+      \State $y_j \gets r_j + \gamma max_{a'} \hat{Q}(\phi_{j+1}, a';\theta')$
+      \EndIf
+      \State Perform gradient descent step with error
+      $(y_j-Q\left(\phi_j,a_j;\theta)\right)^2$
+      w.r.t to the network parameters $\theta$
+      \State Reset $\hat{Q} = Q$ every C steps
+    \EndFor
+  \EndFor
+\end{algorithmic}
+\end{algorithm}
+
+\paragraph{}
+Note that the replay memory is usually finite for practical reasons.
+Different replacement algorithms can be used once it is full
+but the standard way to go about it
+would be to replace the oldest first
+in a First In First Out approach.
+
+\paragraph{}
+The advantages of the Deep Q-Learning approach described here
+can be summed up in the following points.
+
+\begin{itemize}
+  \item The random draw is intended to break up the correlation
+    between consecutive samples.
+    This reduces the variance between updates.
+  \item Each experience can be reused
+    in multiple updates which boosts efficiency
+    because neural networks tend to learn slowly
+    and in the supervised learning context often need multiple passes
+    over the same data-set.
+
+    This idea of experience reuse has been further capitalized on by
+    \citeauthor{Schaul2016} who introduced
+    \textit{prioritized replay} (\citeyear{Schaul2016})
+    based on the earlier \textit{prioritized sweeping} \parencite{Moore1993}
+    which prioritizes state updates according to associated change in value.
+  \item Learning off-policy like this approach does
+    avoids the pitfalls of self-reinforcing feedback loops
+    where a training distribution can contain mostly samples
+    that contain the maximizing action,
+    a situation which would only propagate itself using on-policy learning.
+    Such a loop is of course nefarious to exploration
+    and can cause the learning to get stuck in a local minimum.
+  \item Using a target network makes the learning process much more stable.
+\end{itemize}
+
+% TODO mention clipping etc
+
+\subsection{Model Architecture}
+\label{sub:model_architecture}
+
+\begin{figure}[h]
+\center
+\begin{subfigure}[b]{.49\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{nips_network.pdf}
+  \vspace{.1\baselineskip}
+  \caption{Network described in \cite{Mnih2013}}
+  \label{fig:nips_network}
+\end{subfigure}
+\begin{subfigure}[b]{.49\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{nature_network.pdf}
+  \vspace{.1\baselineskip}
+  \caption{Network described in \cite{Mnih2015}}
+  \label{fig:nature_network}
+\end{subfigure}
+\caption{
+Two variations of the Deep Q-Network.
+Both follow exactly the same principle
+of stacking convolutional layers
+that learn progressively more abstract features.
+The inner area that is higlighted in each of the convolutional layers
+illustrates how a single input tile is funnelled through the network
+and gradually has more features learned on it,
+demonstrated by the layers' increasing heights.
+}
+\label{fig:dqn_networks}
+\end{figure}
+
+Let us start by defining the input and output,
+as DQN aims to be completely end-to-end.
+There is still a preprocessing step to make training
+the network more computationally feasible.
+Atari frames are 210 x 160 pixels in size
+with 7 bits for colors.
+To vastly decrease the input space,
+frames are processed to be 84 x 84.
+The earlier paper simply cropped the image to
+a region of the required size,
+however the viability of this approach
+is very game-dependent.
+The later version scaled the image to the appropriate size.
+
+Even though Atari colors nicely fit into a byte,
+colors are converted to grayscale.
+
+In order to make games Markovian or at least approximately so,
+we use 4 image frames at a time,
+which means two consecutive states
+actually have 3 frames in common.
+This proves to be sufficient for an agent to infer hidden features
+like object velocities by inspecting the distance and direction
+an object has travelled.
+In next chapter I will go into a deeper discussion on this topic.
+% TODO could use a ref on needing 18
+
+The processing step described here corresponds to
+the function $\phi$ in listing \ref{algo:deep_q_learning}.
+Input to the network is now of size 84 x 84 x 4.
+
+\paragraph{}
+Usually, when designing the Q function,
+it would take as input a state and an action and produce
+the corresponding Q-value.
+In other words,
+it would have the signature
+$\mathcal{S} \times \mathcal{A} \mapsto \mathbb{R}$.
+To get the action with the highest associated Q-value
+for a certain state,
+this function would then have to be evaluated
+for each possible action.
+While we only have a maximum of 18 actions,
+the DQN approach is considerably more efficient
+by computing the Q-values for all actions in a single forward pass.
+The signature is now
+$\mathcal{S} \mapsto \mathcal{A} \times \mathbb{R}$.
+This means that the network will have an output unit
+for each action whose value is the associated Q-value.
+
+\paragraph{}
+We now have a description of both the input and output to the network.
+The real magic happens in between however.
+The two DQN architectures depicted in Figure \ref{fig:dqn_networks}
+both follow the same concept
+of stacking convolutional layers that
+contain progressively more filters.
+The first layer has the least amount of filters but uses the largest tiles
+because it is meant for rougher low-level features,
+of which there are suspected to be fewer than high-level ones.
+The output of each convolutional layer passes through a rectifier
+nonlinearity \parencite{Nair2010}.
+
+After the final convolutional layer
+a single hidden fully connected layer is employed
+which is meant to take full use of the features distilled
+in the underlying convolutional layers.
+The output layer is another fully connected layer
+with the output of each unit corresponding to the q-value of an action
+along with the input state.
+
+There are a few differences between the two networks
+depicted in Figure \ref{fig:dqn_networks}.
+They all boil down to the same thing though:
+representational power.
+The network in Figure \ref{fig:nature_network}
+has an extra convolutional layer
+and each layer has more units than the corresponding one
+in Figure \ref{fig:nips_network}.
+More units mean the network has more raw capacity
+but might take longer to train.
 
