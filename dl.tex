@@ -757,6 +757,23 @@ In next chapter I will go into a deeper discussion on this topic.
 The processing step described here corresponds to
 the function $\phi$ in listing \ref{algo:deep_q_learning}.
 Input to the network is now of size 84 x 84 x 4.
+A 2D convolutional network can only cope with three dimensions:
+two of which spatial and one for image depth,
+or channels (an RGB image would have three).
+This is interesting to note because the depth dimension
+gets treated differently.
+% TODO please make 100% sure
+To illustrate without digging too much into the details,
+number of image channels has no impact on the output shape of the
+first convolutional layer as the new depth dimension size
+of said output corresponds to the number of filters in the layer.
+After the first convolutional layer,
+there is nothing reminiscent in terms of shape
+of the input depth.
+Still, we have four frames at a time that we need to feed to the network.
+DQN handles this by having only a single image channel
+since everything is grayscale
+and treating the time dimension as the image's channels.
 
 \paragraph{}
 Usually, when designing the Q function,
@@ -787,6 +804,12 @@ contain progressively more filters.
 The first layer has the least amount of filters but uses the largest tiles
 because it is meant for rougher low-level features,
 of which there are suspected to be fewer than high-level ones.
+The stride for each convolutional layer is set
+to half the tile size for the first two layers,
+so every tile overlaps up to four other tiles.
+The overlap makes it so each pixel can have an impact
+on multiple output units, spatially.
+
 The output of each convolutional layer passes through a rectifier
 nonlinearity \parencite{Nair2010}.
 

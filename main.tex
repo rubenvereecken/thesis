@@ -15,8 +15,9 @@
 \usepackage[Rejne]{fncychap}
 \usepackage{subcaption}
 \usepackage{epigraph} % Citation start of chapter
-\usepackage{algorithm}% You know, algorithms
-\usepackage{algpseudocode} % Popular algo constructs
+\usepackage{algorithm,algpseudocode}
+\usepackage[toc,page]{appendix}
+\usepackage{tabularx}
 
 %\usepackage{layouts}
 % TODO this is totally a thing
@@ -44,6 +45,10 @@
 \include{rl}
 \include{dl}
 \include{exp}
+
+\begin{appendices}
+\include{appendix}
+\end{appendices}
 
 \printbibliography
 \end{document}
