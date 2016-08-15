@@ -1,5 +1,6 @@
 build
 notebooks/.ipynb_checkpoints
+*.pkl
 
 ### LaTeX ###
 *.acn
