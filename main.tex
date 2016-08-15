@@ -7,7 +7,7 @@
 \usepackage{attrib}% Attribute quotes
 \usepackage{amsmath,amsfonts,amssymb}
 \usepackage{graphicx}
-\usepackage[colorlinks,urlcolor=blue,linkcolor=blue]{hyperref}
+\usepackage[linkbordercolor={0.7 0.2 0.25},citebordercolor={0 0.2 .8}]{hyperref}
 \usepackage[backend=biber, style=apa, uniquelist=false, maxcitenames=1]{biblatex}
 \DeclareLanguageMapping{english}{english-apa}
 \usepackage[section]{placeins} % To keep floats within their sections
@@ -35,7 +35,11 @@
 \hfuzz=0pt
 
 \pagenumbering{roman}
+\include{pre}
 \tableofcontents
+\listoffigures
+\listoftables
+\listofalgorithms
 
 % Actual content
 

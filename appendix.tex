@@ -2,11 +2,15 @@
 \label{app:a}
 
 \begin{table}[]
+  \vspace{-2cm}
 \captionof{table}{Basic experiment hyper parameters}
 \label{tab:base}
 % \begin{tabularx}{p{.2\linewidth}l p{.7\linewidth}}
-\begin{tabularx}{1.2\linewidth}{ll X}
+  \renewcommand{\arraystretch}{1.15}
+\small
+\begin{tabularx}{1.1\linewidth}{ll X}
 Hyperparameter                  & Value             & Description                                                                                              \\
+  \hline
 mini-batch size                 & 32                & Number of random samples for each stochastic gradient descent update                                     \\
 replay memory size              & $10^6$            & Replay memory contains this number of most recent frames for SGD updates                                 \\
 agent history length            & 4                 & Number of most recent frames used as input to the Q network                                              \\
@@ -39,4 +43,28 @@ resize frame method             & scale***          & Processing step employed t
   *** The original implementation crops out the required area from a frame.
   This does not generalize well to games where important information
   falls outside of this frame.
+\end{table}
+
+\begin{table}
+  \captionof{table}{\textit{Boost} hyper parameters}
+  \label{tab:boost}
+  \renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{1.\linewidth}{ll X}
+Hyperparameter                  & Value             & Description                                                                                              \\
+  \hline
+discount factor                 & 0.99              & Discount $\gamma$ used in Q-learning update                                                              \\
+update frequency                & 4                 & Parameter updates occur every action selection                                                           \\
+replay start size               & 50000               & Wait with training until the replay memory contains at least this amount of frames                       \\
+
+\end{tabularx}
+
+\paragraph{}
+\small
+The rest of the parameters not present here are as supplied by Table \ref{tab:base}.
+The combination in this table is gotten from \cite{Mnih2015},
+which tended to work well for some games and considerably sped up training
+because less updates are performed.
+
+It is sufficient to draw quick comparisons.
+
 \end{table}
