@@ -401,7 +401,6 @@ To deal with the exploding gradient,
 \parencite{Pascanu2012}
 suggest clipping the norm of the gradients
 and
-% TODO pls verify with Peter
 \citeauthor{Graves2013} (\citeyear{Graves2013})
 show that \textit{skip connections},
 i.e. connections that `skip' a layer,
@@ -412,7 +411,6 @@ for deep networks.
 An architecture especially good at storing and accessing information
 is the \textit{Long Short-Term Memory},
 introduced by \citeauthor{Hochreiter1997} (\citeyear{Hochreiter1997}).
-% TODO eh you sure?
 It remedies extreme gradients
 by enforcing a constant error flow through special internal units.
 It also contains gates that regulate
@@ -752,7 +750,7 @@ This proves to be sufficient for an agent to infer hidden features
 like object velocities by inspecting the distance and direction
 an object has travelled.
 In next chapter I will go into a deeper discussion on this topic.
-% TODO could use a ref on needing 18
+% TODO peter ref for 18 frames
 
 The processing step described here corresponds to
 the function $\phi$ in listing \ref{algo:deep_q_learning}.
@@ -762,7 +760,7 @@ two of which spatial and one for image depth,
 or channels (an RGB image would have three).
 This is interesting to note because the depth dimension
 gets treated differently.
-% TODO please make 100% sure
+
 To illustrate without digging too much into the details,
 number of image channels has no impact on the output shape of the
 first convolutional layer as the new depth dimension size
