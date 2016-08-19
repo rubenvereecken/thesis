@@ -83,3 +83,36 @@ It is sufficient to draw quick comparisons.
     Some games benefit more from increased network capacity than others.
   \label{fig:nips_vs_nature_rewards}
 \end{figure}
+
+\begin{figure}[]
+  \paragraph{}
+  Each experiment is run 3 times
+  except the basic DQN experiments which are all run 5 times
+  (no matter whether 1 or 4 frames as input).
+  An experiment is run over 100 epochs of each 50000 steps.
+  After each epoch a test phase takes place to calculate gathered rewards
+  over 10000 steps.
+  These are then averaged and represent a single point.
+  The average Q-values are calculated over 3200 states
+  that are randomly gathered at the start of the experiment.
+
+  Where rewards or average Q-values are illustrated in a graph,
+  the graph is smoothed with a weighted running average
+  with a window of 5
+  to increase visibility.
+
+  \caption{Basic experiment setup}
+  \label{fig:basic_setup}
+\end{figure}
+
+\begin{table}
+  \center
+  \input{tables/conv3d_wilcoxon.tex}
+  \caption{
+    Wilcoxon signed-rank test p-values
+    for the time to reward 15
+    for the game Pong.
+    No conclusions can be drawn because of
+    the size of the sample sets.
+  }
+\end{table}
