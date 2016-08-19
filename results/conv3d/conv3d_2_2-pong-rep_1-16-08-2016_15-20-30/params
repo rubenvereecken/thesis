@@ -1,0 +1,1 @@
+--network-type=conv3d_cudnn --phi-length=4 --network_temp_filter1=2 --network_temp_filter2=2
