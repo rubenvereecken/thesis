@@ -65,8 +65,28 @@ The combination in this table is gotten from \cite{Mnih2015},
 which tended to work well for some games and considerably sped up training
 because less updates are performed.
 
-It is sufficient to draw quick comparisons.
+It is however sufficient for comparisons.
+\end{table}
 
+\begin{table}
+  \captionof{table}{\textit{LSTM} basic parameters}
+  \label{tab:lstm_params}
+  \renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{1.\linewidth}{ll X}
+Hyperparameter                  & Value             & Description                                                                                              \\
+  \hline
+nonlinearity & tanh & Nonlinearity applied to output \\
+gradient clipping & 10 & Gradients are clipped to 10 \\
+\end{tabularx}
+
+\paragraph{}
+All gates are constructed with all weights initialized randomly
+according to a normal distribution with standard deviation $0.1$.
+They all apply a sigmoid nonlinearity to their output.
+
+The cell state unit has its weights initialized likewise
+except for the cell state value which gets initialized to 0.
+A tanh nonlinearity is applied to the output of this unit.
 \end{table}
 
 \begin{figure}[htpb]
@@ -112,6 +132,7 @@ It is sufficient to draw quick comparisons.
 
 \begin{table}
   \center
+  \renewcommand{\arraystretch}{1.3}
   \input{tables/conv3d_wilcoxon.tex}
   \caption{
     Wilcoxon signed-rank test p-values
@@ -125,6 +146,7 @@ It is sufficient to draw quick comparisons.
 
 \begin{table}
   \center
+  \renewcommand{\arraystretch}{1.3}
   \input{tables/lf_wilcoxon.tex}
   \caption{
     Wilcoxon signed-rank test p-values
