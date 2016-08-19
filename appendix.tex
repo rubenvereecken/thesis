@@ -101,6 +101,11 @@ It is sufficient to draw quick comparisons.
   with a window of 5
   to increase visibility.
 
+  \paragraph{}
+  Where the Wilcoxon signed-rank test is applied,
+  it tests the null hypothesis that the samples
+  are drawn from the same distribution.
+
   \caption{Basic experiment setup}
   \label{fig:basic_setup}
 \end{figure}
@@ -110,9 +115,22 @@ It is sufficient to draw quick comparisons.
   \input{tables/conv3d_wilcoxon.tex}
   \caption{
     Wilcoxon signed-rank test p-values
-    for the time to reward 15
-    for the game Pong.
-    No statistically justified conclusions can be drawn because of
-    the size of the sample sets.
+    for the time to a reward of 10
+    for the 3D convolutional architectures
+    on the game Pong.
   }
+  \label{tab:conv3d_wilcoxon}
+\end{table}
+
+
+\begin{table}
+  \center
+  \input{tables/lf_wilcoxon.tex}
+  \caption{
+    Wilcoxon signed-rank test p-values
+    for the time to a reward of 10
+    for the Late Fusion architectures
+    on the game Pong.
+  }
+  \label{tab:lf_wilcoxon}
 \end{table}
