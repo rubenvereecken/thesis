@@ -49,7 +49,7 @@ the greater the strengthening or weakening of the bond.
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.7\linewidth]{puzzlebox.png}
-  \caption{
+  \caption[Thorndike's cat puzzle box]{
     A puzzle box used by Thorndike in his experiments.
     The hungry cat is locked inside the box which it can open
     by solving some kind of puzzle
@@ -247,8 +247,9 @@ but must also look to what the future has to offer.
 \begin{figure}[ht]
 	\center
 	\includegraphics[width=.8 \linewidth]{agent-environment.png}
-	\caption{The agent interacts with the environment and
-  consequentially perceives a reward and the next state of the environment.
+  \caption[Reinforcement learning framework]{
+    The agent interacts with the environment and
+    consequentially perceives a reward and the next state of the environment.
   \parencite{Sutton1998a}
   }
 	\label{agent-env}
@@ -396,8 +397,9 @@ There are different ways to define such a goal.
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.5\linewidth]{optimality.png}
-  \caption{Different goal models
-  \parencite{Kaelbling1996}
+  \caption[Goal models]{
+    Different goal models
+    \parencite{Kaelbling1996}
   }
   \label{fig:optimality}
 \end{figure}
@@ -753,7 +755,12 @@ All other moves net the agent a reward of $0$.
 \begin{figure}[htpb]
   \centering
   \includegraphics[width=0.8\linewidth]{gridworld.png}
-  \caption{Gridworld: Left }
+  \caption[Gridworld]{
+    Gridworld.
+    Left are depicted the only two positive rewards.
+    Right is $v_\pi$ for the random policy.
+    \parencite{Sutton1998a}
+  }
   \label{fig:gridworld}
 \end{figure}
 
@@ -989,7 +996,8 @@ state and action spaces too large for lookup tables.
 \subsection{Sarsa}
 \label{sub:sarsa}
 Opposite of off-policy learning we have on-policy learning.
-A prominent algorithm in this category is Sarsa,
+A prominent algorithm in this category is Sarsa
+\parencite{rummery1994line},
 so named because it uses the the following 5 events:
 $S_t, A_t, R_{t+1}, S_{t+1}, A_{t+1}$
 as opposed to Q-learning, which does not take into account

@@ -122,7 +122,7 @@ with a depth dimension (such as color).
 \begin{figure}[htpb]
   \centering
   \includegraphics[width=0.7\linewidth]{conv_layer.png}
-  \caption{Convolutional layer (blue) connected to an input layer.
+  \caption[Convolutional layer]{Convolutional layer (blue) connected to an input layer.
     Highlighted are multiple filters connecting to a single input tile.
   }
   \label{fig:conv_layer}
@@ -237,9 +237,10 @@ These I will describe below.
   % TODO attribute to Hausknecht2015
   % TODO no seriously create new
   \centering
-  \includegraphics[width=0.3\linewidth]{conv_layer_funnel.png}
-  \caption{Convolutional layers are often stacked
-    in a funnel-like manner,
+  \includegraphics[angle=90,width=0.7\linewidth]{conv_funnel.pdf}
+  \caption[Convolutional layers stacked]{
+    Convolutional layers can be stacked
+    in a funnel-like manner (right to left),
     growing smaller spatially
     yet larger in the depth or feature dimension.
   }
@@ -281,7 +282,8 @@ demonstrated in Figure \ref{fig:maxpool}.
 \begin{figure}[htpb]
   \centering
   \includegraphics[width=0.7\linewidth]{maxpool.jpg}
-  \caption{Max pooling with a filter size of $2 \times 2$
+  \caption[Max pooling]{
+    Max pooling with a filter size of $2 \times 2$
     and stride $2$.
   }
   \label{fig:maxpool}
@@ -363,8 +365,9 @@ making it the ideal setup for sequences.
 \begin{figure}[htpb]
   \centering
   \includegraphics[width=0.8\linewidth]{rnn.jpg}
-  \caption{Recurrent Neural Network unfolded through time
-  \parencite{Y.2015dl}.
+  \caption[Recurrent neural network time unfolding]{
+    Recurrent Neural Network unfolded through time
+    \parencite{Y.2015dl}.
   }
   \label{fig:rnn}
 \end{figure}
@@ -420,7 +423,8 @@ as well as gates that regulate when to output a remembered value.
 \begin{figure}[htpb]
   \centering
   \includegraphics[width=0.8\linewidth]{lstm.png}
-  \caption{Long Short-Term Memory cell
+  \caption[Long Short-Term Memory]{
+    Long Short-Term Memory cell
   \parencite{Graves2013}.
   }
   \label{fig:lstm}
@@ -712,7 +716,7 @@ can be summed up in the following points.
   \caption{Network described in \cite{Mnih2015}}
   \label{fig:nature_network}
 \end{subfigure}
-\caption{
+\caption[Original Deep Q-Networks]{
 Two variations of the Deep Q-Network.
 Both follow exactly the same principle
 of stacking convolutional layers

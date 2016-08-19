@@ -265,7 +265,7 @@ the model fails to generalize the training data.
 \end{subfigure}
 
 \label{fig:fitting}
-\caption{
+\caption[Underfitting and Overfitting]{
 Underfitting and overfitting
 demonstrated with two polynomial
 models on noisy data modelled
@@ -304,7 +304,7 @@ that helps guide this search.
 \center
 \includegraphics[width=.7\textwidth]{perfectfitting.pdf}
 \label{fig:perfectfitting}
-\caption{The right model can perfectly generalize from noisy data,
+\caption[Curve fitting]{The right model can perfectly generalize from noisy data,
 insofar as the data covers the desired domain}
 \end{figure}
 
@@ -417,8 +417,11 @@ I'll delve into those in the next section. %TODO ORLY?
 
 \begin{figure}
 \center
-\includegraphics[width=0.7\textwidth]{bullseye.png}
-\caption{}
+\includegraphics[width=0.7\textwidth]{dartboard.pdf}
+\caption[Dartboard Analogy]{
+  Dartboard Analogy
+  \parencite{sammut2011encyclopedia}
+}
 \label{fig:bullseye}
 %TODO attribute img http://scott.fortmann-roe.com/docs/BiasVariance.html
 \end{figure}
@@ -515,8 +518,8 @@ the data you desperately need for training.
 \begin{figure}[h]
 \center
 \includegraphics[width=0.8\textwidth]{crossval.png}
-\caption{
-5-fold Cross-validation
+\caption[5-fold cross-validation]{
+5-fold cross-validation
 \parencite{Zhang2011}
 }
 \label{fig:crossval}
@@ -625,7 +628,7 @@ the \textit{curse of dimensionality}.
   \label{fig.ml.cod1}
 \end{subfigure}
 
-\caption{Each plot contains 100 points
+\caption[Curse of dimensionality]{Each plot contains 100 points
 with values in all dimensions ranging
 uniformly between 0 and 10.
 The curse of dimensionality is especially clear
