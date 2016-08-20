@@ -157,3 +157,33 @@ A tanh nonlinearity is applied to the output of this unit.
   }
   \label{tab:lf_wilcoxon}
 \end{table}
+
+
+\begin{table}
+  \center
+  \input{tables/comb_wilcoxon.tex}
+  \caption[Statistical results for comparing architectures]{
+    Wilcoxon signed-rank test p-values
+    for the time to a reward of 10
+    for the best instances of each architecture
+    on the game Pong.
+
+    The LSTM architecture is left out because it
+    never managed positive average scores.
+  }
+  \label{tab:lf_wilcoxon}
+\end{table}
+
+
+\begin{table}[htpb]
+  \center
+  \renewcommand{\arraystretch}{1.3}
+  \input{tables/comb_ttt.tex}
+  \caption[Time to threshold comparison]{
+    Time to threshold
+    of an accumulated reward of 10
+    for Pong
+    on the best instantiations of each architecture,
+    excluding LSTM.
+  }
+\end{table}
