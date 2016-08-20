@@ -1,4 +1,4 @@
-\chapter{Extended Tables}
+\chapter{Extended Tables \& Figures}
 \label{app:a}
 
 \begin{table}[]
@@ -187,3 +187,21 @@ A tanh nonlinearity is applied to the output of this unit.
     excluding LSTM.
   }
 \end{table}
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=0.6\linewidth]{freeze_qs.pdf}
+  \caption[Target swap frequency comparison]{
+    This graph depicts three runs of the game Space Invaders,
+    each with a different interval for swapping
+    the target Q-network,
+    a measure that has been added to stabilize learning.
+
+    The run that uses no separate target network
+    does not really seem to learn any Q-values reliably
+    while the network with the longest stable interval
+    performs most least noisily
+    and actually seems to learn values.
+  }
+  \label{fig:freeze_qs}
+\end{figure}
