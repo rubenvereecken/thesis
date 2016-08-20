@@ -1,0 +1,1 @@
+--network_lstm_layer_size=256 --network_lstm_steps=100 --network-type=lstm_cudnn --network_lstm_type=original --observe-probability=0.5
