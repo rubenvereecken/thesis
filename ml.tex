@@ -568,33 +568,6 @@ that estimates generalization error.
 Generally good compromises for K are 5 and 10
 \parencite{kohavi1995study}.
 
-
-\subsection{Bootstrap}
-Bootstrap is a general statistical method
-to compute any quantity based on
-some amount of data.
-We will content ourselves with only
-its application
-to calculate prediction error.
-
-Start out by randomly drawing a dataset
-with replacement from the training set
-and a total size equal to the original
-training sets.
-Do this until you have B datasets,
-called \textit{bootstrap datasets}.
-We can now compute
-the leave-one-out bootstrap estimate
-of the prediction error:
-
-$$
-BS^{loo}= \frac{1}{N} \sum^{N}_{i=1} \frac{1}{|C^{-i}|} \sum_{b \in C ^ {-i}} E(f(x_i), \hat{f}^{*b}(x_i))
-$$
-
-This error has the same bias tendencies as cross-validation:
-
-% pg 251 in file:///home/ruben/Downloads/ESLII_print10.pdf
-
 \section{Curse of Dimensionality}
 The distance between two instances is calculated based on all of their attributes.
 For these instances to have a small distance between them,
