@@ -2,8 +2,8 @@
   Deep learning is an increasingly popular topic
   in the area of unsupervised learning.
   Reinforcement learning has recently adopted it
-  as a value function approximation method
-  that can learn from raw input
+  as a method for learning behavior
+  from raw sensory input
   such as image frames.
   Decent results have already been achieved
   but many problems still elude us,
@@ -15,28 +15,41 @@
   In this thesis,
   I explore three different neural network architectures
   and their capabilities of handling
-  partially observable Markov decision processes.
-  The first is the Late Fusion network
-  which aims to encompass time information
-  by learning from two input frames
-  that correspond to different time steps.
+  dependencies over time.
+  % The first is the Late Fusion network
+  % which aims to encompass time information
+  % by learning from two input frames
+  % that correspond to different time steps.
 
   \forceindent
-  The second is a 3D convolutional network
-  which allows the network designer
-  a more fine-grained control
-  over how time information is merged
-  throughout the network.
+  Two of the networks I consider
+  are valid alternatives for learning
+  short-term, fixed-time
+  features
+  just like humans can intuitively
+  derive the direction something is moving in.
+  The first aims to encompass time information
+  by learning from two input frames
+  that correspond to different time steps
+  and merging that information in a deeper layer.
+  The second involves convolutions over time
+  and is shown to significantly outperform the standard approach
+  on a problem
+  with considerable amounts of obscured information.
+
+  % The second is a 3D convolutional network
+  % which allows the network designer
+  % a more fine-grained control
+  % over how time information is merged
+  % throughout the network.
 
   \forceindent
   The last is a network
   that makes use of
-  Long Short-Term Memory,
+  long short-term memory,
   a recurrent architecture
   especially useful for learning long-term dependencies
   of arbitrary length.
-
-  \paragraph{}
 
 \end{abstract}
 

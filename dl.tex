@@ -54,15 +54,15 @@ the main topic of interest in this thesis.
 
 \paragraph{}
 The rest of this chapter will start by introducing
-core deep learning conceps,
+core deep learning concepts,
 then proceed to applying deep learning
 to the reinforcement learning case.
 Sections \ref{sec:cnn} and \ref{sec:rnn}
 concern themselves with general deep learning techniques,
 i.e. not specific to the reinforcement learning.
-
-% TODO add refs to later sections
-
+Section \ref{sec:dqn}
+explores the Deep Q-Network architecture
+which forms the basis for the rest of this thesis.
 
 \section{Convolutional Neural Networks}
 \label{sec:cnn}
@@ -499,7 +499,7 @@ in order to mitigate the vanishing and exploding gradient problems.
 
 
 \section{Deep Q-Network}
-\label{sec:deep_q_network}
+\label{sec:dqn}
 In \citeyear{Mnih2013},
 \citeauthor{Mnih2013} at DeepMind
 published a network
@@ -515,6 +515,28 @@ which allowed it to be on par
 and often outperform human players
 on the majority of games considered.
 
+Ever since,
+extensions and
+alternatives based on the same principles
+have received a lot of attention.
+One such a recent alternative is
+Deep DPG
+\parencite{Lillicrap2016}
+which is an actor-critic approach
+which learns a parameterized policy
+instead of a value function.
+Interesting extensions include
+Prioritized Experience Replay
+\parencite{Schaul2016}
+which speeds up learning significantly
+by making smarter use of stored experience
+and
+Deep Recurrent Q-Network
+\parencite{Hausknecht2015}
+which incorporates
+a recurrent layer into its architecture.
+
+\paragraph{}
 This section is devoted to explaining why the Deep Q-Network
 performed so well and what set it apart from previous attempts.
 While there are two publications on the DQN architecture

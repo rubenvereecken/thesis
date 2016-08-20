@@ -2,23 +2,222 @@
 \chapter{Introduction}
 
 \label{introduction}
-Reinforcement Learning is what we have labelled the remarkable ability of man and beast alike 
+Reinforcement Learning is what we have labelled the remarkable ability of man and beast alike
 to learn from their surroundings and their interactions with it.
 It is embodied in our learning from past mistakes or our failing to do so.
-For quite some time now people have attempted to bestow this same ability to 
+For quite some time now people have attempted to bestow this same ability on
 our computing devices so that they would figure out how to tackle problems by themselves
 without explicit instructions.
-While the field has not been without success
-it has been slow going,
-crawling forward inches instead of the hoped-for leaps.
 
-A great effort has been put forward by DeepMind with their DQN [TODO].
+\paragraph{}
+Autonomous learning agents are already present
+in the periphery of our day to day activities.
+For example,
+networks can learn to route smartly
+depending on time of day
+and congestion
+or any other available information.
+More and more,
+autonomous learners are even invading
+the commercial and personal space.
+Smart homes can learn to anticipate the inhabitants'
+behavior and proactively control the thermostat,
+leading to a better experience
+and lessening the ecological footprint of a home
+without the intervention of humans.
+
+Recent years have also seen a rise of interest
+in robotics and control,
+a popular example of which is the ongoing research
+concerning self-driving cars
+along with the multitude of uses for an autonomous robot
+even if only in a restricted and controlled environment.
+
+\paragraph{}
+Clearly,
+in this day and age
+where progress is considered
+one of the most noble of goals,
+reinforcement learning could conceivably
+offer the tools
+for a great many things
+we might consider \textit{of the future}.
+
+The field is relatively young
+yet has already booked remarkable advances.
+Still there is a very real sense of unfinishedness.
+I do not hint at immaturity
+for it has already reached the point
+at which it can be considered mature
+but rather that the field has not reached its full potential.
+The applications that have been conceived successfully
+are not as widespread as they could be
+and those applications we aim to achieve
+still partially elude us.
+Of course, for a researcher
+this poses incredibly interesting opportunities.
+
+\paragraph{}
+As stated,
+the field of reinforcement learning
+inches forward and manages the occasional leap.
+In recent years,
+some of the greatest contributions
+make use of Deep Learning
+within the reinforcement learning context.
+
+Deep Learning originates in supervised learning
+and concerns itself with learning
+end-to-end, hierarchical representations of data
+which can manage unprecented performance
+and are especially interesting
+because they can eliminate the need for handcrafted features.
+A great overview of
+some of the most important contributions
+and noteworthy applications
+in this regard is given by
+\citeauthor{Y.2015a} (\citeyear{Y.2015a}).
+
+The field has had successes in
+face recognition
+\parencite{lawrence1997face,wolf2014deepface},
+speech recognition
+\parencite{dahl2012context,graves2013speech}
+and
+genomics
+\parencite{leung2014deep,xiong2015human}
+and is far from limited to these alone.
+
+\paragraph{}
+Recent successes in reinforcement learning
+include successfully transferring deep learning principles
+outside of their original context.
+
+A great effort has recently been put forward by
+\citeauthor{Mnih2015} (\citeyear{Mnih2013,Mnih2015})
+with the introduction of the Deep Q-Network.
 Through the combination of great research and sufficient computation power
-their reinforcement learners have managed to beat humans
-on a great array of Atari games.
+their learning agents have managed to beat humans
+on an array of Atari games.
 Still, some games remain largely or completely unbeaten.
-It is my goal to investigate their shortcomings
-and supplement them with new techniques in the domain
-in order to point out which direction of research
-offers the most interesting insights and rewards
-to further the field of Reinforcement Learning. 
+The scientific community jumped
+on the opportunity to further improve on DQN
+and to explore the area
+that now goes by the name of deep reinforcement learning.
+
+\paragraph{}
+The current state of the art reinforcement learning
+can now learn straight from raw image pixels
+given a sufficiently deep neural network
+to represent its value function.
+While spatial features can be learned hierarchically,
+the dimension of time has been mostly neglected or simplified.
+% informal rep of mdp
+This is because all theoretical work is based
+on the requirement that all state information that
+could be useful is present;
+no hidden state allowed,
+not even historical state that is not observable anymore.
+
+Experiments with Atari games
+manage to circumvent this requirement somewhat
+since all games are too simple
+to contain such long-term dependencies.
+All information one could need is usually encompassed
+within a few frames at any point,
+like the velocity of a moving object on the screen
+can be calculated from two frames.
+
+\paragraph{}
+This neglect and oversimplification of the dimension of time
+struck me as interesting and as an area
+deserving of investigation.
+In this thesis,
+I set out to compare different approaches
+to handling the dimension of time in reinforcement learning.
+
+\section{Research Question}
+\label{sec:research_question}
+In this thesis I set out to investigate
+what the effect of time dependencies is
+in a reinforcement learning setting
+and how to handle these.
+In particular,
+the problems I consider
+are all Atari games
+where the agent needs to decide on an action
+given solely raw pixels as input
+along with a game-specific reward signal
+to guide its actions.
+What makes these games interesting is that sometimes
+state is not available within a single frame;
+one does not know which way the laser is moving
+from just looking at a standstill.
+
+\paragraph{}
+The current standard approach to cope with
+features that can be derived over time such as velocity
+is to feed multiple frames into the architecture at once.
+This already is an improvement over using just a single frame
+because the network suddenly has more information available.
+The idea behind passing in multiple frames
+is that the network will learn to combine the information
+available in multiple time steps.
+
+\paragraph{}
+I will consider three alternative approaches.
+Late Fusion and 3D convolutional networks
+are of the same variety:
+they too employ a fixed window but
+do so differently.
+Both have successfully been applied in a machine learning context before
+\parencite{Karpathy2014,Ji2013}.
+The last and third approach involves
+long short-term memory,
+which has already been shown to be able to remember
+dependencies over arbitrary amounts of time
+\parencite{Bakker2001},
+albeit it in a vastly more simple setting.
+
+\paragraph{}
+My contribution consists
+of applying these approaches
+in a deep reinforcement learning setting
+and comparing them in different scenarios
+against one another and against the standard approach.
+
+\section{Outline}
+\label{sec:outline}
+This thesis will gradually build up sufficient understanding
+for the reader to understand the contributions presented.
+Chapter 2 concerns itself with providing background
+concerning Machine Learning.
+Following with Artificial Neural networks is Chapter 3,
+which examines how to construct and train neural networks.
+Chapter 4 will provide a full understanding of
+the reinforcement learning setting,
+what is aimed to being achieved
+and how neural networks fit in.
+Chapter 5 follows naturally
+with more recent extensions
+to reinforcement learning
+and gives some necessary background
+to deep reinforcement learning.
+
+\paragraph{}
+The contributions of this thesis are mainly in Chapters 6 and 7.
+Chapter 6 outlines 3 architectures
+that are each in turn explored and discussed.
+At the end of Chapter 6 the reader can find an overview
+comparing these architectures with the standard approach
+and one another.
+
+Chapter 7 will draw conclusions,
+outline my contributions
+and point to future work.
+
+\paragraph{}
+Appendix A can be visited for experimental details,
+statistical tests
+and experiment results that were not discussed in the text
+but may nevertheless prove useful to some.
