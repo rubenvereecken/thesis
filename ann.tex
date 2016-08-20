@@ -390,11 +390,11 @@ $\overrightarrow{w}$ as:
 
 \begin{equation}
   E(\overrightarrow{w}) \equiv \frac{1}{2} \\
-  \sum_{(x_i, y_i) \in D}(y_i - \hat{f}(x_i))^2
+  \sum_{(x_i, y_i) \in D}(y_i - \hat{f}(x_i; \overrightarrow{w}))^2
 \end{equation}
 
-As you can see it is close the mean squared error,
-with an added advantage that will become clear in a moment.
+The reason why it is chosen so specifically
+will become clear in a moment.
 
 \paragraph{}
 In order to algebraically derive $E$ w.r.t to $w$,
@@ -475,11 +475,14 @@ For this reason,
 the stochastic variant is often used.
 
 \subsection{Stochastic Gradient Descent}
-In order to alleviate the problems
+A variation on regular gradient descent
+that alleviate the problems
 with regular stochastic gradient descent's
 convergence speed and even tendency to fall
-into local minimum pitfalls,
-the stochastic approach to gradient descent was devised.
+into local minimum pitfalls
+(\cite{mitchell1997}, chapter 4)
+is \textit{stochastic gradient descent}.
+
 
 Instead of performing the parameter updates in batch fashion,
 parameters are updated incrementally.
@@ -496,13 +499,12 @@ It also means that stochastic gradient descent
 does not use the true gradient to adjust parameters,
 instead it uses some complicated estimate.
 
-It should be ovious that it is computationally cheaper
+It should be obvious that it is computationally cheaper
 because it performs a step for every sample
 instead of once for the whole sample set,
-but it is also good for escaping local minima.
-Because of its strange descent behavior,
-stochastic gradient descent can actually easily overshoot
-shallow local minima, allowing it to find better ones later on.
+% same ref as before really, mitchell
+but it can also sometimes avoid falling into local minima
+because it uses a different gradient than regular gradient descent does.
 
 \paragraph{}
 By adjusting $\eta$ to be smaller as compensation,

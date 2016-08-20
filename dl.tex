@@ -67,7 +67,9 @@ which forms the basis for the rest of this thesis.
 \section{Convolutional Neural Networks}
 \label{sec:cnn}
 The core to deep learning is that representations
-of data can be learned in an unsupervised manner.
+of data can be learned in an unsupervised
+or semi-supervised manner
+without the need for handcrafted features.
 Convolutional networks are able to learn features
 from raw input without any human intervention.
 Stacking convolutional layers even allows
@@ -213,7 +215,7 @@ few features,
 computed over large receptive fields or tiles.
 As the network grows deeper,
 inputs to layers represent higher level features
-and can thus be combined with less at a time;
+and can thus be learned from smaller input tiles;
 intuitively, a few high-level features
 can contain the same information of more
 lower-level features.
@@ -339,10 +341,14 @@ A problem with a pure Markov state space
 has no need of a network useful for learning dependencies between different states,
 since by definition every state on its own is sufficient enough of a representation
 and includes all necesary past states in its description.
-However, many reinforcement learning problems are not strictly Markovian
-and are only reduced to Markov decision processes for convenience.
-Since these problems do not adhere strictly to Markovness,
-they could still benefit from RNN's.
+However, some conceivable reinforcement learning problems
+are not Markovian
+or are only made to be so
+by supplying extra information to the system
+such as derived state
+(imagine angular velocity in the cart pole experiment).
+Both kinds of problems
+could still benefit from RNNs.
 
 Recall also from section \ref{sub:pomdp}
 the class of Partially Observable Markov Decision Procceses (POMDP).
@@ -386,7 +392,9 @@ and allows us to apply the well-known backpropagation algorithm.
 Regular recurrent neural networks can suffer from two problems during training:
 \textit{vanishing gradient} and {exploding gradient}.
 Highlighted first by
-\citeauthor{Bengio1994} (\citeyear{Bengio1994}),
+\citeauthor{hochreiter1991untersuchungen} (\citeyear{hochreiter1991untersuchungen})
+and further characterized by
+\citeauthor{bengio1994} (\citeyear{bengio1994}),
 these two recurring problematic phenomena have long prevented
 efficient traiffic of recurrent neural networks.
 
