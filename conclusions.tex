@@ -1,0 +1,90 @@
+\chapter{Conclusions}
+While deep reinforcement learning offers a novel approach
+to learning control policies
+from raw input data such as pixels in images,
+doing so in partially observable environments
+still proves challenging for the current state of the art.
+
+\paragraph{}
+We have explored three alternative approaches
+to learning dependencies between frames over time.
+The first two of these employ a fixed history
+to learn features that can be derived from short time spans
+while the latter can learn to leverage information
+observed an arbitrary amount of time before.
+
+The Late Fusion network devised based on standard DQN
+has a learning process slower than DQN
+but with less input.
+
+The 3D convolutional network which can
+learn features over time and space combined
+at multiple hierarchical levels
+significantly outperforms standard DQN.
+Moreover,
+it is shown to vastly surpass any other approach
+on the stochastic POMDP
+Flickering Pong.
+
+Both of these architectures have access to an extra input dimension
+compared to DQN because of the way they handle time.
+While DQN converts images to grayscale before feeding them
+into the network,
+we have shown that making use of the extra dimension
+to hold RGB color information
+significantly boosts learning speed.
+
+Lastly,
+we have constructed an LSTM-based DQN architecture
+with the goal in mind for it to learn how to retain
+information from previous frames.
+While it does exhibit a learning curve,
+it is considerably slower than all other considered approaches.
+
+
+\section{Contributions}
+\label{sec:contributions}
+We have introduced the Late Fusion architecture,
+originally from supervised learning,
+in the reinforcement learning context
+to learn value functions.
+
+Additionally,
+we have introduced a deep 3D convolutional network
+capable of learning features over time
+as alternative to the currently widely used 2D convolutional DQN.
+
+Finally,
+we have investigated an LSTM-based deep network
+and a variant of the Deep Q-Learning algorithm
+tailored to learning over sequences
+and found it wanting in terms of learning speed
+on the Arcade Learning Environment.
+
+\section{Future Work}
+\label{sec:future_work}
+The experiments in this thesis
+demonstrated how the LSTM architecture learned rather slowly
+compared to the other architectures considered,
+while the other architectures perform well
+but can only learn short-term dependencies
+because of their use of a fixed history window.
+It may be interesting to combine the strengths of both approaches;
+one could employ the short-term approaches suggested here
+to learn features over small spans of time
+- typically these are derived features such as velocity -
+combined with recurrent units that operate
+on abstract features
+(such as is already attempted in this work)
+which includes features over short periods of time.
+
+\paragraph{}
+Additionally,
+we believe performance is somewhat hindered
+by performing a cold restart on the LSTM layer's
+internal cell states.
+It may be interesting to learn initial values
+for this internal state
+so more of the training process carries over
+between training episodes
+instead of only gate weight updates.

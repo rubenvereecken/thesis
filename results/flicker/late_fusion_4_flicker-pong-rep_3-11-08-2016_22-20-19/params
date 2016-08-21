@@ -1,0 +1,1 @@
+--network-type=late_fusion_cpu --phi-length=4 --observe-probability=0.5
