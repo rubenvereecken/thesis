@@ -86,7 +86,7 @@ in how the input value is expressed, or \textit{activated}.
 \begin{figure}[h]
 \label{fig.neuralnet}
 \center
-\includegraphics[]{net.png}
+\includegraphics[width=0.6\linewidth]{net.pdf}
 \caption[Multi-layer neural network]{
   Multi-layer neural network with a single hidden layer.
 }
@@ -184,7 +184,7 @@ htan(x) = \frac{1}{1 + e^{-2x}}+1
 \begin{figure}[h]
 \center
 \includegraphics[width=.7\textwidth]{tanh.pdf}
-\caption{The Sigmoid function}
+\caption{The hyperbolic tangent function}
 \label{fig.ml.htan}
 \end{figure}
 
@@ -297,7 +297,7 @@ so surfaces with many local minima.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=0.7\textwidth]{error_surface2.pdf}
+  \includegraphics[width=0.7\textwidth,angle=90]{error_surface2.pdf}
   \caption[Error surface]{Error surface in function of two parameters of the model
   that are to be learned.}
   \label{fig:error_surface}
@@ -559,13 +559,7 @@ I only mention this because this
 $-\frac{\delta E}{\delta net_n}$
 corresponds closely to the negative gradient we used in gradient descent.
 
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{neuron.png}
-  \caption[Neural network]{Overview of different components in a neural network}
-  \label{fig:neuron}
-\end{figure}
-
+\paragraph{}
 First off, create a neural network
 and initialize all network weights.
 Initialization can be done in different ways,
