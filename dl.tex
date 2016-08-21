@@ -20,7 +20,6 @@ and example output.
 While the notion of stacking layers of units
 to create multi-tiered artificial neural networks
 has been around for a few decades already,
-% TODO ref first Ann?
 the recent surge in computing power
 has enabled these conceptual models
 to be actually built large enough
@@ -236,8 +235,6 @@ yet still retain output size (again, spatially).
 These I will describe below.
 
 \begin{figure}[htpb]
-  % TODO attribute to Hausknecht2015
-  % TODO no seriously create new
   \centering
   \includegraphics[angle=90,width=0.7\linewidth]{conv_funnel.pdf}
   \caption[Convolutional layers stacked]{
@@ -324,15 +321,17 @@ to make up for the loss in power.
 Some tasks are sequential in nature,
 meaning one sample depends on a previous one,
 rather than data being independently
-drawn from some unknown underlying distribution.
-Typical problems include speech and language.
+drawn from some underlying distribution.
+Typical problems include speech and written language.
 
 Recurrent neural networks are especially suited
 for these domains.
 They process input sequences one step at a time,
-maintaining learned hidden state which will then
+maintaining hidden state which will then
 affect future output.
-% TODO mention recurring connection
+% TODO ref
+Recurrent networks are achieved
+by introducing connections that form cycles.
 
 \paragraph{}
 It is no wonder this class of artificial neural networks
@@ -388,7 +387,7 @@ it simply becomes a very deep network with shared weights
 and allows us to apply the well-known backpropagation algorithm.
 
 \subsection{Long Short-Term Memory Networks}
-\label{sub:lstm}
+\label{sec:lstm}
 Regular recurrent neural networks can suffer from two problems during training:
 \textit{vanishing gradient} and {exploding gradient}.
 Highlighted first by
@@ -593,7 +592,7 @@ in order to distinguish between truly important actions
 and less important actions
 that necessarily bridge the gap between crucial events.
 
-The problem presented here features this problem
+The environment presented here features this problem
 in varying degrees depending on the game in question
 since some games can have a huge delay between
 the reward and the core action or sequence of actions
@@ -608,14 +607,15 @@ while most techniques are tailored to the supervised learning setting
 where data comes from a static distribution.
 Since we update Q-values as we go
 and indeed bootstrap updates with old values,
-our target distribution is far from static and only becomes stable
+our target distribution is far from static and
+is only expected to become stable
 as the network converges.
 
 Added to this is the fact that consecutive states
 are highly correlated,
 another characteristic that must be taken into account
 when using learning algorithms
-that assume data samples to be independent.
+that assume independent data samples.
 
 \subsection{Deep Q-Learning}
 \label{sub:deep_q_learning}
@@ -625,7 +625,8 @@ and improves on previous attempts to improve learning.
 
 To start with,
 while reinforcement learning is inherently online,
-a technique called \textit{experience replay} \parencite{lin1993}
+a technique called \textit{experience replay}
+\parencite{lin1993}
 is employed that allows us to combat some of the previously mentioned challenges.
 An agent's experiences are stored in a data-set $\mathcal{D}$
 as quadruples $e_t = (s_t, a_t, r_t, s_{t+1})$
@@ -633,7 +634,7 @@ at each time step $t$.
 During the agent's experience gathering,
 every few steps,
 we apply a Q-learning minibatch update to a sample of the experience
-$e ~ \mathcal{D}$
+$e \sim \mathcal{D}$
 that is randomly drawn from the experience database.
 
 Note that the use of experience replay condemns us to off-policy learning
@@ -641,7 +642,7 @@ because the policy has already changed at the time a sample is sampled.
 The off-policy learning algorithm of choice for DQN
 was Q-learning,
 resulting in the complete \textit{Deep Q-Learning}
-algorithm in listing \ref{eq:deep_q_learning}.
+algorithm in listing \ref{algo:deep_q_learning}.
 
 \paragraph{}
 Another important addition to the algorithm
@@ -658,6 +659,8 @@ for $C$ updates at a time.
 Of course it still needs to change
 but the frequency at which this happens
 makes divergence unlikely.
+An empirical indication of this behavior
+is presented in Figure \ref{fig:freeze_qs}.
 
 % TODO yeah I didn't really explain \phi, or eps, or rmsprop
 \begin{algorithm}
@@ -724,8 +727,6 @@ can be summed up in the following points.
     and can cause the learning to get stuck in a local minimum.
   \item Using a target network makes the learning process much more stable.
 \end{itemize}
-
-% TODO mention clipping etc
 
 \subsection{Model Architecture}
 \label{sub:model_architecture}
@@ -805,7 +806,7 @@ of the input depth.
 Still, we have four frames at a time that we need to feed to the network.
 DQN handles this by having only a single image channel
 since everything is grayscale
-and treating the time dimension as the image's channels.
+and treats the time dimension as the image's channels.
 
 \paragraph{}
 Usually, when designing the Q function,
@@ -827,8 +828,9 @@ This means that the network will have an output unit
 for each action whose value is the associated Q-value.
 
 \paragraph{}
-We now have a description of both the input and output to the network.
-The real magic happens in between however.
+Now that we have a description
+of both the input and output of the network,
+we can start the discussion on the layers in between.
 The two DQN architectures depicted in Figure \ref{fig:dqn_networks}
 both follow the same concept
 of stacking convolutional layers that

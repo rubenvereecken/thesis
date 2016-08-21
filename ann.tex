@@ -1,7 +1,6 @@
 \chapter{Artificial Neural Networks}
 Neural networks provide a robust method to learn
 vector-valued target functions.
-% TODO more examples is better
 They have effectively been used for a multitude of machine learning domains,
 including recognition of handwritten characters
 \parencite{LeCun1989}
@@ -14,11 +13,11 @@ Both popularity and effectiveness of neural networks can be attributed to
 their ability to cope with noisy, real-world data,
 as well as being able to approximate any function,
 albeit with possibly very large complexity (TODO ref).
-% TODO maybe pic
+
 \paragraph{}
 In part, they are man's attempt
 to model the biology of the brain,
-or at least that is where the inspiration came from.
+or at least that is where the inspiration is drawn from.
 The artificial neural networks we construct
 consist of interconnected units,
 each taking in real-valued inputs
@@ -28,7 +27,8 @@ This can be in a directed, feed-forward manner,
 but it does not have to be.
 Interesting architectures have been discovered
 that make use of recurrent connections.
-Such architectures will be considered in (TODO link).
+Such architectures will be considered in
+section \ref{sec:rnn}.
 To complete the analogy,
 the human brain consists of a large amount of densely packed neurons,
 approximately $10^{11}$ in total.
@@ -61,10 +61,13 @@ Our use of neural networks draws inspiration from nature
 but does not aim to mimic perfectly.
 Whereas our neural networks output real values,
 biological neurons produce a series of spikes
-where both timing and intensity impact the result, % TODO citatie :/?
-a phenomenon researchers are still trying to model perfectly.
+where both timing and intensity impact the represented information
+\parencite{bialek1991reading}.
+The reader interested in spiking neuron networks
+is referred to a good overview by
+\citeauthor{paugam2012computing} (\citeyear{paugam2012computing}).
 For now,
-we shall content ourselves without the dimension of time.
+we shall content ourselves without the dimension of time in this regard.
 
 \section{Building Blocks}
 Artificial neural networks are made up of simple elements called units.
@@ -109,9 +112,9 @@ and $\overrightarrow{w}$
 is the vector of associated weights.
 
 \subsection{Perceptron}
-%TODO ref on perceptrons
 Activation functions can be linear or nonlinear.
-A special kind of unit is the \textit{perceptron},
+A special kind of unit is the \textit{perceptron}
+\parencite{rosenblatt1958perceptron},
 which outputs either a $-1$ or $1$,
 depending on the value of a linear combination of the input:
 
@@ -126,12 +129,10 @@ o(\overrightarrow{x}) = \begin{cases}
 \begin{figure}
 \label{fig.ml.perceptron}
 \center
-\includegraphics[]{perceptron.png}
+\includegraphics[width=.8\linewidth]{perceptron.pdf}
 \caption{Basic perceptron unit.}
-%TODO accredit
 \end{figure}
 
-%TODO I have the perceptron img, need to clean and attribute properly
 where $\overrightarrow{w}$ denotes the weights of the incoming connection
 and $\overrightarrow{x}$ the corresponding incoming values.
 This function effectively creates a hyperplane decision surface;
@@ -142,7 +143,7 @@ it separates the input space in two.
 A problem with perceptrons
 is that they are not differentiable
 in their whole domain.
-As I'll explain further down, %TODO ref
+As will become clear in section \ref{sec:backprop},
 differentiability is a useful and ofttimes required attribute.
 As a way to circumvent this difficulty of non-differentiability,
 the \textit{sigmoid} (denoted $\sigma(x)$) is often used:
@@ -227,9 +228,13 @@ deep learning
 \parencite{Y.2015a}.
 
 Linear rectifier functions also help mitigate
-the \textit{vanishing gradient} problem %TODO consider ref'ing the vanishing gradient paper
+the \textit{vanishing gradient} problem
 since gradients above zero
-are simply propagated.
+are simply propagated
+\parencite{Glorot2011}.
+A more detailed discussion on the vanishing gradient problem
+can be found in section \ref{sec:rnn}
+pertaining recurrent neural networks.
 
 \paragraph{}
 The rectified unit family has gained quite some attention
@@ -256,7 +261,7 @@ so the slopes are fixed outside of training.
 
 
 \section{Gradient Descent and Backpropagation}
-\label{sec.backprop}
+\label{sec:backprop}
 Earlier we talked about a learning algorithm's error
 and even glossed over ways to minimize this error.
 In this section we will discuss gradient descent
@@ -274,7 +279,7 @@ in function of the parameters of the algorithm.
 In other words, they make assumptions
 about the error surface.
 
-Differentiability is even a requirement, %TODO confirm
+Differentiability is even a requirement,
 meaning the derivative of the error
 exists in each point,
 so for each combination of algorithm parameters.
@@ -311,19 +316,8 @@ This makes it a greedy algorithm.
 Following such a slope
 means adjusting the parameters (or weights)
 in the direction of the slope.
-Figure \ref{fig:gradient_descent}
-illustrates what such a walk
-would look like on the error surface.
 
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.5\textwidth]{gradientdescent.png}
-  \caption[Gradient descent path]{Gradient descent follows the path with the steepest slope}
-  \label{fig:gradient_descent}
-  %TODO make own replacement
-  %https://en.wikipedia.org/wiki/File:Gradient_descent.svg
-\end{figure}
-
+\paragraph{}
 As stated before,
 gradient descent requires the derivative of the error E
 to exist in the whole domain.
@@ -401,8 +395,9 @@ In order to algebraically derive $E$ w.r.t to $w$,
 we also need to define the learning algorithm $f$,
 which of course plays a key role
 in what the error surface looks like.
-There are some general computational methods %TODO really cool if I could link any
-for computing the gradient near a certain point $x$
+% TODO
+It is possible to approximate
+the gradient near a certain point $x$
 in case the algebraic derivation is too hard to calculate
 or the calculations are too complex.
 However, we will content ourselves with a simpler example
@@ -520,11 +515,11 @@ of its batch counterpart.
 We have now laid out the basis for the \textit{backpropagation} algorithm,
 a learning algorithm designed for multilayer networks
 that are capable of representing even the most nonlinear surfaces.
-Backpropagation will allow us to learn the weights of a multilayer network
-by minimizing a measure of difference between network output and target output
-\parencite{rumelhart1988learning}.
+Backpropagation \parencite{rumelhart1988learning}
+will allow us to learn the weights of a multilayer network
+by minimizing a measure of difference between network output and target output.
 This minimization will be done with gradient descent
-and the measure of difference we will employ is
+and the measure of error we will employ is
 
 \begin{equation}
   E(\overrightarrow{w}) \equiv \frac{1}{2} \sum_{(x_j, y_j) \in D}
@@ -674,7 +669,7 @@ you carry over some of the weight update from last iteration:
   \label{eq:momentum}
 \end{equation}
 
-We call $\alpha$ in \ref{eq} the \textit{momentum}.
+We call $\alpha$ in \ref{eq:momentum} the \textit{momentum}.
 It is aptly named after the physical property
 and describes how a moving object needs a
 larger force to be applied (or for longer)
@@ -760,14 +755,12 @@ preventing the algorithm from learning anything beyond that point.
 Multiple approaches have been developed to tackle this problem.
 
 One such is \textit{RMSProp},
-introduced by \citeauthor{Hinton}
-% TODO cant find year
-in a lecture in his Coursera Class (\citeyear{Hinton}).
+introduced by \citeauthor{hinton2012neural}
+in a lecture in his Coursera Class (\citeyear{hinton2012neural}).
 It solves the ever-growing $G_t$
 and the resulting ever-diminishing learning rate
 by keeping a moving average of the squared gradient for all parameters:
 
-% TODO confirm this is RHO
 \begin{equation}
   E[g^2]_t = \rho E[g^2]_{t-1} + (1-\rho) g^2_t
 \end{equation}

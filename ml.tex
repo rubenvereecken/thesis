@@ -359,7 +359,6 @@ Bringing these two notions together
 gives us the \textit{bias-variance decomposition}
 of a learning algorithm's generalization error,
 i.e. the expected error on unseen data:
-%TODO I'd like some more space before paragraphs here
 
 $$
 \text{Err}(x) = E[(Y - \hat{f}(x))^2]
@@ -386,7 +385,7 @@ an infinite amount of data. % bold claims man
 
 \caption{Bias-Variance decomposition}
 \label{fig:biasvariance}
-%TODO attribute img http://scott.fortmann-roe.com/docs/BiasVariance.html
+% TODO
 \end{figure}
 
 \paragraph{}
@@ -413,7 +412,7 @@ and calculating the error on that,
 or other techniques that make clever use
 of the training data
 such as bootstrap or cross-fold validation.
-I'll delve into those in the next section. %TODO ORLY?
+I'll delve into those in the next section.
 
 \begin{figure}
 \center
@@ -423,7 +422,6 @@ I'll delve into those in the next section. %TODO ORLY?
   \parencite{sammut2011encyclopedia}
 }
 \label{fig:bullseye}
-%TODO attribute img http://scott.fortmann-roe.com/docs/BiasVariance.html
 \end{figure}
 
 \paragraph{}
@@ -614,7 +612,7 @@ and 1-dimensional plot.
 Figure ~\ref{fig.ml.cod} attempts a visual demonstration.
 Each plot contains 100 instances with a variable amount of dimensions,
 but with values for all dimensions ranging uniformly between 0 and 10.
-As instances become increasingly more multi-dimensional, %TODO wording
+As instances gain more dimensions,
 the spaces containing them become increasingly more sparse.
 Even though an instance may be close to another instance
 in some dimensions,
@@ -642,10 +640,6 @@ given their distributions.
 In other words,
 if one were to pick two instances from one of the above spaces uniformly,
 what would the expected distance between the two be?
-In this running example, %TODO verify this with someone
-this measure is 5 for the 1-dimensional space
-and approximately 7,07 and 8,66 for the other
-two spaces respectively.
 This measure relates directly to the curse of dimensionality;
 as the number of dimensions increase,
 expect the distances to go up as well.
@@ -675,5 +669,6 @@ higher-level concepts
 from the lower-level attributes.
 A popular example of the latter are
 convolutional networks,
-a topic I will cover in %TODO ref
+a topic I will cover in
+section \ref{sec:cnn}.
 

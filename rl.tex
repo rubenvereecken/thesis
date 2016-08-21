@@ -208,22 +208,21 @@ An illusion is created that there are two sides to machine learning,
 though reinforcement learning does not seem to fit either.
 Reinforcement learning is effectively a third machine learning paradigm.
 
-\subsection{Applications (TODO)}
-Reinforcement learning has been applied in a multitude of domains,
-not only the ones immediately called to mind when thinking
-of autonomous agents like physical robots of all kinds,
-though those have definitely gained a lot of attention.
+% TODO only if enough goesting
+%\subsection{Applications}
+%Reinforcement learning has been applied in a multitude of domains,
+%not only the ones immediately called to mind when thinking
+%of autonomous agents like physical robots of all kinds,
+%though those have definitely gained a lot of attention.
 
-%TODO pff geen zin nu
-\paragraph{}
-Survey by \cite{Kober2013}
+%\paragraph{}
+%Survey by \cite{Kober2013}
 
-\paragraph{}
-Talk about self-driving cars
+%\paragraph{}
+%Talk about self-driving cars
 
-With the surge of new techniques and faster machines
-reinforcement learning has also gotten popular with the public.
-%TODO self-driving cars
+%With the surge of new techniques and faster machines
+%reinforcement learning has also gotten popular with the public.
 
 
 \section{Reinforcement Learning Framework}
@@ -315,10 +314,8 @@ by moving however it can.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=0.7\linewidth]{cartpole.png}
-  \caption{Cart Pole Experiment
-  %TODO attribute to http://library.rl-community.org/wiki/CartPole_(Java)
-  }
+  \includegraphics[width=0.6\linewidth]{cartpole.pdf}
+  \caption{Cart Pole Experiment}
   \label{fig:cartpole}
 \end{figure}
 
@@ -589,8 +586,9 @@ and variable-width windows
 \parencite{ring1994continual}
 have been attempted.
 
-In section %TODO ref section recurrent
-we will explore another road.
+In section \ref{sec:rnn}
+we will explore another road
+with recurrent neural networks.
 
 \paragraph{Cart Pole Balancing Example (cont.)}
 In the cart pole example, we originally said we could have both angle
@@ -706,12 +704,12 @@ which we will denote by $\pi*$.
 They all share the \textit{ optimal state-value function }
 and \textit{optimal action-value function}:
 
-\begin{align*}
-  \label{eq:bellman}
+\begin{align}
   v_*(s) &\equiv \max_{\pi} v_\pi(s) & \forall s \in \mathcal{S} \\
   q_*(s, a) &\equiv \max_\pi q_\pi(s,a) & \forall s \in \mathcal{S},
   \forall a \in \mathcal{A}(s)
-\end{align*}
+  \label{eq:bellman}
+\end{align}
 
 Finally, we can write the optimal action-value function
 in function of the optimal state-value function.
@@ -769,7 +767,7 @@ Let us suppose now the random policy $\pi$
 which takes a random action at random in any and every state.
 Figure \ref{fig:gridworld}b then shows the value function $v_\pi$
 for this policy in the case that $\gamma=0.9$.
-These values can be calculated by solving the equations \ref{eq:bellman}.
+These values can be calculated by solving the equation \ref{eq:bellman}.
 For a small state space such as the Gridworld one, doing so explicitly
 is still possible.
 However, for larger ones this quickly becomes infeasable
@@ -793,11 +791,6 @@ TD methods do not require a model of the environment
 in order to work,
 they allow learning from raw experience
 which makes them all the more useful.
-
-In this section,
-% TODO describe what comes after
-% I start out by focusing on how TD methods
-% estimate the previously introduced value function $v_\pi$.
 
 \subsection{TD Prediction}
 We start out with the prediction problem:
@@ -1026,8 +1019,6 @@ it estimates $q_\pi$ for the policy $\pi$ at hand,
 not just the greedy policy,
 like Q-learning would.
 
-% TODO I want a Q-learning example
-
 \section{Function Approximation}
 \label{sec:function_approximation}
 So far we have only dealt with the tabular case
@@ -1138,7 +1129,7 @@ could look as follows.
 \end{align*}
 
 This is of course gradient descent
-as described in section \ref{sec:gradient_descent}
+as described in section \ref{sub:gradient_descent}
 with $\nabla f(\theta)$
 again defined as the vector of partial derivatives
 as in equation \ref{eq:gradient_descent_derivative}.
@@ -1167,8 +1158,7 @@ This simple way of calculating the gradient
 for any given state makes linear methods extremely easy to use with gradient descent.
 Their popularity is further increased
 by having only a single optimum $\theta*$ (or multiple equally good optima)
-% TODO peter pls check p202
-as opposed to have multiple local optima.
+as opposed to multiple local optima.
 Any linear method that would get to local optima
 is thus guaranteed to converge to or near the global optimum.
 
