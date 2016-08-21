@@ -31,7 +31,7 @@ that I will explore.
 One such is the Convolutional Neural Network
 which I will describe in more detail in
 section \ref{sec:cnn}.
-This type especially has benefitted from
+This type especially has benefited from
 advances in technology because of their highly
 parallel nature which effectively allows them to be run
 on consumer graphic hardware which is ever-improving
@@ -203,7 +203,7 @@ A single convolutional layer
 has some hyperparameters that are both important
 and hard to tweak.
 Since learning a convolutional network
-is still a rather slow endeavour,
+is still a rather slow endeavor,
 it is best to start out with good estimates from the deep learning community.
 
 \paragraph{}
@@ -339,7 +339,7 @@ draws the eye of the reinforcement learner designer.
 A problem with a pure Markov state space
 has no need of a network useful for learning dependencies between different states,
 since by definition every state on its own is sufficient enough of a representation
-and includes all necesary past states in its description.
+and includes all necessary past states in its description.
 However, some conceivable reinforcement learning problems
 are not Markovian
 or are only made to be so
@@ -350,7 +350,7 @@ Both kinds of problems
 could still benefit from RNNs.
 
 Recall also from section \ref{sub:pomdp}
-the class of Partially Observable Markov Decision Procceses (POMDP).
+the class of Partially Observable Markov Decision Processes (POMDP).
 These are processes that simply lack all required information in
 at least some state descriptions.
 As a result this is the class of problems that benefit most
@@ -363,7 +363,7 @@ As Recurrent Neural Networks form a class of networks,
 I will go over the general approach taken instead of a specific version.
 
 Whereas regular feed-forward networks contain only forward connections,
-RNN's usually contain cycles allowing them to capture time dependencies.
+RNNs usually contain cycles allowing them to capture time dependencies.
 The cycle allows on state to depend on a previous one,
 making it the ideal setup for sequences.
 
@@ -395,7 +395,7 @@ Highlighted first by
 and further characterized by
 \citeauthor{bengio1994} (\citeyear{bengio1994}),
 these two recurring problematic phenomena have long prevented
-efficient traiffic of recurrent neural networks.
+efficient training of recurrent neural networks.
 
 The \textit{exploding gradient} describes the norm of the gradient
 increasing during training
@@ -455,7 +455,7 @@ into a veritable piece of memory.
 
 \paragraph{}
 Quite a lot of LSTM variants have been developed over the years
-since their the LSTM's inception.
+since the LSTM's inception.
 Below I describe the relations between the different components
 as they are used in this thesis,
 based on a popular design described by
@@ -633,7 +633,7 @@ as quadruples $e_t = (s_t, a_t, r_t, s_{t+1})$
 at each time step $t$.
 During the agent's experience gathering,
 every few steps,
-we apply a Q-learning minibatch update to a sample of the experience
+we apply a Q-learning mini-batch update to a sample of the experience
 $e \sim \mathcal{D}$
 that is randomly drawn from the experience database.
 
@@ -677,7 +677,7 @@ is presented in Figure \ref{fig:freeze_qs}.
       \State Otherwise select $a_t = \text{argmax}_a Q(\phi(s_t), a; \theta)$
       \State Perform action $a_t$, receive reward $r_t$ and observe $s_{t+1}$
       \State Store $(\phi_t, a_t, r_t, \phi(s_{t+1}))$ in $\mathcal{D}$
-      \State Sample random minibatch $(\phi_j, a_j, r_j, \phi_{j+1})$ from $\mathcal{D}$
+      \State Sample random mini-batch $(\phi_j, a_j, r_j, \phi_{j+1})$ from $\mathcal{D}$
       \If{episode terminates at $j+1$}
         \State $y_j \gets r_j$
       \Else
@@ -752,8 +752,8 @@ Two variations of the Deep Q-Network.
 Both follow exactly the same principle
 of stacking convolutional layers
 that learn progressively more abstract features.
-The inner area that is higlighted in each of the convolutional layers
-illustrates how a single input tile is funnelled through the network
+The inner area that is highlighted in each of the convolutional layers
+illustrates how a single input tile is funneled through the network
 and gradually has more features learned on it,
 demonstrated by the layers' increasing heights.
 }
@@ -783,7 +783,7 @@ which means two consecutive states
 actually have 3 frames in common.
 This proves to be sufficient for an agent to infer hidden features
 like object velocities by inspecting the distance and direction
-an object has travelled.
+an object has traveled.
 In next chapter I will go into a deeper discussion on this topic.
 % TODO peter ref for 18 frames
 

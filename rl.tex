@@ -100,7 +100,7 @@ to influence an algorithm:
   When a configuration is reached for which the action is undetermined, a
 random choice for the missing data is made and the appropriate entry is
 made in the description, tentatively, and is applied. When a pain stimulus
-occurs all tentative entries are cancelled, and when a pleasure stimulus
+occurs all tentative entries are canceled, and when a pleasure stimulus
 occurs they are all made permanent.
 
 \attrib{\cite{turing1948intelligent}}
@@ -186,7 +186,7 @@ Reinforcement learning is different
 in that it takes on more of the problem;
 a learning algorithm is not presented with data
 but instead must gather it by interacting with the environment.
-In doing so it must also make a tradeoff between exploration and exploitation,
+In doing so it must also make a trade-off between exploration and exploitation,
 a characterizing element to reinforcement learning.
 A learning agent can either \textit{exploit}
 what it knows to be the best action in order to achieve its goal,
@@ -411,7 +411,7 @@ the expected total discounted return
 \end{equation}
 
 or put otherwise,
-at timestep $t$ the agent will try to optimize his
+at time step $t$ the agent will try to optimize his
 total discounted reward $G_t$
 by choosing the appropriate action $A_t$:
 
@@ -550,7 +550,7 @@ is an extremely convenient one.
 \subsection{Partially Observable Markov Decision Processes}
 \label{sub:pomdp}
 One approach to non-Markovian settings
-are \textit{Partially Observable MDP's} (POMDP).
+are \textit{Partially Observable MDPs} (POMDP).
 They can be seen as generalizations of Markov decision processes
 with incomplete information
 \parencite{lovejoy1991survey}.
@@ -564,7 +564,7 @@ that relates to $s_t$ in some way,
 according to some unknown probability distribution $P(o|s_t)$.
 
 \paragraph{}
-One way that POMDP's arise often is because of noisy sensors,
+One way that POMDPs arise often is because of noisy sensors,
 so observations do not completely accurately reflect true state.
 Another example is when state features can be derived
 from observable features.
@@ -575,7 +575,7 @@ part of a state and indeed one could argue it should not be
 because it is derived from another part of the state, over time.
 
 \paragraph{}
-Many approaches to POMDP's
+Many approaches to POMDPs
 include building some kind of model of the environment
 so the relation between observation and hidden state can be used
 \parencite{Cassandra1994}.
@@ -603,7 +603,7 @@ Ideally it would know the direction of the pole
 so it could counteract or complete its movement,
 but in order to do that it must now look at the history
 of the pole: which direction does it come from?
-What is the distance travelled since last step?
+What is the distance traveled since last step?
 This is clearly not Markovian,
 as in the markovian case all necessary knowledge
 is encoded in the current state,
@@ -770,7 +770,7 @@ for this policy in the case that $\gamma=0.9$.
 These values can be calculated by solving the equation \ref{eq:bellman}.
 For a small state space such as the Gridworld one, doing so explicitly
 is still possible.
-However, for larger ones this quickly becomes infeasable
+However, for larger ones this quickly becomes infeasible
 and one must turn to approximation methods
 which we will consider later on.
 
@@ -982,7 +982,7 @@ is displayed in Algorithm \ref{algo:qlearning}.
 Note that as it is described here it is a \textit{tabular} algorithm,
 meaning Q is represented using a lookup table
 indexed by both a state $s$ and action $a$.
-In next section we will procede beyond the tabular case
+In next section we will proceed beyond the tabular case
 and investigate how to cope with
 state and action spaces too large for lookup tables.
 
@@ -1105,7 +1105,7 @@ Not only are the targets bootstrapped,
 the targets also move as the learning process go on,
 because the targets themselves are affected each backup.
 This calls for approximation methods that
-are very robust to these nonstationary targets.
+are very robust to these non-stationary targets.
 
 Let us return then to our error definition.
 As before, in the machine learning context,
