@@ -15,40 +15,6 @@ title = {{Sample-Based Learning and Search with Permanent and Transient Memories
 url = {http://discovery.ucl.ac.uk/1347372/},
 year = {2008}
 }
-@article{Adam2012,
-annote = {Their results are better than native Q-learning or Sarsa. Main advantage seems to be that you can better use your experience. It mentions that it's better than some batch learning method.
-
-According to Peter this paper's technique is used by DeepMind. 
-He also suggests tracking trajectories could be an interesting extension since recurrent architectures always work with trajectories.},
-author = {Adam, Sander and Buşoniu, Lucian and Babu{\v{s}}ka, Robert},
-doi = {10.1109/TSMCC.2011.2106494},
-file = {:home/ruben/Documents/Mendeley/Adam, Buşoniu, Babu{\v{s}}ka/IEEE Transactions on Systems, Man and Cybernetics Part C Applications and Reviews/Experience replay for real-time reinforcement learning control - 2012 - Adam, Buşoniu, Babu{\v{s}}ka.pdf:pdf},
-issn = {10946977},
-journal = {IEEE Transactions on Systems, Man and Cybernetics Part C: Applications and Reviews},
-keywords = {Experience replay (ER),Q-learning,SARSA,real-time control,reinforcement learning (RL),robotics},
-number = {2},
-pages = {201--212},
-title = {{Experience replay for real-time reinforcement learning control}},
-volume = {42},
-year = {2012}
-}
-@article{Yao2014,
-abstract = {We consider the problem of learning models of options for real-time abstract planning, in the setting where reward functions can be specified at any time and their expected returns must be efficiently computed. We introduce a new model for an option that is independent of any reward function, called the universal option model (UOM). We prove that the UOM of an option can construct a traditional option model given a reward function, and also supports efficient computation of the option-conditional return. We extend the UOM to linear function approximation, and we show the UOM gives the TD solution of option returns and the value function of a policy over options. We provide a stochastic approximation algorithm for incrementally learning UOMs from data and prove its consistency. We demonstrate our method in two domains. The first domain is a real-time strategy game, where the controller must select the best game unit to accomplish a dynamically-specified task. The second domain is article recommendation, where each user query defines a new reward function and an article's relevance is the expected return from following a policy that follows the citations between articles. Our experiments show that UOMs are substantially more efficient than previously known methods for evaluating option returns and policies over options.},
-author = {Yao, Hengshuai and Szepesv{\'{a}}ri, Csaba and Sutton, Rich and Modayil, Joseph and Bhatnagar, Shalabh},
-file = {:home/ruben/Documents/Mendeley/Yao et al/Proceedings of the 28th Annual Conference on Neural Information Processing Systems (NIPS)/Universal Option Models - 2014 - Yao et al.pdf:pdf},
-journal = {Proceedings of the 28th Annual Conference on Neural Information Processing Systems (NIPS)},
-pages = {1--9},
-title = {{Universal Option Models}},
-url = {http://webdocs.cs.ualberta.ca/{~}hengshua/papers/uom{\_}nips.pdf},
-year = {2014}
-}
-@book{friedman2001elements,
-author = {Friedman, Jerome and Hastie, Trevor and Tibshirani, Robert},
-publisher = {Springer series in statistics Springer, Berlin},
-title = {{The elements of statistical learning}},
-volume = {1},
-year = {2001}
-}
 @article{Sutton1998,
 abstract = {Several researchers have proposed modeling temporally abstract actions in reinforcement learning by the combination of a policy and a ter- mination condition, which we refer to as an op- tion. Value functions over options and models of options can be learned using methods designed for semi-Markov decision processes (SMDPs). However, all these methods require an option to be executed to termination. In this paper we ex- plore methods that learn about an option from small fragments of experience consistent with that option, even if the option itself is not exe- cuted. We call these methods intra-option learn- ing methods because they learn from experience within an option. Intra-option methods are some- times much more efficient than SMDP meth- ods because they can use off-policy temporal- difference mechanisms to learn simultaneously about all the options consistent with an expe- rience, not just the few that were actually exe- cuted. In this paper we present intra-option learn- ing methods for learning value functions over op- tions and for learning multi-time models of the consequences of options. We present compu- tational examples in which these new methods learn much faster than SMDP methods and learn effectively when SMDP methods cannot learn at all. We also sketch a convergence proof for intra- option value learning.},
 author = {Sutton, Richard S. and Precup, Doina and Singh, Satinder},
@@ -60,17 +26,6 @@ pages = {556--564},
 title = {{Intra-option learning about temporally abstract actions}},
 year = {1998}
 }
-@article{Sutton2011,
-author = {Sutton, Richard S. and Modayil, Joseph and Delp, Michael and Degris, Thomas and Pilarski, Patrick M. and White, Adam and Precup, Doina},
-file = {:home/ruben/Documents/Mendeley/Sutton et al/Unknown/Horde a scalable real-time architecture for learning knowledge from unsupervised sensorimotor interaction - 2011 - Sutton et al.pdf:pdf},
-isbn = {0-9826571-6-1, 978-0-9826571-6-4},
-keywords = {artificial intelligence,knowledge representation,off-policy learning,real-time,reinforcement learning,robotics,temporal-difference learning,value function approximation},
-number = {1972},
-pages = {761--768},
-title = {{Horde: a scalable real-time architecture for learning knowledge from unsupervised sensorimotor interaction}},
-url = {http://dl.acm.org/citation.cfm?id=2031678.2031726},
-year = {2011}
-}
 @article{Gabel2011,
 abstract = {Neural batch reinforcement learning (RL) algorithms have recently shown to be a powerful tool for model-free reinforcement learning problems. In this paper, we present a novel learning benchmark from the realm of computer games and apply a variant of a neural batch RL algorithm in the scope of this benchmark. Defining the learning problem and appropriately adjusting all relevant parameters is often a tedious task for the researcher who implements and investigates some learning approach. In RL, the suitable choice of the function c of immediate costs is crucial, and, when utilizing multi-layer perceptron neural networks for the purpose of value function approximation, the definition of c must be well aligned with the specific characteristics of this type of function approximator. Determining this alignment is especially tricky, when no a priori knowledge about the task and, hence, about optimal policies is available. To this end, we propose a simple, but effective dynamic scaling heuristic that can be seamlessly integrated into contemporary neural batch RL algorithms. We evaluate the effectiveness of this heuristic in the context of the well-known pole swing-up benchmark as well as in the context of the novel gaming benchmark we are suggesting.},
 author = {Gabel, Thomas and Lutz, Christian and Riedmiller, Martin},
@@ -80,6 +35,17 @@ isbn = {9781424498888},
 journal = {IEEE SSCI 2011: Symposium Series on Computational Intelligence - ADPRL 2011: 2011 IEEE Symposium on Adaptive Dynamic Programming and Reinforcement Learning},
 pages = {279--286},
 title = {{Improved neural fitted Q-iteration applied to a novel computer gaming and learning benchmark}},
+year = {2011}
+}
+@article{Sutton2011,
+author = {Sutton, Richard S. and Modayil, Joseph and Delp, Michael and Degris, Thomas and Pilarski, Patrick M. and White, Adam and Precup, Doina},
+file = {:home/ruben/Documents/Mendeley/Sutton et al/Unknown/Horde a scalable real-time architecture for learning knowledge from unsupervised sensorimotor interaction - 2011 - Sutton et al.pdf:pdf},
+isbn = {0-9826571-6-1, 978-0-9826571-6-4},
+keywords = {artificial intelligence,knowledge representation,off-policy learning,real-time,reinforcement learning,robotics,temporal-difference learning,value function approximation},
+number = {1972},
+pages = {761--768},
+title = {{Horde: a scalable real-time architecture for learning knowledge from unsupervised sensorimotor interaction}},
+url = {http://dl.acm.org/citation.cfm?id=2031678.2031726},
 year = {2011}
 }
 @article{Mnih2015,
@@ -98,4 +64,38 @@ title = {{Human-level control through deep reinforcement learning}},
 url = {http://dx.doi.org/10.1038/nature14236},
 volume = {518},
 year = {2015}
+}
+@book{friedman2001elements,
+author = {Friedman, Jerome and Hastie, Trevor and Tibshirani, Robert},
+publisher = {Springer series in statistics Springer, Berlin},
+title = {{The elements of statistical learning}},
+volume = {1},
+year = {2001}
+}
+@article{Yao2014,
+abstract = {We consider the problem of learning models of options for real-time abstract planning, in the setting where reward functions can be specified at any time and their expected returns must be efficiently computed. We introduce a new model for an option that is independent of any reward function, called the universal option model (UOM). We prove that the UOM of an option can construct a traditional option model given a reward function, and also supports efficient computation of the option-conditional return. We extend the UOM to linear function approximation, and we show the UOM gives the TD solution of option returns and the value function of a policy over options. We provide a stochastic approximation algorithm for incrementally learning UOMs from data and prove its consistency. We demonstrate our method in two domains. The first domain is a real-time strategy game, where the controller must select the best game unit to accomplish a dynamically-specified task. The second domain is article recommendation, where each user query defines a new reward function and an article's relevance is the expected return from following a policy that follows the citations between articles. Our experiments show that UOMs are substantially more efficient than previously known methods for evaluating option returns and policies over options.},
+author = {Yao, Hengshuai and Szepesv{\'{a}}ri, Csaba and Sutton, Rich and Modayil, Joseph and Bhatnagar, Shalabh},
+file = {:home/ruben/Documents/Mendeley/Yao et al/Proceedings of the 28th Annual Conference on Neural Information Processing Systems (NIPS)/Universal Option Models - 2014 - Yao et al.pdf:pdf},
+journal = {Proceedings of the 28th Annual Conference on Neural Information Processing Systems (NIPS)},
+pages = {1--9},
+title = {{Universal Option Models}},
+url = {http://webdocs.cs.ualberta.ca/{~}hengshua/papers/uom{\_}nips.pdf},
+year = {2014}
+}
+@article{Adam2012,
+annote = {Their results are better than native Q-learning or Sarsa. Main advantage seems to be that you can better use your experience. It mentions that it's better than some batch learning method.
+
+According to Peter this paper's technique is used by DeepMind. 
+He also suggests tracking trajectories could be an interesting extension since recurrent architectures always work with trajectories.},
+author = {Adam, Sander and Buşoniu, Lucian and Babu{\v{s}}ka, Robert},
+doi = {10.1109/TSMCC.2011.2106494},
+file = {:home/ruben/Documents/Mendeley/Adam, Buşoniu, Babu{\v{s}}ka/IEEE Transactions on Systems, Man and Cybernetics Part C Applications and Reviews/Experience replay for real-time reinforcement learning control - 2012 - Adam, Buşoniu, Babu{\v{s}}ka.pdf:pdf},
+issn = {10946977},
+journal = {IEEE Transactions on Systems, Man and Cybernetics Part C: Applications and Reviews},
+keywords = {Experience replay (ER),Q-learning,SARSA,real-time control,reinforcement learning (RL),robotics},
+number = {2},
+pages = {201--212},
+title = {{Experience replay for real-time reinforcement learning control}},
+volume = {42},
+year = {2012}
 }
