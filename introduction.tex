@@ -167,13 +167,17 @@ from just looking at a standstill.
 
 \paragraph{}
 The current standard approach to cope with
-features that can be derived over time such as velocity
+features that can be derived over time
 is to feed multiple frames into the architecture at once.
 This already is an improvement over using just a single frame
 because the network suddenly has more information available.
 The idea behind passing in multiple frames
 is that the network will learn to combine the information
 available in multiple time steps.
+However,
+it should be obvious that
+this approach is rather naive
+and limited to only a small fixed history.
 
 \paragraph{}
 I will consider three alternative approaches.
@@ -225,7 +229,9 @@ and one another.
 
 Chapter 7 will draw conclusions,
 outline my contributions
-and point to future work.
+and point to
+interesting avenues for
+future work.
 
 \paragraph{}
 Appendix A can be visited for experimental details
