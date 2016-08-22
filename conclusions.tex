@@ -6,8 +6,8 @@
 % still proves challenging for the current state of the art.
 
 \paragraph{}
-The testing framework under consideration
-is the Arcade Learning Environment,
+The problems under consideration
+are games in the Arcade Learning Environment,
 an Atari game emulator
 which allows a learning agent to interact
 with its environment.
@@ -132,6 +132,45 @@ and a variant of the Deep Q-Learning algorithm
 tailored to learning over sequences
 and found it wanting in terms of learning speed
 on the Arcade Learning Environment.
+
+\paragraph{}
+For all of these architectures,
+we have considered multiple combinations of hyper parameters
+for the Arcade Learning Environment
+and tuned these to find the fastest learning variant.
+For the 3D convolutional network,
+this resulted in the network
+that keeps a uniform time filter size of 2,
+slowly merging time throughout the network.
+
+For the LSTM-based network,
+results were not as clear
+though the network with 256 units and a gradient step of 30
+fared better than both the variant with more units
+and the variant with a smaller gradient step.
+
+\paragraph{}
+In addition to tuning,
+all architectures considered here
+give access to an extra image dimension,
+the use of which we have tested with RGB colors
+instead of the standard grayscale.
+We have tried the Late Fusion
+and 3D convolutional networks with this enriched output
+and found this provided significant performance gains.
+
+\paragraph{}
+Finally,
+because we found the ALE benchmark wanting
+and needed a more clear example of a POMDP,
+we have used Flickering Pong,
+a stochastically heavily obscured variant of Pong,
+as an additional benchmark
+and found only
+the 3D convolutional network
+with sufficient frames
+managed to learn decent performance
+on this problem.
 
 \section{Future Work}
 \label{sec:future_work}
