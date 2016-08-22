@@ -26,6 +26,7 @@ leading to a better experience
 and lessening the ecological footprint of a home
 without the intervention of humans.
 
+\paragraph{}
 Recent years have also seen a rise of interest
 in robotics and control,
 a popular example of which is the ongoing research
@@ -47,7 +48,7 @@ we might consider \textit{of the future}.
 The field is relatively young
 yet has already booked remarkable advances.
 Still there is a very real sense of unfinishedness.
-I do not hint at immaturity
+We do not hint at immaturity
 for it has already reached the point
 at which it can be considered mature
 but rather that the field has not reached its full potential.
@@ -59,12 +60,12 @@ Of course, for a researcher
 this poses incredibly interesting opportunities.
 
 \paragraph{}
-As stated,
-the field of reinforcement learning
+The field of reinforcement learning
 inches forward and manages the occasional leap.
 In recent years,
 some of the greatest contributions
-make use of Deep Learning
+make use of deep learning,
+a concept borrowed from machine learning,
 within the reinforcement learning context.
 
 Deep Learning originates in supervised learning
@@ -114,15 +115,23 @@ to represent its value function.
 While spatial features can be learned hierarchically,
 the dimension of time has been mostly neglected or simplified.
 % informal rep of mdp
-This is because all theoretical work is based
+This is because much of the theoretical work is based
 on the requirement that all state information that
 could be useful is present;
 no hidden state allowed,
 not even historical state that is not observable anymore.
+A short-term example of this is velocity
+which can only be derived when multiple frames are present.
+A more complicated, long-term example
+% TODO is this even correct wwat
+would be the game Blackjack
+where the cards used in previous rounds
+affect the possibilities in later rounds.
 
+\paragraph{}
 Experiments with Atari games
-manage to circumvent this requirement somewhat
-since all games are too simple
+manage to circumvent the requirement somewhat
+since games are too simple
 to contain such long-term dependencies.
 All information one could need is usually encompassed
 within a few frames at any point,
@@ -131,10 +140,10 @@ can be calculated from two frames.
 
 \paragraph{}
 This neglect and oversimplification of the dimension of time
-struck me as interesting and as an area
+struck as interesting and as an area
 deserving of investigation.
 In this thesis,
-I set out to compare different approaches
+we set out to compare different approaches
 to handling the dimension of time in reinforcement learning.
 
 \section{Research Question}

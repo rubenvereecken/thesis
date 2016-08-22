@@ -17,7 +17,20 @@
 
   \paragraph{}
   In this thesis,
-  I explore three different neural network architectures
+  we adopt the Arcade Learning Environment
+  to train agents
+  that learn how to play Atari games
+  based solely on raw pixel input
+  and a reward signal.
+  In order to be successful
+  these agents need to learn
+  important features
+  autonomously,
+  not only visually
+  but also temporally.
+
+  \paragraph{}
+  We explore three different neural network architectures
   and their capabilities of handling
   dependencies over time.
   % The first is the Late Fusion network
@@ -36,6 +49,8 @@
   by learning from two input frames
   that correspond to different time steps
   and merging that information in a deeper layer.
+
+  \forceindent
   The second involves convolutions over time
   and is shown to significantly outperform the standard approach
   on a problem
