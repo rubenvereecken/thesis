@@ -127,6 +127,8 @@ in which case we call the problem a \textit{regression} problem.
 The distinction is worth noting because
 some techniques lend themselves well to
 one category but not necessarily to the other.
+
+\paragraph{}
 On this data we will try to learn a hypothesis $h$
 that can predict the target weather $y$
 for any given observation $x$.
@@ -158,11 +160,12 @@ that maps $Sunny$ to $-1$, $Rainy$ to $0$ and $Cloudy$ to $1$.
 Now that our model is defined, all that is left for us to do
 is train it.
 
+\paragraph{}
 In order to train our model we need a data set with training examples
 $(x_i, y_i)$,
 where the temperature $y_i$ corresponds to
 the observations $x_i$ the previous day.
-All that remains now is to pick the best weights
+We now need to pick the best weights
 so the resulting model is the best hypothesis.
 We describe a \textit{best fit}
 we need some metric of performance.
@@ -185,7 +188,7 @@ with the lowest error.
 An alternative algorithm to find our optimal weights $w$
 is the \textit{weight update rule},
 a source of inspiration for many more algorithms.
-The idea behind is that every sample
+The core idea is that every sample
 you calculate your prediction
 and shift the weights in the direction of the error,
 proportionally to the size of the error.
@@ -196,6 +199,10 @@ So, for every sample:
 \end{enumerate}
 
 The update size can be tweaked with $\eta$.
+
+\paragraph{}
+A theoretical basis for this is given in section
+\ref{sec:backprop}.
 
 \paragraph{}
 As you have witnessed yourself,
