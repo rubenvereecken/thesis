@@ -1,9 +1,47 @@
 \chapter{Conclusions}
-While deep reinforcement learning offers a novel approach
-to learning control policies
-from raw input data such as pixels in images,
-doing so in partially observable environments
-still proves challenging for the current state of the art.
+% While deep reinforcement learning offers a novel approach
+% to learning control policies
+% from raw input data such as pixels in images,
+% doing so in partially observable environments
+% still proves challenging for the current state of the art.
+
+\paragraph{}
+The testing framework under consideration
+is the Arcade Learning Environment,
+an Atari game emulator
+which allows a learning agent to interact
+with its environment.
+The learning agent observes images as raw pixels
+and must successfully learn a value function,
+embodied by the network,
+that indicates which actions are best in which states.
+Along the way the network also has to learn
+how to extract useful features
+from these raw frames
+in a hierarchic fashion
+in order to do so.
+
+\paragraph{}
+The goal of this thesis was to improve the performance
+of the standard Deep Q-Network
+in the Arcade Learning Environment
+by exploring different approaches
+to learning dependencies over time.
+
+DQN employs a straightforward frame stacking approach:
+frames are always fed into the network
+four at a time
+in order to render the games Markovian,
+meaning that any useful historic information
+is present in this small stack
+and nothing beyond could influence decisions.
+
+We have started out by showing that this approach
+is already an improvement over
+using just a single frame
+because important information such as object velocity is lost,
+though the boost in performance is heavily dependent
+on the game under consideration.
 
 \paragraph{}
 We have explored three alternative approaches
@@ -13,34 +51,68 @@ to learn features that can be derived from short time spans
 while the latter can learn to leverage information
 observed an arbitrary amount of time before.
 
-The Late Fusion network devised based on standard DQN
-has a learning process slower than DQN
-but with less input.
+\paragraph{}
+The Late Fusion network proposed here
+is based on the Late Fusion architecture
+that has already successfully been used
+for action recognition in video,
+though our variant is heavily based on DQN
+for better comparison.
+Instead of a single stack of convolutional layers,
+the Late Fusion architecture contains
+two such stacks, or towers, that each take as input a single frame
+though both share weights in order to learn exactly the same features.
+Only the fully-connected layer
+that both towers feed into
+has access to time information
+because it can see
+the difference between the high-level features
+from both stacks.
 
-The 3D convolutional network which can
+The Late Fusion network
+has a learning process slower than standard DQN
+but still forms an improvement over using
+just a single frame.
+
+\paragraph{}
+The 3D convolutional architecture can
 learn features over time and space combined
 at multiple hierarchical levels
-significantly outperforms standard DQN.
+because it gives more control over how
+filters over time are learned and propagated throughout the network.
+We have shown that it significantly outperforms standard DQN
 Moreover,
 it is shown to vastly surpass any other approach
 on the stochastic POMDP
-Flickering Pong.
+Flickering Pong
+given sufficient input frames.
 
+\paragraph{}
 Both of these architectures have access to an extra input dimension
 compared to DQN because of the way they handle time.
 While DQN converts images to grayscale before feeding them
 into the network,
 we have shown that making use of the extra dimension
 to hold RGB color information
-significantly boosts learning speed.
+significantly boosts learning speed
+of both architectures.
 
+\paragraph{}
 Lastly,
 we have constructed an LSTM-based DQN architecture
 with the goal in mind for it to learn how to retain
 information from previous frames.
-While it does exhibit a learning curve,
-it is considerably slower than all other considered approaches.
+LSTM units keep internal cell state,
+the use of which is regulated by
+an input gate, forget gate and output gate
+that all have to be trained.
+They also contain a recurring connection.
+This makes them ideal for learning over sequences
+which reinforcement learning inherently exhibit
+in its sequential nature.
 
+While this approach does exhibit a learning curve,
+it is considerably slower than all other considered approaches.
 
 \section{Contributions}
 \label{sec:contributions}
