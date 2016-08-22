@@ -14,7 +14,7 @@ Hyperparameter                  & Value             & Description               
 mini-batch size                 & 32                & Number of random samples for each stochastic gradient descent update                                     \\
 replay memory size              & $10^6$            & Replay memory contains this number of most recent frames for SGD updates                                 \\
 agent history length            & 4                 & Number of most recent frames used as input to the Q network                                              \\
-target network update frequency & 2000*             & Every 2000 parameter updates the target network gets updated with the parameters of the current network. \\
+target network update frequency & 2000             & Every 2000 parameter updates the target network gets updated with the parameters of the current network. \\
 discount factor                 & 0.95              & Discount $\gamma$ used in Q-learning update                                                              \\
 frame skip                      & 4                 & The agent only sees every 4th frame                                                                      \\
 update frequency                & 1                 & Parameter updates occur every action selection                                                           \\
@@ -26,21 +26,18 @@ initial exploration             & 1                 & Initial value for $\epsilo
 final exploration               & 0.1               & Smallest value for $\epsilon$ in $\epsilon$-greedy                                                       \\
 epsilon decay                   & $10^{-6}$         & $\epsilon$ decays linearly over this amount of actions                                                   \\
 replay start size               & 100               & Wait with training until the replay memory contains at least this amount of frames                       \\
-max no-ops                      & 10**              & Start with a random amount of no-ops that is at most this amount                                         \\
-resize frame method             & scale***          & Processing step employed to resize frames in order to reduce amount of pixels                            \\
+max no-ops                      & 10*              & Start with a random amount of no-ops that is at most this amount                                         \\
+resize frame method             & scale**          & Processing step employed to resize frames in order to reduce amount of pixels                            \\
 \end{tabularx}
 \paragraph{}
   The values in this table are based entirely on the DQN implementation by
   \cite{Mnih2013},
   except for those annotated.
 
-  \textbf{*} The original implementation employs no separate target network.
-  This is added in for stability.
-
-  ** The original implementation uses no initial no-ops.
+  * The original implementation uses no initial no-ops.
   This is added in to add some stochasticity to the games.
 
-  *** The original implementation crops out the required area from a frame.
+  ** The original implementation crops out the required area from a frame.
   This does not generalize well to games where important information
   falls outside of this frame.
 \end{table}
