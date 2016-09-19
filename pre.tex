@@ -4,15 +4,15 @@
 }
 \begin{abstract}
   Deep learning is an increasingly popular topic
-  in the area of unsupervised learning.
+  in the area of machine learning.
   Reinforcement learning has recently adopted it
   as a method for learning behavior
   from raw sensory input
   such as image frames.
-  Decent results have already been achieved
+  Good results have already been achieved
   but many problems still elude us,
   % Maybe mention POMDP
-  especially where time dependencies
+  especially where dependencies over time
   must be learned in order to achieve results.
 
   \paragraph{}
@@ -30,16 +30,21 @@
   but also temporally.
 
   \paragraph{}
-  We explore three different neural network architectures
+  The current state of the art,
+  Deep Q-Network (DQN),
+  only takes into account the most recent frames.
+  We explore three alternative neural network architectures
   and their capabilities of handling
-  dependencies over time.
+  dependencies over time
+  and compare these
+  against DQN.
   % The first is the Late Fusion network
   % which aims to encompass time information
   % by learning from two input frames
   % that correspond to different time steps.
 
   \forceindent
-  Two of the networks I consider
+  Two of the networks considered here
   are valid alternatives for learning
   short-term, fixed-time
   features
@@ -63,12 +68,12 @@
   % throughout the network.
 
   \forceindent
-  The last is a network
-  that makes use of
+  The last architecture under consideration
+  makes use of
   long short-term memory,
-  a recurrent architecture
-  especially useful for learning long-term dependencies
-  of arbitrary length.
+  which effectively equips the network
+  with internal memory
+  that can hold past information.
 \end{abstract}
 
 \renewcommand{\abstractname}{

@@ -20,7 +20,7 @@ frame skip                      & 4                 & The agent only sees every 
 update frequency                & 1                 & Parameter updates occur every action selection                                                           \\
 learning rate                   & $2 \cdot 10^{-4}$ & Learning rate $\eta$ used by RMSProp                                                                     \\
 RMS decay                       & 0.99              & Gradient moving average decay factor $\rho$ for RMSProp                                                  \\
-RMS epsilon                     & $10^{-6}$         & RMSProp small stability value added to denominator (see \ref{eq:rmsprop})                              \\
+RMS epsilon                     & $10^{-6}$         & RMSProp small stability value added to denominator (see equation \ref{eq:rmsprop})                              \\
 clip delta                      & false             & Whether to clip the delta; \cite{Mnih2015} clips this to $[-1, 1]$                                      \\
 initial exploration             & 1                 & Initial value for $\epsilon$ in $\epsilon$-greedy                                                        \\
 final exploration               & 0.1               & Smallest value for $\epsilon$ in $\epsilon$-greedy                                                       \\
